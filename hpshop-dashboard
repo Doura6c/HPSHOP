@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HPSHOP — Tableau de Bord Agents</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Bebas+Neue&display=swap');
+:root{
+  --red:#E8001C;--gold:#F5A800;--green:#1A8A2E;
+  --bg:#F4F6FA;--white:#fff;--dark:#1a1a1a;
+  --muted:#6b7280;--border:#E5E7EB;
+  --shadow:0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg:0 8px 30px rgba(0,0,0,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Nunito",sans-serif;background:var(--bg);color:var(--dark);}
+
+/* LOGIN */
+.login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#1a1a1a,#2d1a00);display:flex;align-items:center;justify-content:center;z-index:9999;}
+.login-box{background:#fff;border-radius:16px;padding:2.5rem;width:360px;box-shadow:0 25px 80px rgba(0,0,0,0.3);text-align:center;}
+.login-logo{font-family:"Bebas Neue",sans-serif;font-size:2rem;color:var(--red);letter-spacing:2px;margin-bottom:.3rem;}
+.login-sub{font-size:.8rem;color:var(--muted);margin-bottom:2rem;}
+.login-fg{margin-bottom:1rem;text-align:left;}
+.login-fg label{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:.35rem;}
+.login-fg input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:"Nunito",sans-serif;font-size:.9rem;outline:none;transition:border-color .3s;}
+.login-fg input:focus{border-color:var(--red);}
+.login-btn{width:100%;background:var(--red);color:#fff;border:none;padding:13px;border-radius:8px;font-family:"Bebas Neue",sans-serif;font-size:1.2rem;letter-spacing:2px;cursor:pointer;margin-top:.5rem;transition:background .3s;}
+.login-btn:hover{background:#b8001a;}
+.login-error{color:var(--red);font-size:.8rem;margin-top:.5rem;display:none;}
+
+/* SIDEBAR */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh;}
+.sidebar{background:var(--dark);padding:0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;}
+.sb-logo{padding:1.5rem;border-bottom:1px solid rgba(255,255,255,.08);}
+.sb-logo-txt{font-family:"Bebas Neue",sans-serif;font-size:1.4rem;color:var(--gold);letter-spacing:2px;}
+.sb-logo-sub{font-size:.65rem;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;}
+.sb-agent{padding:1rem 1.5rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.08);}
+.sb-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--red),#8b0000);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.85rem;}
+.sb-agent-name{font-size:.82rem;font-weight:700;color:#fff;}
+.sb-agent-role{font-size:.65rem;color:rgba(255,255,255,.4);}
+.sb-nav{padding:1rem 0;flex:1;}
+.sb-section{font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);padding:.5rem 1.5rem;margin-top:.5rem;}
+.sb-link{display:flex;align-items:center;gap:.8rem;padding:.75rem 1.5rem;color:rgba(255,255,255,.6);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;border-left:3px solid transparent;}
+.sb-link:hover,.sb-link.active{background:rgba(255,255,255,.06);color:#fff;border-left-color:var(--gold);}
+.sb-link .ico{font-size:1.1rem;width:20px;text-align:center;}
+.sb-badge{background:var(--red);color:#fff;font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:10px;margin-left:auto;}
+.sb-bottom{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,.08);}
+.sb-logout{display:flex;align-items:center;gap:.6rem;color:rgba(255,255,255,.4);font-size:.8rem;cursor:pointer;transition:color .3s;}
+.sb-logout:hover{color:var(--red);}
+
+/* MAIN */
+.main{overflow:hidden;}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 2rem;height:65px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
+.topbar-title{font-family:"Bebas Neue",sans-serif;font-size:1.3rem;letter-spacing:1px;color:var(--dark);}
+.topbar-right{display:flex;align-items:center;gap:1rem;}
+.notif-btn{position:relative;background:var(--bg);border:none;width:38px;height:38px;border-radius:8px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid #fff;}
+.wa-connect{background:#25D366;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:background .3s;}
+.wa-connect:hover{background:#1da851;}
+
+/* PAGES */
+.page{display:none;padding:2rem;}
+.page.active{display:block;}
+
+/* STATS CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:2rem;}
+.stat-card{background:#fff;border-radius:12px;padding:1.5rem;box-shadow:var(--shadow);border-left:4px solid transparent;transition:transform .3s;}
+.stat-card:hover{transform:translateY(-3px);}
+.stat-card.rouge{border-left-color:var(--red);}
+.stat-card.or{border-left-color:var(--gold);}
+.stat-card.vert{border-left-color:var(--green);}
+.stat-card.bleu{border-left-color:#3B82F6;}
+.stat-ico{font-size:1.8rem;margin-bottom:.8rem;}
+.stat-val{font-family:"Bebas Neue",sans-serif;font-size:2.2rem;line-height:1;color:var(--dark);}
+.stat-lbl{font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:.3rem;}
+.stat-trend{font-size:.72rem;font-weight:700;margin-top:.4rem;}
+.trend-up{color:var(--green);}
+.trend-down{color:var(--red);}
+
+/* TABLES */
+.card{background:#fff;border-radius:12px;box-shadow:var(--shadow);overflow:hidden;}
+.card-head{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-weight:800;color:var(--dark);font-size:.95rem;}
+.card-actions{display:flex;gap:.5rem;}
+.btn-sm{padding:6px 14px;border-radius:6px;font-size:.75rem;font-weight:700;cursor:pointer;border:none;font-family:"Nunito",sans-serif;transition:all .3s;}
+.btn-red{background:var(--red);color:#fff;}
+.btn-red:hover{background:#b8001a;}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.btn-outline:hover{border-color:var(--red);color:var(--red);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-gold{background:var(--gold);color:#fff;}
+table{width:100%;border-collapse:collapse;}
+th{padding:.9rem 1.2rem;text-align:left;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);background:#FAFAFA;border-bottom:1px solid var(--border);}
+td{padding:.9rem 1.2rem;font-size:.84rem;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#FAFBFF;}
+
+/* STATUS BADGES */
+.badge{display:inline-flex;align-items:center;gap:.3rem;padding:3px 10px;border-radius:20px;font-size:.68rem;font-weight:800;}
+.badge-new{background:rgba(59,130,246,.1);color:#3B82F6;}
+.badge-confirm{background:rgba(245,168,0,.1);color:#D97706;}
+.badge-livraison{background:rgba(26,138,46,.1);color:var(--green);}
+.badge-livre{background:rgba(26,138,46,.15);color:var(--green);}
+.badge-annule{background:rgba(232,0,28,.1);color:var(--red);}
+.badge-stock-ok{background:rgba(26,138,46,.1);color:var(--green);font-size:.65rem;}
+.badge-stock-low{background:rgba(245,168,0,.1);color:#D97706;font-size:.65rem;}
+.badge-stock-no{background:rgba(232,0,28,.1);color:var(--red);font-size:.65rem;}
+
+/* FILTERS */
+.filters{display:flex;gap:.7rem;padding:1rem 1.5rem;border-bottom:1px solid var(--border);flex-wrap:wrap;align-items:center;}
+.filter-select{padding:7px 12px;border:1.5px solid var(--border);border-radius:6px;font-family:"Nunito",sans-serif;font-size:.8rem;outline:none;color:var(--dark);background:#fff;cursor:pointer;}
+.search-input{padding:7px 14px;border:1.5px solid var(--border);border-radius:6px;font-family:"Nunito",sans-serif;font-size:.8rem;outline:none;color:var(--dark);width:200px;}
+.search-input:focus,.filter-select:focus{border-color:var(--red);}
+
+/* ACTION BUTTONS IN TABLE */
+.action-btns{display:flex;gap:.4rem;}
+
+/* STOCK GRID */
+.stock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;padding:1.5rem;}
+.stock-item{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:1.2rem;transition:all .3s;}
+.stock-item:hover{border-color:var(--red);}
+.stock-emoji{font-size:2.5rem;margin-bottom:.5rem;}
+.stock-name{font-weight:800;font-size:.85rem;color:var(--dark);margin-bottom:.3rem;}
+.stock-qty{font-family:"Bebas Neue",sans-serif;font-size:1.8rem;line-height:1;}
+.stock-actions{display:flex;gap:.4rem;margin-top:.8rem;}
+.qty-btn{width:28px;height:28px;border-radius:6px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .3s;font-weight:800;}
+.qty-btn:hover{background:var(--red);color:#fff;border-color:var(--red);}
+.qty-display{padding:0 10px;font-weight:800;font-size:.9rem;display:flex;align-items:center;}
+
+/* MODAL COMMANDE */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-overlay.show{display:flex;}
+.modal{background:#fff;border-radius:16px;padding:2rem;max-width:520px;width:90%;box-shadow:0 25px 80px rgba(0,0,0,.2);animation:zi .3s ease;}
+.modal h3{font-family:"Bebas Neue",sans-serif;font-size:1.4rem;letter-spacing:1px;margin-bottom:1.2rem;color:var(--dark);}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.2rem;}
+.modal-field label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:.2rem;}
+.modal-field span{font-size:.88rem;font-weight:700;color:var(--dark);}
+.modal-actions{display:flex;gap:.7rem;flex-wrap:wrap;}
+@keyframes zi{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* WA CONFIG */
+.wa-config{background:#fff;border-radius:12px;padding:2rem;box-shadow:var(--shadow);max-width:600px;}
+.wa-config h3{font-weight:800;margin-bottom:1rem;}
+.wa-number-input{display:flex;gap:.7rem;margin-bottom:1rem;}
+.wa-number-input input{flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:"Nunito",sans-serif;font-size:.9rem;outline:none;}
+.wa-number-input input:focus{border-color:#25D366;}
+.wa-preview{background:#E8F5E9;border:1px solid #C8E6C9;border-radius:10px;padding:1.2rem;font-size:.82rem;color:#1a1a1a;line-height:1.7;margin-bottom:1rem;}
+.wa-preview strong{color:#25D366;}
+.wa-toggle{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;}
+.toggle{width:44px;height:24px;background:#ccc;border-radius:12px;cursor:pointer;position:relative;transition:background .3s;}
+.toggle.on{background:#25D366;}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:left .3s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.toggle.on::after{left:23px;}
+
+/* AGENT CARDS */
+.agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;padding:1.5rem;}
+.agent-card{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;box-shadow:var(--shadow);transition:all .3s;}
+.agent-card:hover{border-color:var(--red);transform:translateY(-3px);}
+.agent-av{width:55px;height:55px;border-radius:50%;background:linear-gradient(135deg,var(--red),#8b0000);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:1.2rem;margin:0 auto .8rem;}
+.agent-name{font-weight:800;color:var(--dark);margin-bottom:.2rem;}
+.agent-role{font-size:.75rem;color:var(--muted);margin-bottom:.8rem;}
+.agent-stats{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1rem;}
+.agent-stat{background:var(--bg);border-radius:6px;padding:.4rem;}
+.agent-stat-n{font-family:"Bebas Neue",sans-serif;font-size:1.2rem;color:var(--red);}
+.agent-stat-l{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.online-dot{width:8px;height:8px;border-radius:50%;background:#2ECC71;display:inline-block;margin-right:.3rem;}
+.offline-dot{width:8px;height:8px;border-radius:50%;background:#ccc;display:inline-block;margin-right:.3rem;}
+
+/* CHART SIMPLE */
+.chart-bars{display:flex;align-items:flex-end;gap:.5rem;height:120px;padding:1rem 1.5rem 0;}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:.3rem;}
+.bar{width:100%;background:linear-gradient(to top,var(--red),var(--gold));border-radius:4px 4px 0 0;transition:height .5s ease;min-height:4px;}
+.bar-lbl{font-size:.62rem;color:var(--muted);font-weight:700;}
+.bar-val{font-size:.65rem;font-weight:800;color:var(--dark);}
+.chart-footer{display:flex;justify-content:space-between;align-items:center;padding:.8rem 1.5rem;border-top:1px solid var(--border);}
+
+/* NOTIFICATION TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:#1a1a1a;color:#fff;padding:1rem 1.5rem;border-radius:10px;font-size:.85rem;font-weight:600;z-index:9999;display:none;align-items:center;gap:.7rem;box-shadow:var(--shadow-lg);animation:slideIn .3s ease;}
+.toast.show{display:flex;}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">🏪 HPSHOP</div>
+    <div class="login-sub">Tableau de bord — Agents</div>
+    <div class="login-fg">
+      <label>Identifiant agent</label>
+      <input type="text" id="loginUser" placeholder="Ex: agent01" value="agent01">
+    </div>
+    <div class="login-fg">
+      <label>Mot de passe</label>
+      <input type="password" id="loginPass" placeholder="••••••••" value="hpshop2026">
+    </div>
+    <button class="login-btn" onclick="doLogin()">SE CONNECTER</button>
+    <div class="login-error" id="loginError">❌ Identifiant ou mot de passe incorrect</div>
+    <p style="font-size:.7rem;color:#ccc;margin-top:1rem;">Démo : agent01 / hpshop2026</p>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout" id="appLayout" style="display:none;">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-txt">HPSHOP</div>
+      <div class="sb-logo-sub">Espace Agents</div>
+    </div>
+    <div class="sb-agent">
+      <div class="sb-avatar" id="sbAvatar">A1</div>
+      <div>
+        <div class="sb-agent-name" id="sbName">Agent 01</div>
+        <div class="sb-agent-role">🟢 En ligne</div>
+      </div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-section">Principal</div>
+      <div class="sb-link active" onclick="showPage('dashboard',this)"><span class="ico">📊</span> Tableau de bord</div>
+      <div class="sb-link" onclick="showPage('commandes',this)">
+        <span class="ico">📦</span> Commandes
+        <span class="sb-badge" id="newOrderBadge">0</span>
+      </div>
+      <div class="sb-link" onclick="showPage('stock',this)"><span class="ico">🏪</span> Gestion Stock</div>
+      <div class="sb-section">Équipe</div>
+      <div class="sb-link" onclick="showPage('agents',this)"><span class="ico">👥</span> Agents</div>
+      <div class="sb-section">Paramètres</div>
+      <div class="sb-link" onclick="showPage('whatsapp',this)"><span class="ico">💬</span> WhatsApp</div>
+      <div class="sb-link" onclick="showPage('rapido',this)"><span class="ico">🚚</span> Rapido Livraison</div>
+    </div>
+    <div class="sb-bottom">
+      <div class="sb-logout" onclick="logout()">🚪 &nbsp; Déconnexion</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbarTitle">Tableau de bord</div>
+      <div class="topbar-right">
+        <button class="notif-btn" onclick="showToast('💬 3 nouvelles commandes reçues !')">
+          🔔 <div class="notif-dot"></div>
+        </button>
+        <button class="wa-connect" onclick="showPage('whatsapp',null)">
+          <svg fill="white" viewBox="0 0 24 24" width="14" height="14"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp connecté
+        </button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card rouge"><div class="stat-ico">📦</div><div class="stat-val" id="totalCommandes">0</div><div class="stat-lbl">Commandes totales</div><div class="stat-trend trend-up">↑ +12 aujourd'hui</div></div>
+        <div class="stat-card or"><div class="stat-ico">⏳</div><div class="stat-val" id="enAttente">0</div><div class="stat-lbl">En attente</div><div class="stat-trend trend-down">À traiter en priorité</div></div>
+        <div class="stat-card vert"><div class="stat-ico">✅</div><div class="stat-val" id="livrees">0</div><div class="stat-lbl">Livrées</div><div class="stat-trend trend-up">↑ Taux 87%</div></div>
+        <div class="stat-card bleu"><div class="stat-ico">💰</div><div class="stat-val" id="chiffre">0</div><div class="stat-lbl">CA (GNF millions)</div><div class="stat-trend trend-up">↑ Ce mois</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.2rem;margin-bottom:1.2rem;">
+        <div class="card">
+          <div class="card-head"><span class="card-title">📈 Ventes des 7 derniers jours</span></div>
+          <div class="chart-bars" id="chartBars"></div>
+          <div class="chart-footer"><span style="font-size:.78rem;color:var(--muted)">Commandes par jour</span><span style="font-size:.78rem;font-weight:800;color:var(--green)">↑ +23% vs semaine passée</span></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">🏆 Top Produits</span></div>
+          <div style="padding:1rem;">
+            <div id="topProduits"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">🆕 Dernières commandes</span><div class="card-actions"><button class="btn-sm btn-red" onclick="showPage('commandes',null)">Voir tout</button></div></div>
+        <table>
+          <thead><tr><th>#</th><th>Client</th><th>Produit</th><th>Ville</th><th>Montant</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="recentOrders"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COMMANDES -->
+    <div class="page" id="page-commandes">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">📦 Toutes les commandes</span>
+          <div class="card-actions">
+            <button class="btn-sm btn-green" onclick="exportWA()">💬 Exporter WhatsApp</button>
+            <button class="btn-sm btn-outline" onclick="exportCSV()">📥 Export CSV</button>
+          </div>
+        </div>
+        <div class="filters">
+          <input type="text" class="search-input" placeholder="🔍 Rechercher client..." oninput="filterOrders(this.value)">
+          <select class="filter-select" onchange="filterByStatus(this.value)">
+            <option value="all">Tous les statuts</option>
+            <option value="Nouvelle">🆕 Nouvelles</option>
+            <option value="Confirmée">✅ Confirmées</option>
+            <option value="En livraison">🚚 En livraison</option>
+            <option value="Livrée">📬 Livrées</option>
+            <option value="Annulée">❌ Annulées</option>
+          </select>
+          <select class="filter-select" onchange="filterByCity(this.value)">
+            <option value="all">Toutes les villes</option>
+            <option>Conakry</option><option>Kindia</option><option>Labé</option><option>Kankan</option>
+          </select>
+        </div>
+        <table>
+          <thead><tr><th>#ID</th><th>Date/Heure</th><th>Client</th><th>Téléphone</th><th>Produit</th><th>Ville</th><th>Montant</th><th>Paiement</th><th>Statut</th><th>Agent</th><th>Actions</th></tr></thead>
+          <tbody id="allOrders"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STOCK -->
+    <div class="page" id="page-stock">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;">
+        <div>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;">Gestion du Stock</h2>
+          <p style="font-size:.82rem;color:var(--muted);">Mettez à jour les quantités en temps réel</p>
+        </div>
+        <button class="btn-sm btn-red" onclick="showToast('✅ Stock synchronisé avec le site !')">🔄 Sync avec le site</button>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">📦 Inventaire produits</span>
+          <div class="card-actions">
+            <select class="filter-select" onchange="filterStock(this.value)">
+              <option value="all">Tous</option>
+              <option value="low">Stock faible</option>
+              <option value="out">Rupture</option>
+            </select>
+          </div>
+        </div>
+        <div class="stock-grid" id="stockGrid"></div>
+      </div>
+    </div>
+
+    <!-- AGENTS -->
+    <div class="page" id="page-agents">
+      <div class="card">
+        <div class="card-head"><span class="card-title">👥 Équipe d'agents</span><button class="btn-sm btn-red" onclick="showToast('Fonctionnalité : Ajouter un agent')">+ Ajouter agent</button></div>
+        <div class="agents-grid" id="agentsGrid"></div>
+      </div>
+    </div>
+
+    <!-- WHATSAPP -->
+    <div class="page" id="page-whatsapp">
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;margin-bottom:1.2rem;">💬 Configuration WhatsApp</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
+        <div class="wa-config">
+          <h3>📱 Numéro WhatsApp principal</h3>
+          <div class="wa-number-input">
+            <input type="tel" id="waNumber" placeholder="+224 6XX XXX XXX" value="+224 6XX XXX XXX">
+            <button class="btn-sm btn-green" onclick="saveWA()">Sauvegarder</button>
+          </div>
+          <div class="wa-toggle">
+            <div class="toggle on" id="waToggle" onclick="toggleWA()"></div>
+            <span style="font-size:.85rem;font-weight:700;">Notifications WhatsApp activées</span>
+          </div>
+          <h3 style="margin-bottom:.7rem;margin-top:1rem;">📋 Message automatique envoyé</h3>
+          <div class="wa-preview">
+            <strong>🛍 Nouvelle commande HPSHOP !</strong><br><br>
+            👤 Client : <strong>[NOM CLIENT]</strong><br>
+            📞 Tel : <strong>[TELEPHONE]</strong><br>
+            📦 Produit : <strong>[PRODUIT]</strong><br>
+            💰 Montant : <strong>[PRIX] GNF</strong><br>
+            📍 Adresse : <strong>[ADRESSE]</strong><br>
+            🏙️ Ville : <strong>[VILLE]</strong><br>
+            💳 Paiement : <strong>[MODE PAIEMENT]</strong><br>
+            🕐 Heure : <strong>[HEURE]</strong><br><br>
+            ⚡ Livraison via <strong>Rapido</strong> — À confirmer rapidement !
+          </div>
+          <button class="btn-sm btn-green" onclick="testWA()">📤 Tester le message</button>
+        </div>
+        <div class="wa-config">
+          <h3 style="margin-bottom:1rem;">📊 Statistiques WhatsApp</h3>
+          <div class="stats-grid" style="grid-template-columns:1fr 1fr;">
+            <div class="stat-card vert"><div class="stat-ico">📤</div><div class="stat-val">47</div><div class="stat-lbl">Msgs envoyés</div></div>
+            <div class="stat-card or"><div class="stat-ico">👁️</div><div class="stat-val">45</div><div class="stat-lbl">Msgs lus</div></div>
+          </div>
+          <div style="margin-top:1rem;">
+            <h3 style="margin-bottom:.7rem;">👥 Groupes agents notifiés</h3>
+            <div style="display:flex;flex-direction:column;gap:.5rem;" id="groupList">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:.7rem 1rem;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+                <span style="font-size:.85rem;font-weight:700;">📱 Groupe Confirmations</span>
+                <span class="badge badge-livre">Actif</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:.7rem 1rem;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+                <span style="font-size:.85rem;font-weight:700;">🚚 Groupe Livraisons Rapido</span>
+                <span class="badge badge-livre">Actif</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:.7rem 1rem;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
+                <span style="font-size:.85rem;font-weight:700;">📦 Groupe Stock & Réapprovisionnement</span>
+                <span class="badge badge-confirm">En attente</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RAPIDO -->
+    <div class="page" id="page-rapido">
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;margin-bottom:1.2rem;">🚚 Gestion Livraisons Rapido</h2>
+      <div class="stats-grid" style="margin-bottom:1.2rem;">
+        <div class="stat-card vert"><div class="stat-ico">🚚</div><div class="stat-val">12</div><div class="stat-lbl">En cours</div></div>
+        <div class="stat-card or"><div class="stat-ico">⏳</div><div class="stat-val">5</div><div class="stat-lbl">À dispatcher</div></div>
+        <div class="stat-card bleu"><div class="stat-ico">📬</div><div class="stat-val">38</div><div class="stat-lbl">Livrées ce mois</div></div>
+        <div class="stat-card rouge"><div class="stat-ico">↩️</div><div class="stat-val">2</div><div class="stat-lbl">Retours</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">🚚 Commandes à dispatcher vers Rapido</span><button class="btn-sm btn-red" onclick="showToast('📲 Dispatch envoyé à Rapido !')">📲 Dispatcher tout</button></div>
+        <table>
+          <thead><tr><th>#</th><th>Client</th><th>Produit</th><th>Ville</th><th>Adresse</th><th>Statut Rapido</th><th>Action</th></tr></thead>
+          <tbody id="rapidoTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<!-- MODAL DETAIL COMMANDE -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal">
+    <h3>📦 Détail commande <span id="modalId"></span></h3>
+    <div class="modal-grid" id="modalContent"></div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// DONNÉES
+// ═══════════════════════════════════════
+const AGENTS = [
+  {id:"agent01",pass:"hpshop2026",name:"Mamadou Bah",role:"Superviseur",commandes:23,livrees:20,online:true},
+  {id:"agent02",pass:"hpshop2026",name:"Fatoumata Diallo",role:"Agent confirmations",commandes:18,livrees:16,online:true},
+  {id:"agent03",pass:"hpshop2026",name:"Ibrahima Sow",role:"Agent livraisons",commandes:15,livrees:14,online:false},
+  {id:"agent04",pass:"hpshop2026",name:"Aïssatou Camara",role:"Agent stock",commandes:12,livrees:11,online:true},
+  {id:"agent05",pass:"hpshop2026",name:"Seydou Kouyaté",role:"Agent confirmations",commandes:20,livrees:18,online:false},
+  {id:"agent06",pass:"hpshop2026",name:"Kadiatou Barry",role:"Agent livraisons",commandes:9,livrees:8,online:true},
+];
+
+const STATUTS = ["Nouvelle","Confirmée","En livraison","Livrée","Annulée"];
+const PRODUITS_NOM = ["Fer à Lisser Pro","Montre GPS","Climatiseur Portable","Drone 4K","Robot Cuiseur","Lisseur Ionique","Purificateur Air","Blender Pro","Masseur Pistolet","Vélo Appartement"];
+const VILLES = ["Conakry","Kindia","Labé","Kankan","Mamou","Boké"];
+const PAIEMENTS = ["Cash livraison","Orange Money","Soutrat Money","MTN MoMo","Wave"];
+const EMOJIS = ["💇‍♀️","⌚","❄️","🚁","🍳","💨","💨","🥤","💪","🚴"];
+
+// Générer 30 commandes de démo
+let orders = [];
+for(let i=1;i<=30;i++){
+  const pi = Math.floor(Math.random()*PRODUITS_NOM.length);
+  const prix = [170000,175000,180000,185000,190000,195000,200000,210000,220000,240000,250000][Math.floor(Math.random()*11)];
+  const statut = STATUTS[Math.floor(Math.random()*STATUTS.length)];
+  const agent = AGENTS[Math.floor(Math.random()*AGENTS.length)];
+  const h = String(Math.floor(Math.random()*12)+8).padStart(2,"0");
+  const m = String(Math.floor(Math.random()*60)).padStart(2,"0");
+  orders.push({
+    id: "HP"+String(i).padStart(4,"0"),
+    date: `26/04/2026 ${h}:${m}`,
+    client: ["Fatoumata K.","Mamadou B.","Aïssatou M.","Seydou D.","Kadiatou S.","Ibrahim C.","Mariama T.","Oumar L."][Math.floor(Math.random()*8)],
+    tel: `62${Math.floor(Math.random()*9)}${String(Math.floor(Math.random()*1000000)).padStart(6,"0")}`,
+    produit: PRODUITS_NOM[pi],
+    emoji: EMOJIS[pi],
+    ville: VILLES[Math.floor(Math.random()*VILLES.length)],
+    adresse: "Quartier "+["Ratoma","Kaloum","Matam","Dixinn","Matoto"][Math.floor(Math.random()*5)],
+    prix: prix.toLocaleString("fr")+" GNF",
+    paiement: PAIEMENTS[Math.floor(Math.random()*PAIEMENTS.length)],
+    statut: statut,
+    agent: agent.name
+  });
+}
+
+let currentAgent = null;
+let waActive = true;
+
+// ═══════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════
+function doLogin(){
+  const u=document.getElementById("loginUser").value.trim();
+  const p=document.getElementById("loginPass").value.trim();
+  const agent = AGENTS.find(a=>a.id===u && a.pass===p);
+  if(agent){
+    currentAgent = agent;
+    document.getElementById("loginScreen").style.display="none";
+    document.getElementById("appLayout").style.display="grid";
+    document.getElementById("sbName").textContent=agent.name;
+    document.getElementById("sbAvatar").textContent=agent.name.split(" ").map(n=>n[0]).join("").slice(0,2);
+    initDashboard();
+  } else {
+    document.getElementById("loginError").style.display="block";
+  }
+}
+
+function logout(){
+  document.getElementById("loginScreen").style.display="flex";
+  document.getElementById("appLayout").style.display="none";
+}
+
+// LOGIN avec Enter
+document.addEventListener("keydown",e=>{if(e.key==="Enter" && document.getElementById("loginScreen").style.display!=="none") doLogin();});
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+function showPage(name, btn){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".sb-link").forEach(l=>l.classList.remove("active"));
+  document.getElementById("page-"+name).classList.add("active");
+  if(btn) btn.classList.add("active");
+  const titles={dashboard:"Tableau de bord",commandes:"Commandes",stock:"Gestion Stock",agents:"Équipe Agents",whatsapp:"Configuration WhatsApp",rapido:"Livraisons Rapido"};
+  document.getElementById("topbarTitle").textContent=titles[name]||name;
+  if(name==="commandes") renderAllOrders(orders);
+  if(name==="stock") renderStock();
+  if(name==="agents") renderAgents();
+  if(name==="rapido") renderRapido();
+}
+
+// ═══════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════
+function initDashboard(){
+  const total = orders.length;
+  const attente = orders.filter(o=>o.statut==="Nouvelle"||o.statut==="Confirmée").length;
+  const livrees = orders.filter(o=>o.statut==="Livrée").length;
+  const ca = orders.filter(o=>o.statut!=="Annulée").reduce((s,o)=>s+parseInt(o.prix.replace(/[^\d]/g,"")),0);
+
+  document.getElementById("totalCommandes").textContent = total;
+  document.getElementById("enAttente").textContent = attente;
+  document.getElementById("livrees").textContent = livrees;
+  document.getElementById("chiffre").textContent = (ca/1000000).toFixed(1)+"M";
+  document.getElementById("newOrderBadge").textContent = orders.filter(o=>o.statut==="Nouvelle").length;
+
+  // Chart
+  const days=["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
+  const vals=[5,8,6,12,9,15,11];
+  const max=Math.max(...vals);
+  document.getElementById("chartBars").innerHTML=vals.map((v,i)=>`
+    <div class="bar-wrap">
+      <div class="bar-val">${v}</div>
+      <div class="bar" style="height:${(v/max)*90}px"></div>
+      <div class="bar-lbl">${days[i]}</div>
+    </div>`).join("");
+
+  // Top produits
+  const counts={};
+  orders.forEach(o=>{counts[o.produit]=(counts[o.produit]||0)+1;});
+  const top=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  document.getElementById("topProduits").innerHTML=top.map(([nom,cnt],i)=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--border);">
+      <span style="font-size:.8rem;font-weight:700;">${["🥇","🥈","🥉","4️⃣","5️⃣"][i]} ${nom}</span>
+      <span class="badge badge-confirm">${cnt} cmd</span>
+    </div>`).join("");
+
+  // Recent orders (5 dernières)
+  document.getElementById("recentOrders").innerHTML=orders.slice(0,5).map(o=>renderRow(o,true)).join("");
+}
+
+// ═══════════════════════════════════════
+// ORDERS TABLE
+// ═══════════════════════════════════════
+function renderRow(o, simple=false){
+  const badgeClass={Nouvelle:"badge-new",Confirmée:"badge-confirm","En livraison":"badge-livraison",Livrée:"badge-livre",Annulée:"badge-annule"}[o.statut]||"badge-new";
+  const icons={Nouvelle:"🆕",Confirmée:"✅","En livraison":"🚚",Livrée:"📬",Annulée:"❌"};
+  if(simple) return `<tr>
+    <td style="font-weight:800;color:var(--red)">${o.id}</td>
+    <td>${o.client}</td>
+    <td>${o.emoji} ${o.produit}</td>
+    <td>${o.ville}</td>
+    <td style="font-weight:800">${o.prix}</td>
+    <td><span class="badge ${badgeClass}">${icons[o.statut]} ${o.statut}</span></td>
+    <td><div class="action-btns">
+      <button class="btn-sm btn-red" onclick="openOrder('${o.id}')">Voir</button>
+      <button class="btn-sm btn-green" onclick="sendWA('${o.id}')">💬</button>
+    </div></td>
+  </tr>`;
+  return `<tr>
+    <td style="font-weight:800;color:var(--red)">${o.id}</td>
+    <td style="font-size:.75rem">${o.date}</td>
+    <td style="font-weight:700">${o.client}</td>
+    <td>${o.tel}</td>
+    <td>${o.emoji} ${o.produit}</td>
+    <td>${o.ville}</td>
+    <td style="font-weight:800">${o.prix}</td>
+    <td style="font-size:.75rem">${o.paiement}</td>
+    <td><span class="badge ${badgeClass}">${icons[o.statut]} ${o.statut}</span></td>
+    <td style="font-size:.75rem">${o.agent}</td>
+    <td><div class="action-btns">
+      <button class="btn-sm btn-red" onclick="openOrder('${o.id}')">👁</button>
+      <button class="btn-sm btn-green" onclick="sendWA('${o.id}')">💬</button>
+      <button class="btn-sm btn-outline" onclick="changeStatus('${o.id}')">✏️</button>
+    </div></td>
+  </tr>`;
+}
+
+function renderAllOrders(list){
+  document.getElementById("allOrders").innerHTML=list.map(o=>renderRow(o)).join("");
+}
+
+function filterOrders(q){
+  const filtered=orders.filter(o=>o.client.toLowerCase().includes(q.toLowerCase())||o.id.includes(q)||o.produit.toLowerCase().includes(q.toLowerCase()));
+  renderAllOrders(filtered);
+}
+
+function filterByStatus(s){
+  renderAllOrders(s==="all"?orders:orders.filter(o=>o.statut===s));
+}
+
+function filterByCity(c){
+  renderAllOrders(c==="all"?orders:orders.filter(o=>o.ville===c));
+}
+
+// ═══════════════════════════════════════
+// ORDER MODAL
+// ═══════════════════════════════════════
+function openOrder(id){
+  const o=orders.find(x=>x.id===id);
+  if(!o)return;
+  document.getElementById("modalId").textContent="#"+o.id;
+  document.getElementById("modalContent").innerHTML=`
+    <div class="modal-field"><label>Client</label><span>${o.client}</span></div>
+    <div class="modal-field"><label>Téléphone</label><span>${o.tel}</span></div>
+    <div class="modal-field"><label>Produit</label><span>${o.emoji} ${o.produit}</span></div>
+    <div class="modal-field"><label>Montant</label><span style="color:var(--red);font-weight:800">${o.prix}</span></div>
+    <div class="modal-field"><label>Ville</label><span>${o.ville}</span></div>
+    <div class="modal-field"><label>Adresse</label><span>${o.adresse}</span></div>
+    <div class="modal-field"><label>Paiement</label><span>${o.paiement}</span></div>
+    <div class="modal-field"><label>Statut</label><span>${o.statut}</span></div>
+    <div class="modal-field"><label>Agent</label><span>${o.agent}</span></div>
+    <div class="modal-field"><label>Date</label><span>${o.date}</span></div>`;
+  document.getElementById("modalActions").innerHTML=`
+    <button class="btn-sm btn-green" onclick="updateStatus('${o.id}','Confirmée');closeModal()">✅ Confirmer</button>
+    <button class="btn-sm btn-red" style="background:#3B82F6" onclick="updateStatus('${o.id}','En livraison');closeModal()">🚚 En livraison</button>
+    <button class="btn-sm btn-green" onclick="updateStatus('${o.id}','Livrée');closeModal()">📬 Livrée</button>
+    <button class="btn-sm" style="background:#E74C3C;color:#fff" onclick="updateStatus('${o.id}','Annulée');closeModal()">❌ Annuler</button>
+    <button class="btn-sm btn-green" onclick="sendWA('${o.id}');closeModal()">💬 WhatsApp</button>
+    <button class="btn-sm btn-outline" onclick="closeModal()">Fermer</button>`;
+  document.getElementById("orderModal").classList.add("show");
+}
+
+function closeModal(){document.getElementById("orderModal").classList.remove("show");}
+document.getElementById("orderModal").addEventListener("click",function(e){if(e.target===this)closeModal();});
+
+function updateStatus(id,statut){
+  const o=orders.find(x=>x.id===id);
+  if(o){o.statut=statut;showToast("✅ Commande "+id+" → "+statut);}
+}
+
+function changeStatus(id){openOrder(id);}
+
+// ═══════════════════════════════════════
+// WHATSAPP
+// ═══════════════════════════════════════
+function sendWA(id){
+  const o=orders.find(x=>x.id===id);
+  if(!o)return;
+  const waNum=document.getElementById("waNumber").value.replace(/[^0-9]/g,"");
+  const msg=`🛍 *Nouvelle commande HPSHOP !*
+
+👤 Client : ${o.client}
+📞 Tel : ${o.tel}
+📦 Produit : ${o.emoji} ${o.produit}
+💰 Montant : ${o.prix}
+📍 Adresse : ${o.adresse}
+🏙️ Ville : ${o.ville}
+💳 Paiement : ${o.paiement}
+🕐 Heure : ${o.date}
+
+⚡ Livraison via *Rapido* — À confirmer rapidement !`;
+  window.open(`https://wa.me/${waNum||"224XXXXXXXX"}?text=${encodeURIComponent(msg)}`,"_blank");
+  showToast("💬 Message WhatsApp envoyé !");
+}
+
+function testWA(){
+  const waNum=document.getElementById("waNumber").value.replace(/[^0-9]/g,"");
+  const msg="🛍 *Test HPSHOP* — Notification de commande bien configurée ✅
+
+Votre système de commande est opérationnel !";
+  window.open(`https://wa.me/${waNum||"224XXXXXXXX"}?text=${encodeURIComponent(msg)}`,"_blank");
+}
+
+function saveWA(){showToast("✅ Numéro WhatsApp sauvegardé !");}
+
+function toggleWA(){
+  waActive=!waActive;
+  const t=document.getElementById("waToggle");
+  t.classList.toggle("on",waActive);
+  showToast(waActive?"✅ Notifications WhatsApp activées":"⚠️ Notifications désactivées");
+}
+
+function exportWA(){
+  const nouvelles=orders.filter(o=>o.statut==="Nouvelle");
+  const waNum=document.getElementById("waNumber").value.replace(/[^0-9]/g,"");
+  const msg=`📊 *Rapport commandes HPSHOP*
+
+📦 Total : ${orders.length} commandes
+🆕 Nouvelles : ${nouvelles.length}
+✅ Livrées : ${orders.filter(o=>o.statut==="Livrée").length}
+
+${nouvelles.slice(0,5).map(o=>`• ${o.id} — ${o.client} — ${o.produit} — ${o.prix}`).join("
+")}`;
+  window.open(`https://wa.me/${waNum||"224XXXXXXXX"}?text=${encodeURIComponent(msg)}`,"_blank");
+}
+
+function exportCSV(){
+  const header="ID,Date,Client,Tel,Produit,Ville,Prix,Paiement,Statut,Agent
+";
+  const rows=orders.map(o=>`${o.id},${o.date},${o.client},${o.tel},${o.produit},${o.ville},${o.prix},${o.paiement},${o.statut},${o.agent}`).join("
+");
+  const blob=new Blob([header+rows],{type:"text/csv"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="hpshop-commandes.csv";a.click();
+  showToast("📥 Export CSV téléchargé !");
+}
+
+// ═══════════════════════════════════════
+// STOCK
+// ═══════════════════════════════════════
+const stockData=[
+  {nom:"Fer à Lisser Pro",emoji:"💇‍♀️",qty:15,cat:"beaute"},
+  {nom:"Montre GPS",emoji:"⌚",qty:8,cat:"tech"},
+  {nom:"Climatiseur Portable",emoji:"❄️",qty:3,cat:"maison"},
+  {nom:"Drone 4K",emoji:"🚁",qty:5,cat:"tech"},
+  {nom:"Robot Cuiseur",emoji:"🍳",qty:12,cat:"maison"},
+  {nom:"Blender Pro",emoji:"🥤",qty:0,cat:"maison"},
+  {nom:"Purificateur Air",emoji:"💨",qty:7,cat:"maison"},
+  {nom:"Masseur Pistolet",emoji:"💪",qty:2,cat:"sante"},
+  {nom:"Vélo Appartement",emoji:"🚴",qty:4,cat:"sante"},
+  {nom:"Tapis de Course",emoji:"🏃",qty:0,cat:"sante"},
+  {nom:"Kit Soin Visage",emoji:"✨",qty:20,cat:"beaute"},
+  {nom:"Enceinte Bluetooth",emoji:"🔊",qty:9,cat:"tech"},
+];
+
+function renderStock(filter="all"){
+  const list = filter==="low"?stockData.filter(s=>s.qty>0&&s.qty<=5):filter==="out"?stockData.filter(s=>s.qty===0):stockData;
+  document.getElementById("stockGrid").innerHTML=list.map((s,i)=>{
+    const badgeClass=s.qty===0?"badge-stock-no":s.qty<=5?"badge-stock-low":"badge-stock-ok";
+    const badgeTxt=s.qty===0?"❌ Rupture":s.qty<=5?"⚠️ Stock faible":"✅ En stock";
+    return `<div class="stock-item">
+      <div class="stock-emoji">${s.emoji}</div>
+      <div class="stock-name">${s.nom}</div>
+      <span class="badge ${badgeClass}" style="margin-bottom:.5rem">${badgeTxt}</span>
+      <div class="stock-actions">
+        <button class="qty-btn" onclick="updateQty(${i},-1)">−</button>
+        <div class="qty-display" id="qty-${i}" style="color:${s.qty===0?'var(--red)':s.qty<=5?'#D97706':'var(--green)'}">${s.qty}</div>
+        <button class="qty-btn" onclick="updateQty(${i},1)">+</button>
+        <button class="btn-sm btn-red" style="margin-left:.3rem;font-size:.65rem" onclick="showToast('📲 Alerte stock envoyée sur WhatsApp !')">📲</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function updateQty(i,delta){
+  stockData[i].qty=Math.max(0,stockData[i].qty+delta);
+  renderStock();
+  if(stockData[i].qty===0) showToast("⚠️ "+stockData[i].nom+" : RUPTURE DE STOCK !");
+  else if(stockData[i].qty<=3) showToast("⚠️ "+stockData[i].nom+" : Stock faible ("+stockData[i].qty+" restants)");
+}
+
+function filterStock(f){renderStock(f);}
+
+// ═══════════════════════════════════════
+// AGENTS
+// ═══════════════════════════════════════
+function renderAgents(){
+  document.getElementById("agentsGrid").innerHTML=AGENTS.map(a=>`
+    <div class="agent-card">
+      <div class="agent-av">${a.name.split(" ").map(n=>n[0]).join("").slice(0,2)}</div>
+      <div class="agent-name">${a.name}</div>
+      <div class="agent-role">${a.role}</div>
+      <div style="font-size:.75rem;margin-bottom:.8rem">
+        <span class="${a.online?"online-dot":"offline-dot"}"></span>
+        ${a.online?"En ligne":"Hors ligne"}
+      </div>
+      <div class="agent-stats">
+        <div class="agent-stat"><div class="agent-stat-n">${a.commandes}</div><div class="agent-stat-l">Commandes</div></div>
+        <div class="agent-stat"><div class="agent-stat-n">${a.livrees}</div><div class="agent-stat-l">Livrées</div></div>
+      </div>
+      <button class="btn-sm btn-green" onclick="sendWA('HP0001')">💬 Contacter</button>
+    </div>`).join("");
+}
+
+// ═══════════════════════════════════════
+// RAPIDO
+// ═══════════════════════════════════════
+function renderRapido(){
+  const toDispatch=orders.filter(o=>o.statut==="Confirmée").slice(0,8);
+  const statuts=["En attente Rapido","Pris en charge","En route","Livré"];
+  document.getElementById("rapidoTable").innerHTML=toDispatch.map(o=>{
+    const rs=statuts[Math.floor(Math.random()*statuts.length)];
+    const bc=rs==="Livré"?"badge-livre":rs==="En route"?"badge-livraison":"badge-confirm";
+    return `<tr>
+      <td style="font-weight:800;color:var(--red)">${o.id}</td>
+      <td>${o.client}</td>
+      <td>${o.emoji} ${o.produit}</td>
+      <td>${o.ville}</td>
+      <td style="font-size:.8rem">${o.adresse}</td>
+      <td><span class="badge ${bc}">${rs}</span></td>
+      <td><button class="btn-sm btn-red" onclick="showToast('🚚 Dispatch Rapido envoyé pour ${o.id}')">Dispatcher</button></td>
+    </tr>`;
+  }).join("");
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove("show"),3500);
+}
+
+// Simuler notifications de nouvelles commandes
+setInterval(()=>{
+  const idx=Math.floor(Math.random()*10);
+  const prods=["Fer à Lisser Pro","Montre GPS","Climatiseur","Drone 4K","Blender Pro"];
+  const clients=["Fatoumata","Mamadou","Aïssatou","Ibrahim","Mariama"];
+  showToast("🔔 Nouvelle commande : "+clients[idx%5]+" → "+prods[idx%5]);
+  const badge=document.getElementById("newOrderBadge");
+  badge.textContent=parseInt(badge.textContent)+1;
+}, 25000);
+</script>
+</body>
+</html>
