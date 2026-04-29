@@ -1,0 +1,45 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+locale: 'fr'
+
+collections:
+  - name: "produits"
+    label: "Produits"
+    folder: "_produits"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nom du produit", name: "title", widget: "string"}
+      - {label: "Categorie", name: "categorie", widget: "select", options: ["Beauté & Soin", "Maison & Cuisine", "Tech & Gadgets", "Santé & Sport", "Mode", "Enfants"]}
+      - {label: "Prix de vente (GNF)", name: "prix", widget: "number"}
+      - {label: "Prix barré (GNF)", name: "prix_barre", widget: "number"}
+      - {label: "Stock disponible", name: "stock", widget: "number"}
+      - {label: "En stock ?", name: "en_stock", widget: "boolean", default: true}
+      - {label: "Badge", name: "badge", widget: "select", options: ["Aucun", "Chaud", "Nouveau", "Top"], default: "Aucun"}
+      - {label: "Description courte", name: "description_courte", widget: "string"}
+      - {label: "Description complète", name: "description", widget: "text"}
+      - {label: "Photo principale", name: "photo", widget: "image", required: false}
+      - {label: "Video publicitaire (URL YouTube)", name: "video", widget: "string", required: false}
+      - {label: "Emoji", name: "emoji", widget: "string", default: "🛍"}
+
+  - name: "parametres"
+    label: "Paramètres du site"
+    files:
+      - label: "Informations générales"
+        name: "general"
+        file: "_config/general.yml"
+        fields:
+          - {label: "Nom de la boutique", name: "nom_boutique", widget: "string", default: "HPSHOP Afrique"}
+          - {label: "Slogan", name: "slogan", widget: "string", default: "La boutique de la bonne fortune"}
+          - {label: "Numéro WhatsApp", name: "whatsapp", widget: "string"}
+          - {label: "Numéro téléphone", name: "telephone", widget: "string"}
+          - {label: "Adresse", name: "adresse", widget: "string"}
+          - {label: "Message livraison", name: "livraison", widget: "string", default: "Livraison GRATUITE partout en Guinée"}
+          - {label: "Délai livraison", name: "delai", widget: "string", default: "24-48h"}
+          - {label: "Lien Facebook", name: "facebook", widget: "string", required: false}
+          - {label: "Lien Instagram", name: "instagram", widget: "string", required: false}
