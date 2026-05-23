@@ -2,8 +2,31 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HPSHOP Afrique — La boutique de la bonne fortune 🇬🇳</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#E8001C">
+<meta name="description" content="HPSHOP Afrique — Les meilleurs produits livrés gratuitement partout en Guinée. Paiement à la livraison ou Orange Money. Beauté, maison, tech, santé, mode, enfants. Commandez en 1 minute.">
+<meta name="keywords" content="HPSHOP, boutique en ligne Guinée, livraison gratuite Conakry, paiement à la livraison, Orange Money, e-commerce Guinée, achat en ligne Conakry">
+<meta name="author" content="HPSHOP Afrique">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph / Facebook / WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_GN">
+<meta property="og:site_name" content="HPSHOP Afrique">
+<meta property="og:title" content="HPSHOP Afrique — La boutique de la bonne fortune 🇬🇳">
+<meta property="og:description" content="Livraison gratuite partout en Guinée. Paiement à la livraison ou Orange Money. 50+ produits sélectionnés.">
+<meta property="og:image" content="https://hpshop.gn/og-image.jpg">
+<meta property="og:url" content="https://hpshop.gn">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HPSHOP Afrique — La boutique de la bonne fortune 🇬🇳">
+<meta name="twitter:description" content="Livraison gratuite partout en Guinée. Paiement à la livraison ou Orange Money.">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23E8001C'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='white' font-family='Arial' font-weight='900'%3EH%3C/text%3E%3C/svg%3E">
+
+<title>HPSHOP Afrique — La boutique de la bonne fortune 🇬🇳 | Livraison gratuite Guinée</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap');
 
@@ -358,6 +381,86 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
   .hero-visual{display:none;}
 }
 
+/* ====== AMÉLIORATIONS V2 ====== */
+
+/* Photos produits réelles (Unsplash) */
+.prod-img-real{height:180px;background-size:cover;background-position:center;background-repeat:no-repeat;position:relative;transition:transform .4s ease;}
+.prod-card:hover .prod-img-real{transform:scale(1.05);}
+.pd-media-img{width:100%;min-height:340px;background-size:cover;background-position:center;border-radius:10px;}
+
+/* Quantity selector */
+.qty-row{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;}
+.qty-label{font-size:.72rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);}
+.qty-box{display:inline-flex;align-items:center;border:1.5px solid var(--border);border-radius:8px;background:#fff;overflow:hidden;box-shadow:var(--shadow);}
+.qty-btn{background:transparent;border:none;width:36px;height:36px;font-size:1.1rem;font-weight:800;color:var(--red);cursor:pointer;transition:background .2s;}
+.qty-btn:hover{background:rgba(232,0,28,.08);}
+.qty-val{min-width:38px;text-align:center;font-weight:800;font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--dark);}
+.pd-total-row{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1rem;background:#FFF8F0;border:1.5px dashed var(--gold);border-radius:8px;margin-bottom:1rem;}
+.pd-total-row span{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.pd-total-row strong{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--red);letter-spacing:1px;}
+
+/* Orange Money section */
+.om-info{display:none;background:linear-gradient(135deg,#FFF5E6,#FFEBC9);border:1.5px solid #FF8C00;border-radius:10px;padding:1rem 1.2rem;margin-top:.8rem;animation:slideDown .35s ease;}
+.om-info.show{display:block;}
+.om-info-title{display:flex;align-items:center;gap:.5rem;font-weight:800;color:#D17900;font-size:.88rem;margin-bottom:.5rem;}
+.om-info-num{background:#fff;border:1.5px dashed #FF8C00;border-radius:8px;padding:.6rem .9rem;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:#D17900;letter-spacing:2px;text-align:center;margin:.5rem 0;cursor:pointer;transition:background .2s;}
+.om-info-num:hover{background:#FFF5E6;}
+.om-info-steps{font-size:.78rem;color:var(--muted);line-height:1.6;margin-top:.5rem;}
+.om-info-steps b{color:var(--dark);}
+@keyframes slideDown{from{opacity:0;max-height:0;transform:translateY(-10px)}to{opacity:1;max-height:400px;transform:translateY(0)}}
+
+/* Toast notifications */
+.toast-container{position:fixed;top:1.5rem;right:1.5rem;z-index:1000;display:flex;flex-direction:column;gap:.7rem;pointer-events:none;}
+.toast{background:#fff;border-left:4px solid var(--green);border-radius:10px;padding:1rem 1.3rem;box-shadow:0 12px 35px rgba(0,0,0,.15);min-width:280px;max-width:380px;display:flex;align-items:center;gap:.8rem;animation:toastIn .35s cubic-bezier(.16,1,.3,1);pointer-events:auto;}
+.toast.error{border-left-color:var(--red);}
+.toast.warning{border-left-color:var(--gold);}
+.toast-ico{font-size:1.5rem;flex-shrink:0;}
+.toast-body{flex:1;}
+.toast-title{font-weight:800;font-size:.88rem;color:var(--dark);margin-bottom:.15rem;}
+.toast-msg{font-size:.78rem;color:var(--muted);line-height:1.45;}
+.toast.out{animation:toastOut .35s ease forwards;}
+@keyframes toastIn{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(120%)}}
+
+/* Sticky mobile commander bar */
+.mobile-cta{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1.5px solid var(--border);box-shadow:0 -8px 25px rgba(0,0,0,.08);padding:.8rem 1rem;z-index:380;align-items:center;gap:.7rem;}
+.mobile-cta-info{flex:1;min-width:0;}
+.mobile-cta-label{font-size:.62rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted2);}
+.mobile-cta-title{font-size:.88rem;font-weight:800;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mobile-cta-btn{background:var(--red);color:#fff;border:none;padding:.75rem 1.2rem;border-radius:8px;font-weight:800;font-size:.85rem;font-family:'Nunito',sans-serif;cursor:pointer;white-space:nowrap;box-shadow:0 4px 12px rgba(232,0,28,.3);}
+.mobile-cta-btn:hover{background:#b8001a;}
+@media(max-width:768px){.mobile-cta{display:flex;}body{padding-bottom:75px;}.wa-btn{bottom:90px;}}
+
+/* Card hover lift amélioré */
+.prod-card{will-change:transform;}
+.prod-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,0,28,0) 0%,rgba(245,168,0,0) 100%);transition:background .35s;pointer-events:none;z-index:1;border-radius:12px;}
+.prod-card:hover::before{background:linear-gradient(135deg,rgba(232,0,28,0.04) 0%,rgba(245,168,0,0.06) 100%);}
+
+/* Buttons shimmer */
+.btn-red,.order-btn,.nav-cta{position:relative;overflow:hidden;}
+.btn-red::after,.order-btn::after,.nav-cta::after{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transition:left .6s ease;}
+.btn-red:hover::after,.order-btn:hover::after,.nav-cta:hover::after{left:100%;}
+
+/* Form field focus animation */
+.fg input,.fg select{transition:border-color .25s, box-shadow .25s, transform .15s;}
+.fg input:focus,.fg select:focus{transform:translateY(-1px);}
+.fg input.error,.fg select.error{border-color:var(--red);background:#FFF5F5;animation:shake .35s;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* Hero stats hover */
+.stat{transition:transform .3s, box-shadow .3s;cursor:default;}
+.stat:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(0,0,0,.1);}
+
+/* Progress bar pendant envoi */
+.sending-bar{position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--gold),var(--green));z-index:999;transform-origin:left;animation:loadBar 1.8s ease-in-out;display:none;}
+.sending-bar.show{display:block;}
+@keyframes loadBar{0%{transform:scaleX(0)}50%{transform:scaleX(.7)}100%{transform:scaleX(1)}}
+
+/* Order button loading state */
+.order-btn:disabled{opacity:.7;cursor:wait;}
+.order-btn .spin{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:rot 0.7s linear infinite;vertical-align:middle;margin-right:.4rem;}
+@keyframes rot{to{transform:rotate(360deg)}}
+
 </style>
 </head>
 <body>
@@ -409,7 +512,7 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
     <p class="hero-sub">Des produits sélectionnés pour améliorer votre quotidien. Commandez en ligne, payez cash à la livraison. Simple, rapide, 100% fiable.</p>
     <div class="hero-btns">
       <a href="#produits" class="btn-red">🛍 Découvrir les produits</a>
-      <a href="https://wa.me/224XXXXXXXX" class="btn-wa" target="_blank">
+      <a href="https://wa.me/224621881210" class="btn-wa" target="_blank">
         <svg fill="white" viewBox="0 0 24 24" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         WhatsApp
       </a>
@@ -512,8 +615,8 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
     <p class="s-sub" style="margin:0 auto">Notre équipe est disponible 7j/7 pour vous accompagner</p>
   </div>
   <div class="contact-grid">
-    <div class="contact-card reveal"><div class="contact-ico">📞</div><h3>Téléphone</h3><p>Appelez-nous pour toute question sur votre commande.</p><a href="tel:+224XXXXXXXX">+224 XX XX XX XX</a></div>
-    <div class="contact-card reveal"><div class="contact-ico">💬</div><h3>WhatsApp</h3><p>Envoyez-nous un message, on répond rapidement.</p><a href="https://wa.me/224XXXXXXXX">Écrire sur WhatsApp</a></div>
+    <div class="contact-card reveal"><div class="contact-ico">📞</div><h3>Téléphone</h3><p>Appelez-nous pour toute question sur votre commande.</p><a href="tel:+224621881210">+224 621 88 12 10</a></div>
+    <div class="contact-card reveal"><div class="contact-ico">💬</div><h3>WhatsApp</h3><p>Envoyez-nous un message, on répond rapidement.</p><a href="https://wa.me/224621881210">Écrire sur WhatsApp</a></div>
     <div class="contact-card reveal"><div class="contact-ico">📍</div><h3>Localisation</h3><p>Basé à Kaloum, Conakry. Livraison partout en Guinée.</p><span style="color:var(--red);font-weight:800;font-size:.9rem;">Conakry, Guinée 🇬🇳</span></div>
   </div>
 </section>
@@ -535,8 +638,23 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
   </div>
 </footer>
 
+<!-- SENDING BAR -->
+<div class="sending-bar" id="sendingBar"></div>
+
+<!-- TOASTS -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- STICKY MOBILE COMMANDER -->
+<div class="mobile-cta" id="mobileCta">
+  <div class="mobile-cta-info">
+    <div class="mobile-cta-label">🇬🇳 Livraison gratuite</div>
+    <div class="mobile-cta-title">Paiement à la livraison ou Orange Money</div>
+  </div>
+  <a href="#produits" class="mobile-cta-btn">🛍 Commander</a>
+</div>
+
 <!-- WA FLOAT -->
-<a href="https://wa.me/224XXXXXXXX" class="wa-btn" target="_blank">
+<a href="https://wa.me/224621881210" class="wa-btn" target="_blank">
   <svg fill="white" viewBox="0 0 24 24" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
@@ -582,11 +700,26 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
       </div>
       <div class="pd-form-section">
         <div class="pd-form-title">📦 Passer ma commande</div>
-        <div class="frow">
-          <div class="fg"><label>Prénom & Nom *</label><input type="text" id="pdNom" placeholder="Ex: Fatoumata Diallo"></div>
-          <div class="fg"><label>Téléphone *</label><input type="tel" id="pdTel" placeholder="Ex: 622 000 000"></div>
+
+        <div class="qty-row">
+          <span class="qty-label">Quantité</span>
+          <div class="qty-box">
+            <button class="qty-btn" type="button" onclick="updateQty(-1)">−</button>
+            <span class="qty-val" id="pdQty">1</span>
+            <button class="qty-btn" type="button" onclick="updateQty(1)">+</button>
+          </div>
         </div>
-        <div class="fg"><label>Adresse de livraison *</label><input type="text" id="pdAdresse" placeholder="Ex: Kaloum, près du marché"></div>
+
+        <div class="pd-total-row">
+          <span>Total à payer</span>
+          <strong id="pdTotal">0 GNF</strong>
+        </div>
+
+        <div class="frow">
+          <div class="fg"><label>Prénom & Nom *</label><input type="text" id="pdNom" placeholder="Ex: Fatoumata Diallo" autocomplete="name"></div>
+          <div class="fg"><label>Téléphone *</label><input type="tel" id="pdTel" placeholder="622 00 00 00" autocomplete="tel" maxlength="13"></div>
+        </div>
+        <div class="fg"><label>Adresse de livraison *</label><input type="text" id="pdAdresse" placeholder="Ex: Kaloum, près du marché central" autocomplete="street-address"></div>
         <div class="fg">
           <label>Ville / Préfecture *</label>
           <select id="pdVille">
@@ -603,16 +736,23 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
         </div>
         <div class="fg">
           <label>Mode de paiement</label>
-          <div class="pay-opts">
-            <div class="pay-opt on" onclick="selPay(this)"><span class="pay-ico">💵</span>Cash livraison</div>
-            <div class="pay-opt" onclick="selPay(this)"><span class="pay-ico">🟠</span>Orange Money</div>
-            <div class="pay-opt" onclick="selPay(this)"><span class="pay-ico">🟡</span>Soutrat Money</div>
-            <div class="pay-opt" onclick="selPay(this)"><span class="pay-ico">🔵</span>MTN MoMo</div>
-            <div class="pay-opt" onclick="selPay(this)"><span class="pay-ico">🌊</span>Wave</div>
+          <div class="pay-opts" style="grid-template-columns:repeat(2,1fr);">
+            <div class="pay-opt on" data-pay="CASH" onclick="selPay(this)"><span class="pay-ico">💵</span>Cash à la livraison</div>
+            <div class="pay-opt" data-pay="ORANGE" onclick="selPay(this)"><span class="pay-ico">🟠</span>Orange Money</div>
+          </div>
+          <div class="om-info" id="omInfo">
+            <div class="om-info-title">🟠 Paiement Orange Money</div>
+            <p style="font-size:.78rem;color:var(--muted);line-height:1.5;">Envoyez le montant total au numéro marchand ci-dessous, puis confirmez votre commande. Notre équipe vérifie la transaction avant livraison.</p>
+            <div class="om-info-num" onclick="copyOM(this)" title="Cliquez pour copier">+224 621 88 12 10</div>
+            <div class="fg" style="margin-top:.6rem;margin-bottom:0;">
+              <label style="color:#D17900;">ID Transaction Orange Money *</label>
+              <input type="text" id="pdOMId" placeholder="Ex: PP250522.1234.A56789" autocomplete="off">
+            </div>
+            <p class="om-info-steps"><b>Comment payer :</b><br>1. Composez <b>#144#</b><br>2. Envoyer de l'argent → <b>+224 621 88 12 10</b><br>3. Copiez l'ID de transaction reçu par SMS<br>4. Collez-le ci-dessus et confirmez</p>
           </div>
         </div>
-        <button class="order-btn" onclick="passerCommande()">🛒 CONFIRMER MA COMMANDE — LIVRAISON GRATUITE</button>
-        <p class="form-note">🔒 Données confidentielles &nbsp;·&nbsp; Paiement uniquement à la livraison</p>
+        <button class="order-btn" id="orderBtn" onclick="passerCommande()">🛒 CONFIRMER MA COMMANDE — LIVRAISON GRATUITE</button>
+        <p class="form-note">🔒 Données confidentielles &nbsp;·&nbsp; Réponse de notre équipe sous 1h</p>
       </div>
     </div>
   </div>
@@ -629,68 +769,94 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 </div>
 
 <script>
+// ============================================
+// CONFIGURATION — À MODIFIER SELON BESOIN
+// ============================================
+const CONFIG = {
+  waNumber: "224621881210",
+  waDisplay: "+224 621 88 12 10",
+  webhookUrl: "http://localhost:3002/api/webhook/order",
+  webhookKey: "xkLgqHyoCEEErMZb6PWOLu9cNg2LDAqU05RaBQLA",
+  // Numéro marchand Orange Money
+  omMerchant: "+224 621 88 12 10",
+};
+
+// ============================================
+// CATALOGUE PRODUITS (avec photos Unsplash)
+// ============================================
+const UNSPLASH = (q,w=400)=>`https://images.unsplash.com/${q}?auto=format&fit=crop&w=${w}&q=70`;
+
 const produits=[
-  {id:1,nom:"Fer à Lisser Céramique Pro",cat:"beaute",emoji:"💇‍♀️",prix:"185 000",old:"270 000",stock:true,badge:"chaud",desc:"Lisseur céramique infrarouge professionnel. Résultat salon à domicile en 5 minutes. Protection thermique avancée. Pour tous types de cheveux africains."},
-  {id:2,nom:"Kit Soin Visage Complet 5 en 1",cat:"beaute",emoji:"✨",prix:"200 000",old:"300 000",stock:true,badge:"new",desc:"Set complet : nettoyant, tonique, sérum vitamine C, crème hydratante, masque. Peau lumineuse en 7 jours. 100% naturel, adapté aux peaux africaines."},
-  {id:3,nom:"Brosse Sèche-Cheveux Ionique",cat:"beaute",emoji:"💨",prix:"175 000",old:"250 000",stock:true,badge:"top",desc:"Sèche et lisse simultanément. Technologie ionique anti-frisottis. 3 réglages de chaleur. Résultats professionnels en 10 minutes."},
-  {id:4,nom:"Épilateur Sans Douleur Électrique",cat:"beaute",emoji:"🌸",prix:"180 000",old:"260 000",stock:true,badge:"",desc:"Épilation sans douleur pour jambes, aisselles et bikini. Rechargeable USB. Utilisable sous la douche. Résultat jusqu'à 4 semaines."},
-  {id:5,nom:"Appareil Massage Anti-Cellulite",cat:"beaute",emoji:"💆",prix:"190 000",old:"280 000",stock:true,badge:"chaud",desc:"Massage par aspiration et vibration. Améliore la circulation. Réduit visiblement la cellulite en 4 semaines. Rechargeable et silencieux."},
-  {id:6,nom:"Masque LED Soin Visage 7 Couleurs",cat:"beaute",emoji:"🔴",prix:"220 000",old:"320 000",stock:true,badge:"new",desc:"Thérapie lumineuse rouge et bleue. Anti-acné, anti-âge, éclat du teint. 7 couleurs LED. 20 min/jour. Résultats visibles en 2 semaines."},
-  {id:7,nom:"Tondeuse Précision Sourcils & Visage",cat:"beaute",emoji:"✂️",prix:"170 000",old:"240 000",stock:true,badge:"",desc:"Tondeuse précision pour sourcils, lèvres, nez. Lame acier inox. Rechargeable. Étanche. Parfaite pour un look soigné quotidien."},
-  {id:8,nom:"Coffret Parfum Oriental Luxe",cat:"beaute",emoji:"🌹",prix:"240 000",old:"350 000",stock:false,badge:"",desc:"Coffret 3 parfums orientaux longue tenue. Notes de musc, oud et floral. Présenté dans un écrin de luxe. Idéal comme cadeau."},
-  {id:9,nom:"Robot Cuiseur Multifonction 5L",cat:"maison",emoji:"🍳",prix:"220 000",old:"320 000",stock:true,badge:"chaud",desc:"Cuit, mijote, frits, cuit à la vapeur. Capacité 5 litres. Timer programmable. Nettoyage facile. Économise du temps et de l'énergie."},
-  {id:10,nom:"Purificateur d'Air UV Silencieux",cat:"maison",emoji:"💨",prix:"200 000",old:"290 000",stock:true,badge:"top",desc:"Filtre HEPA + UV. Élimine 99,9% des bactéries et allergènes. Silencieux mode nuit. Couvre 30m². Idéal pour Conakry."},
-  {id:11,nom:"Mixeur Blender Pro 1500W",cat:"maison",emoji:"🥤",prix:"185 000",old:"270 000",stock:true,badge:"",desc:"Moteur 1500W. Broie glace, noix, légumes durs. 6 vitesses + pulse. Bol 2L en verre. Idéal pour jus, smoothies, sauces et soupes."},
-  {id:12,nom:"Friteuse à Air Chaud 4.5L",cat:"maison",emoji:"🍟",prix:"210 000",old:"300 000",stock:true,badge:"new",desc:"Cuisine sans huile ou presque. Frites croustillantes, poulet doré. 4,5L de capacité. 80% moins de graisses. Nettoyage facile."},
-  {id:13,nom:"Machine à Café Expresso Auto",cat:"maison",emoji:"☕",prix:"230 000",old:"340 000",stock:true,badge:"",desc:"Expresso, cappuccino, latte en un bouton. Pression 15 bars. Chauffe en 25 secondes. Compatible capsules et café moulu."},
-  {id:14,nom:"Aspirateur Sans Fil Cyclonique",cat:"maison",emoji:"🌀",prix:"195 000",old:"280 000",stock:true,badge:"chaud",desc:"Sans fil, léger 1,5kg. Aspiration 22 000 Pa. Autonomie 45 min. Filtre HEPA lavable. Parfait pour tapis, carrelage, canapés."},
-  {id:15,nom:"Ventilateur Tour Silencieux",cat:"maison",emoji:"🌬️",prix:"175 000",old:"250 000",stock:true,badge:"top",desc:"Tour 90cm. 3 vitesses silencieuses. Oscillation 90°. Timer 8h. Télécommande incluse. Idéal pour Conakry pendant les périodes chaudes."},
-  {id:16,nom:"Fer à Repasser Vapeur Pro",cat:"maison",emoji:"👔",prix:"170 000",old:"240 000",stock:true,badge:"",desc:"2400W. Semelle céramique anti-adhésive. Jet vapeur 200g/min. Réservoir 300ml. Chauffe en 30 sec. Défroisse les tissus africains épais."},
-  {id:17,nom:"Lampe Solaire Extérieure 200 LED",cat:"maison",emoji:"🌞",prix:"180 000",old:"260 000",stock:true,badge:"chaud",desc:"Panneau solaire intégré. 200 LEDs. Détecteur de mouvement. Résiste à la pluie IP65. Charge de jour, éclaire de nuit."},
-  {id:18,nom:"Balance de Cuisine Digitale Pro",cat:"maison",emoji:"⚖️",prix:"170 000",old:"240 000",stock:false,badge:"",desc:"Précision 1g. Capacité 10kg. Écran LCD rétroéclairé. Tare automatique. Idéale pâtisserie, cuisine diététique et commerce."},
-  {id:19,nom:"Montre Connectée Sport Pro GPS",cat:"tech",emoji:"⌚",prix:"210 000",old:"310 000",stock:true,badge:"chaud",desc:"Suivi santé complet : cardiaque, oxymètre, sommeil, calories. GPS intégré. Résistante à l'eau. Autonomie 7 jours. Android/iOS."},
-  {id:20,nom:"Écouteurs Bluetooth Réduction Bruit",cat:"tech",emoji:"🎧",prix:"195 000",old:"280 000",stock:true,badge:"new",desc:"Réduction de bruit active ANC. Autonomie 30h. Son Hi-Fi puissant. Charge rapide USB-C. Idéal pour bureau, voyages et sport."},
-  {id:21,nom:"Batterie Externe Solaire 30000mAh",cat:"tech",emoji:"🔋",prix:"185 000",old:"270 000",stock:true,badge:"top",desc:"30 000 mAh. Charge solaire + USB. 4 ports de sortie. Charge 3 appareils simultanément. Lampe torche. Parfaite pour coupures."},
-  {id:22,nom:"Stabilisateur Gimbal Smartphone",cat:"tech",emoji:"📸",prix:"200 000",old:"290 000",stock:true,badge:"",desc:"Stabilisation 3 axes. Suivi automatique du visage. Modes selfie, panorama, slow-motion. Pliable et compact. Pour créateurs de contenu."},
-  {id:23,nom:"Mini Projecteur Portable 1080p",cat:"tech",emoji:"📽️",prix:"240 000",old:"350 000",stock:true,badge:"chaud",desc:"Résolution 1080p. 5000 lumens. HDMI, USB, WiFi. Batterie intégrée. Écran jusqu'à 120 pouces. Cinéma maison et présentations."},
-  {id:24,nom:"Enceinte Bluetooth Waterproof 30W",cat:"tech",emoji:"🔊",prix:"175 000",old:"250 000",stock:true,badge:"",desc:"Son 360° puissant 30W. Étanche IPX7. Autonomie 24h. Bluetooth 5.0. Lumières LED. Idéale sorties, fêtes et plage."},
-  {id:25,nom:"Lampe Annulaire LED Selfie 45cm",cat:"tech",emoji:"💡",prix:"180 000",old:"260 000",stock:true,badge:"new",desc:"Diamètre 45cm. 3 températures de couleur. 10 niveaux de luminosité. Support téléphone inclus. Idéale vidéos, photos, réunions."},
-  {id:26,nom:"Clé WiFi 4G Portable 10 appareils",cat:"tech",emoji:"📶",prix:"190 000",old:"275 000",stock:false,badge:"",desc:"Partage de connexion 4G jusqu'à 10 appareils. Batterie 5000mAh. Débit 150 Mbps. Compatible toutes cartes SIM guinéennes."},
-  {id:27,nom:"Vélo d'Appartement Pliable 8 niveaux",cat:"sante",emoji:"🚴",prix:"245 000",old:"350 000",stock:true,badge:"chaud",desc:"Pliable et compact. 8 niveaux de résistance. Écran LCD calories/distance/temps. Charge max 120kg. Pédalier silencieux."},
-  {id:28,nom:"Tapis de Course Électrique Pliable",cat:"sante",emoji:"🏃",prix:"250 000",old:"370 000",stock:true,badge:"new",desc:"Vitesse 1-12 km/h. Pliable gain de place. Affichage LED. Arrêt d'urgence magnétique. Moteur silencieux 1.5HP. Charge 100kg."},
-  {id:29,nom:"Masseur Pistolet Percussion Pro",cat:"sante",emoji:"💪",prix:"200 000",old:"290 000",stock:true,badge:"top",desc:"6 têtes de massage. 30 vitesses. Autonomie 8h. Silencieux 45dB. Soulage douleurs musculaires, dos, cervicales. Idéal sport."},
-  {id:30,nom:"Tensiomètre Bras Automatique",cat:"sante",emoji:"💊",prix:"175 000",old:"250 000",stock:true,badge:"",desc:"Mesure automatique pression artérielle. Mémoire 200 mesures. Écran large. Détection arythmie. Validé cliniquement."},
-  {id:31,nom:"Corde à Sauter Digitale Lestée",cat:"sante",emoji:"⚡",prix:"170 000",old:"240 000",stock:true,badge:"",desc:"Compteur automatique sauts et calories. Poignées lestées 500g. Câble réglable. Parfaite cardio et perte de poids."},
-  {id:32,nom:"Kit Haltères Réglables 20kg",cat:"sante",emoji:"🏋️",prix:"235 000",old:"340 000",stock:true,badge:"chaud",desc:"2 haltères réglables 1-10kg chacun. Remplace 10 paires. Gain de place. Idéal musculation à domicile sans salle de sport."},
-  {id:33,nom:"Sac à Main Cuir Véritable Luxe",cat:"mode",emoji:"👜",prix:"210 000",old:"300 000",stock:true,badge:"new",desc:"Cuir véritable. Fermeture zippée. Poches intérieures multiples. Bandoulière amovible. Noir, marron et bordeaux. Élégance africaine."},
-  {id:34,nom:"Montre Homme Acier Automatique",cat:"mode",emoji:"🕐",prix:"220 000",old:"320 000",stock:true,badge:"",desc:"Boîtier acier inoxydable 42mm. Verre saphir anti-rayures. Étanche 50m. Mouvement automatique. Style habillé toutes occasions."},
-  {id:35,nom:"Lunettes Soleil Polarisées UV400",cat:"mode",emoji:"🕶️",prix:"175 000",old:"250 000",stock:true,badge:"top",desc:"Verres polarisés UV400. Monture acétate premium. Protection totale UV. Idéales conduite, plage, soleil guinéen intense."},
-  {id:36,nom:"Ensemble Bogolan Moderne Femme",cat:"mode",emoji:"👗",prix:"185 000",old:"270 000",stock:true,badge:"chaud",desc:"Ensemble haut + jupe tissu bogolan authentique. Couture artisanale. Motifs traditionnels modernisés. Tailles S à XL."},
-  {id:37,nom:"Sneakers Cuir Premium Homme",cat:"mode",emoji:"👟",prix:"195 000",old:"280 000",stock:false,badge:"",desc:"Cuir pleine fleur. Semelle confort EVA. Style casual-chic. Du 40 au 46. Parfait bureau, sorties et occasions décontractées."},
-  {id:38,nom:"Ceinture Cuir Artisanale Luxe",cat:"mode",emoji:"🔗",prix:"170 000",old:"240 000",stock:true,badge:"",desc:"Cuir véritable épais. Boucle dorée anti-rouille. Taille ajustable. Noir et marron. Finition artisanale soignée. Cadeau idéal."},
-  {id:39,nom:"Vélo Enfant 4-7 ans + Stabilisateurs",cat:"enfant",emoji:"🚲",prix:"180 000",old:"260 000",stock:true,badge:"chaud",desc:"Cadre acier robuste. Roues stabilisatrices amovibles. Frein avant et arrière. Pour enfants 4-7 ans (85-115cm). Montage 20 min."},
-  {id:40,nom:"Tablette Éducative Enfant 7 pouces",cat:"enfant",emoji:"📱",prix:"200 000",old:"290 000",stock:true,badge:"new",desc:"7 pouces. 32Go. Applications éducatives préinstallées. Mode enfant sécurisé. Coque anti-choc. Batterie 8h. De 3 à 10 ans."},
-  {id:41,nom:"Kit Peinture & Dessin 120 pièces",cat:"enfant",emoji:"🎨",prix:"170 000",old:"240 000",stock:true,badge:"top",desc:"120 pièces : crayons, aquarelles, pastels, pinceaux, carnet. Coffret complet créativité enfants 5-14 ans."},
-  {id:42,nom:"Trottinette Électrique Enfant",cat:"enfant",emoji:"🛴",prix:"230 000",old:"330 000",stock:true,badge:"chaud",desc:"Vitesse max 15 km/h. Autonomie 10km. Lumières LED. Frein électronique. Pour enfants 8-15 ans. Poids max 80kg. Pliable."},
-  {id:43,nom:"Trampoline Jardin 3 mètres",cat:"enfant",emoji:"🤸",prix:"245 000",old:"360 000",stock:false,badge:"",desc:"Diamètre 3m. Filet de sécurité inclus. Charge max 150kg. Montage 1h. Idéal jardin ou cour. Cadeau incontournable."},
-  {id:44,nom:"Console Jeux Rétro 400+ Jeux",cat:"enfant",emoji:"🎮",prix:"175 000",old:"250 000",stock:true,badge:"",desc:"400+ jeux préinstallés classiques. Écran 3,5 pouces. Autonomie 5h. 2 manettes incluses. Connexion TV possible."},
-  {id:45,nom:"Caméra Surveillance WiFi 4K",cat:"tech",emoji:"📷",prix:"195 000",old:"280 000",stock:true,badge:"new",desc:"Résolution 4K. Vision nocturne 30m. Alerte mouvement sur smartphone. Résistante à l'eau. Stockage cloud ou carte SD."},
-  {id:46,nom:"Climatiseur Portable sans Tuyau",cat:"maison",emoji:"❄️",prix:"250 000",old:"370 000",stock:true,badge:"chaud",desc:"Refroidit, humidifie et purifie l'air. Réservoir 4L. 3 vitesses. Télécommande. Idéal chambre ou bureau sans installation fixe."},
-  {id:47,nom:"Machine à Coudre Électronique 32 pts",cat:"maison",emoji:"🧵",prix:"235 000",old:"340 000",stock:true,badge:"top",desc:"32 points de couture. Vitesse réglable. Bras libre. Lumière LED. Manuel français. Idéale couturières et tailleurs."},
-  {id:48,nom:"Générateur Solaire Portable 500W",cat:"maison",emoji:"⚡",prix:"248 000",old:"360 000",stock:true,badge:"chaud",desc:"500Wh. Recharge solaire, secteur ou voiture. 5 sorties AC, 3 USB. Parfait coupures de courant et usage déplacement."},
-  {id:49,nom:"Plaque à Induction Portable 2000W",cat:"maison",emoji:"🔥",prix:"185 000",old:"270 000",stock:true,badge:"",desc:"2000W. 9 niveaux de puissance. Minuteur. Sécurité enfant. Chauffe en 30 secondes. Économique. Idéale studio ou 2ème foyer."},
-  {id:50,nom:"Drone Caméra 4K Pliable GPS",cat:"tech",emoji:"🚁",prix:"240 000",old:"350 000",stock:true,badge:"new",desc:"Caméra 4K stabilisée. Autonomie 25 min. Portée 500m. Suivi automatique. Pliable taille poing. Mariages, événements, voyages."},
+  {id:1,nom:"Fer à Lisser Céramique Pro",cat:"beaute",emoji:"💇‍♀️",img:UNSPLASH("photo-1522338242992-e1a54906a8da"),prix:"185 000",old:"270 000",stock:true,badge:"chaud",desc:"Lisseur céramique infrarouge professionnel. Résultat salon à domicile en 5 minutes. Protection thermique avancée. Pour tous types de cheveux africains."},
+  {id:2,nom:"Kit Soin Visage Complet 5 en 1",cat:"beaute",emoji:"✨",img:UNSPLASH("photo-1556228720-195a672e8a03"),prix:"200 000",old:"300 000",stock:true,badge:"new",desc:"Set complet : nettoyant, tonique, sérum vitamine C, crème hydratante, masque. Peau lumineuse en 7 jours. 100% naturel, adapté aux peaux africaines."},
+  {id:3,nom:"Brosse Sèche-Cheveux Ionique",cat:"beaute",emoji:"💨",img:UNSPLASH("photo-1522338242992-e1a54906a8da"),prix:"175 000",old:"250 000",stock:true,badge:"top",desc:"Sèche et lisse simultanément. Technologie ionique anti-frisottis. 3 réglages de chaleur. Résultats professionnels en 10 minutes."},
+  {id:4,nom:"Épilateur Sans Douleur Électrique",cat:"beaute",emoji:"🌸",img:UNSPLASH("photo-1570194065650-d99fb4bedf0a"),prix:"180 000",old:"260 000",stock:true,badge:"",desc:"Épilation sans douleur pour jambes, aisselles et bikini. Rechargeable USB. Utilisable sous la douche. Résultat jusqu'à 4 semaines."},
+  {id:5,nom:"Appareil Massage Anti-Cellulite",cat:"beaute",emoji:"💆",img:UNSPLASH("photo-1540555700478-4be289fbecef"),prix:"190 000",old:"280 000",stock:true,badge:"chaud",desc:"Massage par aspiration et vibration. Améliore la circulation. Réduit visiblement la cellulite en 4 semaines. Rechargeable et silencieux."},
+  {id:6,nom:"Masque LED Soin Visage 7 Couleurs",cat:"beaute",emoji:"🔴",img:UNSPLASH("photo-1614108809050-58d3a3eaa2c5"),prix:"220 000",old:"320 000",stock:true,badge:"new",desc:"Thérapie lumineuse rouge et bleue. Anti-acné, anti-âge, éclat du teint. 7 couleurs LED. 20 min/jour. Résultats visibles en 2 semaines."},
+  {id:7,nom:"Tondeuse Précision Sourcils & Visage",cat:"beaute",emoji:"✂️",img:UNSPLASH("photo-1599351431202-1e0f0137899a"),prix:"170 000",old:"240 000",stock:true,badge:"",desc:"Tondeuse précision pour sourcils, lèvres, nez. Lame acier inox. Rechargeable. Étanche. Parfaite pour un look soigné quotidien."},
+  {id:8,nom:"Coffret Parfum Oriental Luxe",cat:"beaute",emoji:"🌹",img:UNSPLASH("photo-1541643600914-78b084683601"),prix:"240 000",old:"350 000",stock:false,badge:"",desc:"Coffret 3 parfums orientaux longue tenue. Notes de musc, oud et floral. Présenté dans un écrin de luxe. Idéal comme cadeau."},
+  {id:9,nom:"Robot Cuiseur Multifonction 5L",cat:"maison",emoji:"🍳",img:UNSPLASH("photo-1585515320310-259814833e62"),prix:"220 000",old:"320 000",stock:true,badge:"chaud",desc:"Cuit, mijote, frits, cuit à la vapeur. Capacité 5 litres. Timer programmable. Nettoyage facile. Économise du temps et de l'énergie."},
+  {id:10,nom:"Purificateur d'Air UV Silencieux",cat:"maison",emoji:"💨",img:UNSPLASH("photo-1585771724684-38269d6639fd"),prix:"200 000",old:"290 000",stock:true,badge:"top",desc:"Filtre HEPA + UV. Élimine 99,9% des bactéries et allergènes. Silencieux mode nuit. Couvre 30m². Idéal pour Conakry."},
+  {id:11,nom:"Mixeur Blender Pro 1500W",cat:"maison",emoji:"🥤",img:UNSPLASH("photo-1570194065650-d99fb4bedf0a"),prix:"185 000",old:"270 000",stock:true,badge:"",desc:"Moteur 1500W. Broie glace, noix, légumes durs. 6 vitesses + pulse. Bol 2L en verre. Idéal pour jus, smoothies, sauces et soupes."},
+  {id:12,nom:"Friteuse à Air Chaud 4.5L",cat:"maison",emoji:"🍟",img:UNSPLASH("photo-1626202373052-9cb6c43e0f0e"),prix:"210 000",old:"300 000",stock:true,badge:"new",desc:"Cuisine sans huile ou presque. Frites croustillantes, poulet doré. 4,5L de capacité. 80% moins de graisses. Nettoyage facile."},
+  {id:13,nom:"Machine à Café Expresso Auto",cat:"maison",emoji:"☕",img:UNSPLASH("photo-1606937295547-bc0f668595e3"),prix:"230 000",old:"340 000",stock:true,badge:"",desc:"Expresso, cappuccino, latte en un bouton. Pression 15 bars. Chauffe en 25 secondes. Compatible capsules et café moulu."},
+  {id:14,nom:"Aspirateur Sans Fil Cyclonique",cat:"maison",emoji:"🌀",img:UNSPLASH("photo-1558317374-067fb5f30001"),prix:"195 000",old:"280 000",stock:true,badge:"chaud",desc:"Sans fil, léger 1,5kg. Aspiration 22 000 Pa. Autonomie 45 min. Filtre HEPA lavable. Parfait pour tapis, carrelage, canapés."},
+  {id:15,nom:"Ventilateur Tour Silencieux",cat:"maison",emoji:"🌬️",img:UNSPLASH("photo-1593104547489-5cfb3839a3b5"),prix:"175 000",old:"250 000",stock:true,badge:"top",desc:"Tour 90cm. 3 vitesses silencieuses. Oscillation 90°. Timer 8h. Télécommande incluse. Idéal pour Conakry pendant les périodes chaudes."},
+  {id:16,nom:"Fer à Repasser Vapeur Pro",cat:"maison",emoji:"👔",img:UNSPLASH("photo-1604335399105-a0c585fd81a1"),prix:"170 000",old:"240 000",stock:true,badge:"",desc:"2400W. Semelle céramique anti-adhésive. Jet vapeur 200g/min. Réservoir 300ml. Chauffe en 30 sec. Défroisse les tissus africains épais."},
+  {id:17,nom:"Lampe Solaire Extérieure 200 LED",cat:"maison",emoji:"🌞",img:UNSPLASH("photo-1565636192335-865b1f9c8cb1"),prix:"180 000",old:"260 000",stock:true,badge:"chaud",desc:"Panneau solaire intégré. 200 LEDs. Détecteur de mouvement. Résiste à la pluie IP65. Charge de jour, éclaire de nuit."},
+  {id:18,nom:"Balance de Cuisine Digitale Pro",cat:"maison",emoji:"⚖️",img:UNSPLASH("photo-1610978415099-95feb5dfe97e"),prix:"170 000",old:"240 000",stock:false,badge:"",desc:"Précision 1g. Capacité 10kg. Écran LCD rétroéclairé. Tare automatique. Idéale pâtisserie, cuisine diététique et commerce."},
+  {id:19,nom:"Montre Connectée Sport Pro GPS",cat:"tech",emoji:"⌚",img:UNSPLASH("photo-1546868871-7041f2a55e12"),prix:"210 000",old:"310 000",stock:true,badge:"chaud",desc:"Suivi santé complet : cardiaque, oxymètre, sommeil, calories. GPS intégré. Résistante à l'eau. Autonomie 7 jours. Android/iOS."},
+  {id:20,nom:"Écouteurs Bluetooth Réduction Bruit",cat:"tech",emoji:"🎧",img:UNSPLASH("photo-1505740420928-5e560c06d30e"),prix:"195 000",old:"280 000",stock:true,badge:"new",desc:"Réduction de bruit active ANC. Autonomie 30h. Son Hi-Fi puissant. Charge rapide USB-C. Idéal pour bureau, voyages et sport."},
+  {id:21,nom:"Batterie Externe Solaire 30000mAh",cat:"tech",emoji:"🔋",img:UNSPLASH("photo-1609692814859-95a5a4eedbb1"),prix:"185 000",old:"270 000",stock:true,badge:"top",desc:"30 000 mAh. Charge solaire + USB. 4 ports de sortie. Charge 3 appareils simultanément. Lampe torche. Parfaite pour coupures."},
+  {id:22,nom:"Stabilisateur Gimbal Smartphone",cat:"tech",emoji:"📸",img:UNSPLASH("photo-1606986628253-49a8b91be8b8"),prix:"200 000",old:"290 000",stock:true,badge:"",desc:"Stabilisation 3 axes. Suivi automatique du visage. Modes selfie, panorama, slow-motion. Pliable et compact. Pour créateurs de contenu."},
+  {id:23,nom:"Mini Projecteur Portable 1080p",cat:"tech",emoji:"📽️",img:UNSPLASH("photo-1626379953822-baec19c3accd"),prix:"240 000",old:"350 000",stock:true,badge:"chaud",desc:"Résolution 1080p. 5000 lumens. HDMI, USB, WiFi. Batterie intégrée. Écran jusqu'à 120 pouces. Cinéma maison et présentations."},
+  {id:24,nom:"Enceinte Bluetooth Waterproof 30W",cat:"tech",emoji:"🔊",img:UNSPLASH("photo-1608043152269-423dbba4e7e1"),prix:"175 000",old:"250 000",stock:true,badge:"",desc:"Son 360° puissant 30W. Étanche IPX7. Autonomie 24h. Bluetooth 5.0. Lumières LED. Idéale sorties, fêtes et plage."},
+  {id:25,nom:"Lampe Annulaire LED Selfie 45cm",cat:"tech",emoji:"💡",img:UNSPLASH("photo-1606293926249-ed35d5325753"),prix:"180 000",old:"260 000",stock:true,badge:"new",desc:"Diamètre 45cm. 3 températures de couleur. 10 niveaux de luminosité. Support téléphone inclus. Idéale vidéos, photos, réunions."},
+  {id:26,nom:"Clé WiFi 4G Portable 10 appareils",cat:"tech",emoji:"📶",img:UNSPLASH("photo-1606229365485-93a3b8ee0385"),prix:"190 000",old:"275 000",stock:false,badge:"",desc:"Partage de connexion 4G jusqu'à 10 appareils. Batterie 5000mAh. Débit 150 Mbps. Compatible toutes cartes SIM guinéennes."},
+  {id:27,nom:"Vélo d'Appartement Pliable 8 niveaux",cat:"sante",emoji:"🚴",img:UNSPLASH("photo-1591741535018-d042766c62eb"),prix:"245 000",old:"350 000",stock:true,badge:"chaud",desc:"Pliable et compact. 8 niveaux de résistance. Écran LCD calories/distance/temps. Charge max 120kg. Pédalier silencieux."},
+  {id:28,nom:"Tapis de Course Électrique Pliable",cat:"sante",emoji:"🏃",img:UNSPLASH("photo-1538805060514-97d9cc17730c"),prix:"250 000",old:"370 000",stock:true,badge:"new",desc:"Vitesse 1-12 km/h. Pliable gain de place. Affichage LED. Arrêt d'urgence magnétique. Moteur silencieux 1.5HP. Charge 100kg."},
+  {id:29,nom:"Masseur Pistolet Percussion Pro",cat:"sante",emoji:"💪",img:UNSPLASH("photo-1591741535018-d042766c62eb"),prix:"200 000",old:"290 000",stock:true,badge:"top",desc:"6 têtes de massage. 30 vitesses. Autonomie 8h. Silencieux 45dB. Soulage douleurs musculaires, dos, cervicales. Idéal sport."},
+  {id:30,nom:"Tensiomètre Bras Automatique",cat:"sante",emoji:"💊",img:UNSPLASH("photo-1576091160550-2173dba999ef"),prix:"175 000",old:"250 000",stock:true,badge:"",desc:"Mesure automatique pression artérielle. Mémoire 200 mesures. Écran large. Détection arythmie. Validé cliniquement."},
+  {id:31,nom:"Corde à Sauter Digitale Lestée",cat:"sante",emoji:"⚡",img:UNSPLASH("photo-1518611012118-696072aa579a"),prix:"170 000",old:"240 000",stock:true,badge:"",desc:"Compteur automatique sauts et calories. Poignées lestées 500g. Câble réglable. Parfaite cardio et perte de poids."},
+  {id:32,nom:"Kit Haltères Réglables 20kg",cat:"sante",emoji:"🏋️",img:UNSPLASH("photo-1517836357463-d25dfeac3438"),prix:"235 000",old:"340 000",stock:true,badge:"chaud",desc:"2 haltères réglables 1-10kg chacun. Remplace 10 paires. Gain de place. Idéal musculation à domicile sans salle de sport."},
+  {id:33,nom:"Sac à Main Cuir Véritable Luxe",cat:"mode",emoji:"👜",img:UNSPLASH("photo-1584917865442-de89df76afd3"),prix:"210 000",old:"300 000",stock:true,badge:"new",desc:"Cuir véritable. Fermeture zippée. Poches intérieures multiples. Bandoulière amovible. Noir, marron et bordeaux. Élégance africaine."},
+  {id:34,nom:"Montre Homme Acier Automatique",cat:"mode",emoji:"🕐",img:UNSPLASH("photo-1524805444758-089113d48a6d"),prix:"220 000",old:"320 000",stock:true,badge:"",desc:"Boîtier acier inoxydable 42mm. Verre saphir anti-rayures. Étanche 50m. Mouvement automatique. Style habillé toutes occasions."},
+  {id:35,nom:"Lunettes Soleil Polarisées UV400",cat:"mode",emoji:"🕶️",img:UNSPLASH("photo-1572635196237-14b3f281503f"),prix:"175 000",old:"250 000",stock:true,badge:"top",desc:"Verres polarisés UV400. Monture acétate premium. Protection totale UV. Idéales conduite, plage, soleil guinéen intense."},
+  {id:36,nom:"Ensemble Bogolan Moderne Femme",cat:"mode",emoji:"👗",img:UNSPLASH("photo-1581338834647-b0fb40704e21"),prix:"185 000",old:"270 000",stock:true,badge:"chaud",desc:"Ensemble haut + jupe tissu bogolan authentique. Couture artisanale. Motifs traditionnels modernisés. Tailles S à XL."},
+  {id:37,nom:"Sneakers Cuir Premium Homme",cat:"mode",emoji:"👟",img:UNSPLASH("photo-1542291026-7eec264c27ff"),prix:"195 000",old:"280 000",stock:false,badge:"",desc:"Cuir pleine fleur. Semelle confort EVA. Style casual-chic. Du 40 au 46. Parfait bureau, sorties et occasions décontractées."},
+  {id:38,nom:"Ceinture Cuir Artisanale Luxe",cat:"mode",emoji:"🔗",img:UNSPLASH("photo-1624222247344-550fb60583dc"),prix:"170 000",old:"240 000",stock:true,badge:"",desc:"Cuir véritable épais. Boucle dorée anti-rouille. Taille ajustable. Noir et marron. Finition artisanale soignée. Cadeau idéal."},
+  {id:39,nom:"Vélo Enfant 4-7 ans + Stabilisateurs",cat:"enfant",emoji:"🚲",img:UNSPLASH("photo-1532149997404-cfd203ff9f6f"),prix:"180 000",old:"260 000",stock:true,badge:"chaud",desc:"Cadre acier robuste. Roues stabilisatrices amovibles. Frein avant et arrière. Pour enfants 4-7 ans (85-115cm). Montage 20 min."},
+  {id:40,nom:"Tablette Éducative Enfant 7 pouces",cat:"enfant",emoji:"📱",img:UNSPLASH("photo-1561154464-82e9adf32764"),prix:"200 000",old:"290 000",stock:true,badge:"new",desc:"7 pouces. 32Go. Applications éducatives préinstallées. Mode enfant sécurisé. Coque anti-choc. Batterie 8h. De 3 à 10 ans."},
+  {id:41,nom:"Kit Peinture & Dessin 120 pièces",cat:"enfant",emoji:"🎨",img:UNSPLASH("photo-1513364776144-60967b0f800f"),prix:"170 000",old:"240 000",stock:true,badge:"top",desc:"120 pièces : crayons, aquarelles, pastels, pinceaux, carnet. Coffret complet créativité enfants 5-14 ans."},
+  {id:42,nom:"Trottinette Électrique Enfant",cat:"enfant",emoji:"🛴",img:UNSPLASH("photo-1604868189265-219ba7bf7ea3"),prix:"230 000",old:"330 000",stock:true,badge:"chaud",desc:"Vitesse max 15 km/h. Autonomie 10km. Lumières LED. Frein électronique. Pour enfants 8-15 ans. Poids max 80kg. Pliable."},
+  {id:43,nom:"Trampoline Jardin 3 mètres",cat:"enfant",emoji:"🤸",img:UNSPLASH("photo-1597289124948-688d1eea34c6"),prix:"245 000",old:"360 000",stock:false,badge:"",desc:"Diamètre 3m. Filet de sécurité inclus. Charge max 150kg. Montage 1h. Idéal jardin ou cour. Cadeau incontournable."},
+  {id:44,nom:"Console Jeux Rétro 400+ Jeux",cat:"enfant",emoji:"🎮",img:UNSPLASH("photo-1531525645387-7f14be1bdbbd"),prix:"175 000",old:"250 000",stock:true,badge:"",desc:"400+ jeux préinstallés classiques. Écran 3,5 pouces. Autonomie 5h. 2 manettes incluses. Connexion TV possible."},
+  {id:45,nom:"Caméra Surveillance WiFi 4K",cat:"tech",emoji:"📷",img:UNSPLASH("photo-1557324232-b8917d3c3dcb"),prix:"195 000",old:"280 000",stock:true,badge:"new",desc:"Résolution 4K. Vision nocturne 30m. Alerte mouvement sur smartphone. Résistante à l'eau. Stockage cloud ou carte SD."},
+  {id:46,nom:"Climatiseur Portable sans Tuyau",cat:"maison",emoji:"❄️",img:UNSPLASH("photo-1631545806609-4b4f6a26f0e6"),prix:"250 000",old:"370 000",stock:true,badge:"chaud",desc:"Refroidit, humidifie et purifie l'air. Réservoir 4L. 3 vitesses. Télécommande. Idéal chambre ou bureau sans installation fixe."},
+  {id:47,nom:"Machine à Coudre Électronique 32 pts",cat:"maison",emoji:"🧵",img:UNSPLASH("photo-1604335399105-a0c585fd81a1"),prix:"235 000",old:"340 000",stock:true,badge:"top",desc:"32 points de couture. Vitesse réglable. Bras libre. Lumière LED. Manuel français. Idéale couturières et tailleurs."},
+  {id:48,nom:"Générateur Solaire Portable 500W",cat:"maison",emoji:"⚡",img:UNSPLASH("photo-1509391366360-2e959784a276"),prix:"248 000",old:"360 000",stock:true,badge:"chaud",desc:"500Wh. Recharge solaire, secteur ou voiture. 5 sorties AC, 3 USB. Parfait coupures de courant et usage déplacement."},
+  {id:49,nom:"Plaque à Induction Portable 2000W",cat:"maison",emoji:"🔥",img:UNSPLASH("photo-1607215030309-91eb7b1da40b"),prix:"185 000",old:"270 000",stock:true,badge:"",desc:"2000W. 9 niveaux de puissance. Minuteur. Sécurité enfant. Chauffe en 30 secondes. Économique. Idéale studio ou 2ème foyer."},
+  {id:50,nom:"Drone Caméra 4K Pliable GPS",cat:"tech",emoji:"🚁",img:UNSPLASH("photo-1473968512647-3e447244af8f"),prix:"240 000",old:"350 000",stock:true,badge:"new",desc:"Caméra 4K stabilisée. Autonomie 25 min. Portée 500m. Suivi automatique. Pliable taille poing. Mariages, événements, voyages."},
 ];
 
-function getCatLabel(c){return{beaute:"💄 Beauté",maison:"🏠 Maison",tech:"📱 Tech",sante:"💪 Santé",mode:"👗 Mode",enfant:"🧒 Enfants"}[c]||c;}
+const CATS = {beaute:"💄 Beauté",maison:"🏠 Maison",tech:"📱 Tech",sante:"💪 Santé",mode:"👗 Mode",enfant:"🧒 Enfants"};
+function getCatLabel(c){return CATS[c]||c;}
 
+// ============================================
+// FORMATAGE PRIX
+// ============================================
+const fmtPrice = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g," ");
+const parsePrice = s => parseInt(String(s).replace(/\s/g,""))||0;
+
+// ============================================
+// RENDER PRODUITS
+// ============================================
 function renderProducts(list){
   const g=document.getElementById("prodGrid");
   g.innerHTML=list.map(p=>`
     <div class="prod-card" onclick="openPD(${p.id})">
       ${p.badge?`<div class="prod-badge badge-${p.badge}">${p.badge==="chaud"?"🔥 Chaud":p.badge==="new"?"✨ Nouveau":"⭐ Top"}</div>`:""}
-      <div class="prod-img">
-        ${p.emoji}
+      <div class="prod-img prod-img-real" style="background-image:url('${p.img}'),linear-gradient(135deg,#FFF8F0,#FFF3E0);">
         <div class="stock-dot ${p.stock?"stock-ok":"stock-no"}"></div>
       </div>
       <div class="prod-body">
@@ -711,32 +877,58 @@ function filter(cat,btn){
 
 renderProducts(produits);
 
+// ============================================
+// MODAL PRODUIT (avec quantité, total dynamique)
+// ============================================
+let currentProduct = null;
+let currentQty = 1;
+
 function openPD(id){
   const p=produits.find(x=>x.id===id);
   if(!p)return;
+  currentProduct = p;
+  currentQty = 1;
+  document.getElementById("pdQty").textContent = "1";
+
   document.getElementById("pdEmoji").textContent=p.emoji;
   document.getElementById("pdCat").textContent=getCatLabel(p.cat);
   document.getElementById("pdName").textContent=p.nom;
   document.getElementById("pdDesc").textContent=p.desc;
   document.getElementById("pdPrice").textContent=p.prix+" GNF";
   document.getElementById("pdOld").textContent=p.old+" GNF";
-  const prixNum=parseInt(p.prix.replace(/\s/g,""));
-  const oldNum=parseInt(p.old.replace(/\s/g,""));
-  const saving=Math.round((1-prixNum/oldNum)*100);
+  const saving=Math.round((1-parsePrice(p.prix)/parsePrice(p.old))*100);
   document.getElementById("pdSaving").textContent="-"+saving+"%";
   document.getElementById("pdStock").innerHTML=p.stock?"✅ En stock — Livraison sous 24–48h":"❌ Rupture de stock — Contactez-nous sur WhatsApp";
   document.getElementById("pdStock").style.color=p.stock?"#2ECC71":"#E74C3C";
-  // Mettre à jour les 3 photos avec l'emoji du produit
+
+  // Photos : utiliser l'image Unsplash en grand + emojis pour les vignettes
+  const media = document.querySelector(".pd-media");
+  let bigImg = document.getElementById("pdBigImg");
+  if(!bigImg){
+    bigImg = document.createElement("div");
+    bigImg.id = "pdBigImg";
+    bigImg.className = "pd-media-img";
+    media.insertBefore(bigImg, document.getElementById("pdEmoji"));
+  }
+  bigImg.style.backgroundImage = `url('${UNSPLASH(p.img.match(/photo-[a-z0-9-]+/)?.[0]||"",800)}'),linear-gradient(135deg,#FFF8F0,#FFF0D0)`;
+  document.getElementById("pdEmoji").style.display = "none";
+
   ["pdPhotoEmoji1","pdPhotoEmoji2","pdPhotoEmoji3"].forEach(id=>{
     document.getElementById(id).textContent = p.emoji;
   });
-  // Reset photo selection
   document.querySelectorAll(".pd-photo").forEach(ph=>ph.classList.remove("active"));
   document.getElementById("pdPhoto1").classList.add("active");
-  // Mettre à jour le grand emoji selon la vue sélectionnée
+
   window.currentEmoji = p.emoji;
+  updateTotal();
+  // Reset Orange Money
+  document.querySelectorAll(".pay-opt").forEach(o=>o.classList.toggle("on", o.dataset.pay==="CASH"));
+  document.getElementById("omInfo").classList.remove("show");
   document.getElementById("pdOverlay").classList.add("show");
   document.body.style.overflow="hidden";
+
+  // Restaurer données client depuis localStorage
+  restoreCustomer();
 }
 
 function closePD(){
@@ -744,52 +936,213 @@ function closePD(){
   document.body.style.overflow="";
 }
 
+function updateQty(delta){
+  currentQty = Math.max(1, Math.min(10, currentQty + delta));
+  document.getElementById("pdQty").textContent = currentQty;
+  updateTotal();
+}
+
+function updateTotal(){
+  if(!currentProduct) return;
+  const total = parsePrice(currentProduct.prix) * currentQty;
+  document.getElementById("pdTotal").textContent = fmtPrice(total) + " GNF";
+}
+
 function selPay(el){
   document.querySelectorAll(".pay-opt").forEach(o=>o.classList.remove("on"));
   el.classList.add("on");
+  document.getElementById("omInfo").classList.toggle("show", el.dataset.pay==="ORANGE");
 }
 
-// === NUMÉRO WHATSAPP — À MODIFIER ===
-const WA_NUMBER = "224XXXXXXXX";
+function copyOM(el){
+  const num = el.textContent.replace(/\s/g,"");
+  navigator.clipboard?.writeText(num).then(()=>{
+    toast("Numéro copié !", "Collez-le dans Orange Money", "success");
+    el.style.background = "#FFE4B5";
+    setTimeout(()=>el.style.background="", 500);
+  }).catch(()=>toast("Numéro : "+num, "", "warning"));
+}
 
-function passerCommande(){
-  const n=document.getElementById("pdNom").value.trim();
-  const t=document.getElementById("pdTel").value.trim();
-  const a=document.getElementById("pdAdresse").value.trim();
-  const v=document.getElementById("pdVille").value;
-  const produit=document.getElementById("pdName").textContent;
-  const prix=document.getElementById("pdPrice").textContent;
-  const payEl=document.querySelector(".pay-opt.on");
-  const paiement=payEl?payEl.textContent.trim():"Cash livraison";
-  const heure=new Date().toLocaleString("fr-FR");
+// ============================================
+// TOASTS
+// ============================================
+function toast(title, msg="", type="success"){
+  const c = document.getElementById("toastContainer");
+  const t = document.createElement("div");
+  t.className = "toast " + type;
+  const ico = {success:"✅", error:"❌", warning:"⚠️"}[type] || "ℹ️";
+  t.innerHTML = `<div class="toast-ico">${ico}</div><div class="toast-body"><div class="toast-title">${title}</div>${msg?`<div class="toast-msg">${msg}</div>`:""}</div>`;
+  c.appendChild(t);
+  setTimeout(()=>{ t.classList.add("out"); setTimeout(()=>t.remove(), 350); }, 3500);
+}
 
-  if(!n||!t||!a||!v){alert("Veuillez remplir tous les champs (*)");return;}
+// ============================================
+// VALIDATION TÉLÉPHONE GUINÉEN
+// ============================================
+function validatePhoneGN(tel){
+  const clean = tel.replace(/[\s\-\.\(\)]/g,"");
+  // Accepte : 6XXXXXXXX (9 chiffres), 2246XXXXXXXX (12), +2246XXXXXXXX
+  const re = /^(\+?224)?6\d{8}$/;
+  return re.test(clean);
+}
+function normalizePhoneGN(tel){
+  const clean = tel.replace(/[\s\-\.\(\)\+]/g,"");
+  if(clean.startsWith("224")) return clean;
+  if(clean.startsWith("6")) return "224"+clean;
+  return clean;
+}
 
-  // Message WhatsApp formaté
-  const msg = 
+// ============================================
+// LOCALSTORAGE - SAUVEGARDE CLIENT
+// ============================================
+const STORAGE_KEY = "hpshop_customer";
+function saveCustomer(){
+  const data = {
+    nom: document.getElementById("pdNom").value,
+    tel: document.getElementById("pdTel").value,
+    adresse: document.getElementById("pdAdresse").value,
+    ville: document.getElementById("pdVille").value,
+    savedAt: Date.now()
+  };
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e){}
+}
+function restoreCustomer(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const d = JSON.parse(raw);
+    // Expire après 30 jours
+    if(Date.now() - (d.savedAt||0) > 30*24*3600*1000) return;
+    if(d.nom) document.getElementById("pdNom").value = d.nom;
+    if(d.tel) document.getElementById("pdTel").value = d.tel;
+    if(d.adresse) document.getElementById("pdAdresse").value = d.adresse;
+    if(d.ville) document.getElementById("pdVille").value = d.ville;
+  } catch(e){}
+}
+
+// ============================================
+// CONFIRMER COMMANDE
+// ============================================
+async function passerCommande(){
+  if(!currentProduct){ toast("Erreur", "Aucun produit sélectionné", "error"); return; }
+  if(!currentProduct.stock){ toast("Rupture de stock", "Ce produit n'est plus disponible", "warning"); return; }
+
+  const nom = document.getElementById("pdNom");
+  const tel = document.getElementById("pdTel");
+  const adr = document.getElementById("pdAdresse");
+  const vil = document.getElementById("pdVille");
+
+  // Reset erreurs
+  [nom,tel,adr,vil].forEach(f=>f.classList.remove("error"));
+
+  let firstErr = null;
+  if(!nom.value.trim()){ nom.classList.add("error"); firstErr = firstErr || nom; }
+  if(!tel.value.trim() || !validatePhoneGN(tel.value)){ tel.classList.add("error"); firstErr = firstErr || tel; }
+  if(!adr.value.trim()){ adr.classList.add("error"); firstErr = firstErr || adr; }
+  if(!vil.value){ vil.classList.add("error"); firstErr = firstErr || vil; }
+
+  if(firstErr){
+    if(firstErr === tel && tel.value.trim()){
+      toast("Téléphone invalide", "Format : 622 00 00 00 (9 chiffres)", "error");
+    } else {
+      toast("Champs obligatoires", "Veuillez remplir tous les champs (*)", "error");
+    }
+    firstErr.focus();
+    return;
+  }
+
+  const payEl = document.querySelector(".pay-opt.on");
+  const payMode = payEl?.dataset.pay || "CASH";
+  let omId = "";
+  if(payMode === "ORANGE"){
+    omId = document.getElementById("pdOMId").value.trim();
+    if(!omId){
+      document.getElementById("pdOMId").classList.add("error");
+      toast("ID Transaction requis", "Effectuez d'abord le paiement Orange Money", "error");
+      document.getElementById("pdOMId").focus();
+      return;
+    }
+  }
+
+  saveCustomer();
+
+  const totalAmount = parsePrice(currentProduct.prix) * currentQty;
+  const phoneNorm = normalizePhoneGN(tel.value);
+
+  const btn = document.getElementById("orderBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>Envoi en cours...';
+  document.getElementById("sendingBar").classList.add("show");
+
+  // ============================================
+  // 1) ENVOI AU WEBHOOK CRM (si configuré)
+  // ============================================
+  let crmOk = false;
+  if(CONFIG.webhookUrl && CONFIG.webhookKey){
+    try {
+      const payLabel = payMode === "ORANGE" ? `Orange Money — ID: ${omId}` : "Cash à la livraison";
+      const payload = {
+        externalRef: "HP-" + Date.now() + "-" + currentProduct.id,
+        customer: {
+          fullName: nom.value.trim(),
+          phone: phoneNorm,
+          address: adr.value.trim(),
+          city: vil.value,
+        },
+        paymentMethod: payMode,
+        paymentRef: omId || null,
+        notes: payLabel,
+        items: [{
+          sku: "HP-" + currentProduct.id,
+          name: currentProduct.nom,
+          price: parsePrice(currentProduct.prix),
+          quantity: currentQty
+        }],
+        total: totalAmount,
+        source: "hpshop.gn"
+      };
+      const r = await fetch(CONFIG.webhookUrl, {
+        method: "POST",
+        headers: {"Content-Type":"application/json", "X-Webhook-Key": CONFIG.webhookKey},
+        body: JSON.stringify(payload)
+      });
+      crmOk = r.ok;
+    } catch(e){ crmOk = false; }
+  }
+
+  // ============================================
+  // 2) FALLBACK / NOTIFICATION WHATSAPP
+  // ============================================
+  const payLabel = payMode === "ORANGE" ? `🟠 Orange Money (ID: ${omId})` : "💵 Cash à la livraison";
+  const msg =
     "🛍 *Nouvelle commande HPSHOP AFRIQUE !*\n\n" +
-    "👤 Client : " + n + "\n" +
-    "📞 Téléphone : " + t + "\n" +
-    "📦 Produit : " + produit + "\n" +
-    "💰 Montant : " + prix + "\n" +
-    "📍 Adresse : " + a + "\n" +
-    "🏙️ Ville : " + v + "\n" +
-    "💳 Paiement : " + paiement + "\n" +
-    "🕐 Heure : " + heure + "\n\n" +
-    "⚡ Livraison via *Rapido* — À confirmer rapidement !\n" +
-    "🌐 hpshop-afrique.github.io";
+    "👤 Client : " + nom.value.trim() + "\n" +
+    "📞 Téléphone : " + tel.value.trim() + "\n" +
+    "📦 Produit : " + currentProduct.nom + "\n" +
+    "🔢 Quantité : " + currentQty + "\n" +
+    "💰 Total : " + fmtPrice(totalAmount) + " GNF\n" +
+    "📍 Adresse : " + adr.value.trim() + "\n" +
+    "🏙️ Ville : " + vil.value + "\n" +
+    "💳 Paiement : " + payLabel + "\n" +
+    "🕐 " + new Date().toLocaleString("fr-FR") + "\n\n" +
+    "⚡ Livraison via *Rapido* — À confirmer rapidement !";
 
-  // Ouvrir WhatsApp avec le message
-  const waUrl = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
-  window.open(waUrl, "_blank");
+  // Ouvre WhatsApp seulement si pas de CRM (sinon notif silencieuse)
+  if(!crmOk){
+    const waUrl = "https://wa.me/" + CONFIG.waNumber + "?text=" + encodeURIComponent(msg);
+    window.open(waUrl, "_blank");
+  }
 
-  // Afficher la confirmation
-  closePD();
-  document.getElementById("successOverlay").classList.add("show");
-  
-  // Reset formulaire
-  ["pdNom","pdTel","pdAdresse"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("pdVille").value="";
+  setTimeout(()=>{
+    btn.disabled = false;
+    btn.innerHTML = "🛒 CONFIRMER MA COMMANDE — LIVRAISON GRATUITE";
+    document.getElementById("sendingBar").classList.remove("show");
+    closePD();
+    document.getElementById("successOverlay").classList.add("show");
+    toast("Commande envoyée !", "Notre équipe vous rappelle sous 1h", "success");
+    // Reset uniquement l'ID Orange Money (on garde les coordonnées client)
+    document.getElementById("pdOMId").value = "";
+  }, 800);
 }
 
 function closeSuccess(){
@@ -798,26 +1151,70 @@ function closeSuccess(){
 
 document.getElementById("pdOverlay").addEventListener("click",function(e){if(e.target===this)closePD();});
 
+// ESC pour fermer
+document.addEventListener("keydown", e=>{
+  if(e.key === "Escape"){
+    closePD();
+    closeSuccess();
+  }
+});
+
+// ============================================
+// SCROLL REVEAL
+// ============================================
 const ro=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("in");});
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in"); ro.unobserve(e.target);}});
 },{threshold:0.08});
 document.querySelectorAll(".reveal").forEach(el=>ro.observe(el));
 
+// ============================================
+// SÉLECTION VUE PHOTO
+// ============================================
 function selectPhoto(el, view) {
   document.querySelectorAll(".pd-photo").forEach(ph=>ph.classList.remove("active"));
   el.classList.add("active");
-  // Animer le grand emoji selon la vue
   const em = document.getElementById("pdEmoji");
-  const views = {face: window.currentEmoji||"🛍", cote: window.currentEmoji||"🛍", usage: window.currentEmoji||"🛍"};
-  em.style.transform = "scale(0.8)";
-  em.style.opacity = "0";
+  em.style.transform = "scale(0.85)";
+  em.style.opacity = "0.5";
   setTimeout(()=>{
-    em.textContent = views[view];
     em.style.transform = "scale(1)";
     em.style.opacity = "1";
     em.style.transition = "all .3s ease";
   }, 150);
 }
+
+// ============================================
+// AUTO-FORMAT TÉLÉPHONE
+// ============================================
+document.getElementById("pdTel").addEventListener("input", e=>{
+  let v = e.target.value.replace(/\D/g,"");
+  if(v.startsWith("224")) v = v.slice(3);
+  if(v.length > 9) v = v.slice(0,9);
+  // Format : 6XX XX XX XX
+  let formatted = v;
+  if(v.length > 3) formatted = v.slice(0,3) + " " + v.slice(3);
+  if(v.length > 5) formatted = v.slice(0,3) + " " + v.slice(3,5) + " " + v.slice(5);
+  if(v.length > 7) formatted = v.slice(0,3) + " " + v.slice(3,5) + " " + v.slice(5,7) + " " + v.slice(7);
+  e.target.value = formatted;
+  e.target.classList.remove("error");
+});
+
+// Retirer erreur sur input
+["pdNom","pdAdresse","pdVille","pdOMId"].forEach(id=>{
+  document.getElementById(id)?.addEventListener("input", e=>e.target.classList.remove("error"));
+  document.getElementById(id)?.addEventListener("change", e=>e.target.classList.remove("error"));
+});
+
+// ============================================
+// MASQUE STICKY MOBILE BAR QUAND MODAL OUVERT
+// ============================================
+const mObs = new MutationObserver(()=>{
+  const isOpen = document.getElementById("pdOverlay").classList.contains("show") ||
+                 document.getElementById("successOverlay").classList.contains("show");
+  document.getElementById("mobileCta").style.display = isOpen ? "none" : "";
+});
+mObs.observe(document.getElementById("pdOverlay"),{attributes:true,attributeFilter:["class"]});
+mObs.observe(document.getElementById("successOverlay"),{attributes:true,attributeFilter:["class"]});
 </script>
 </body>
 </html>
