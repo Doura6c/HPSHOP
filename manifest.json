@@ -1,0 +1,29 @@
+{
+  "name": "HPSHOP Afrique — La boutique de la bonne fortune",
+  "short_name": "HPSHOP",
+  "description": "Livraison gratuite partout en Guinée. Paiement à la livraison ou Orange Money.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8F5F0",
+  "theme_color": "#E8001C",
+  "lang": "fr-GN",
+  "categories": ["shopping", "lifestyle"],
+  "icons": [
+    { "src": "assets/logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Voir les produits",
+      "url": "/#produits",
+      "description": "Parcourir notre catalogue"
+    },
+    {
+      "name": "Contact WhatsApp",
+      "url": "https://wa.me/224621881210",
+      "description": "Nous contacter sur WhatsApp"
+    }
+  ]
+}
