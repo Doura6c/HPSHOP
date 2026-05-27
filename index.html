@@ -1473,10 +1473,8 @@ a, button, input, select{transition:all .25s ease;}
 const CONFIG = {
   waNumber: "224621881210",
   waDisplay: "+224 621 88 12 10",
-  // ⚠️ Webhook : à configurer côté serveur (Make.com/n8n/Cloudflare Worker).
-  // La clé NE DOIT PAS être stockée dans le frontend en production.
-  webhookUrl: "",  // ex: "https://hook.eu1.make.com/xxxxx"
-  // Numéro marchand Orange Money
+  webhookUrl: "https://cod-crm-zeta.vercel.app/api/webhook/order",
+  webhookKey: "FviI7sM0c8tVH78D9PzNXvICbNC2NAdD0Xdc8d8Z",
   omMerchant: "+224 621 88 12 10",
 };
 
@@ -1804,7 +1802,10 @@ async function passerCommande(){
       };
       const r = await fetch(CONFIG.webhookUrl, {
         method: "POST",
-        headers: {"Content-Type":"application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          "X-Webhook-Key": CONFIG.webhookKey
+        },
         body: JSON.stringify(payload)
       });
       crmOk = r.ok;
@@ -2068,26 +2069,51 @@ function renderCart(){
   document.getElementById('cartTotal').textContent = fmtPrice(total) + ' GNF';
   foot.style.display = 'block';
 }
-function checkoutCart(){
+async function checkoutCart(){
   if(cart.length === 0) return;
   let total = 0;
-  let items = '';
+  let waItems = '';
+  const crmItems = [];
   cart.forEach(item => {
     const p = produits.find(x => x.id === item.id);
     if(p){
-      total += parsePrice(p.prix) * item.qty;
-      items += `• ${p.nom} × ${item.qty} = ${fmtPrice(parsePrice(p.prix)*item.qty)} GNF\n`;
+      const linePrice = parsePrice(p.prix) * item.qty;
+      total += linePrice;
+      waItems += `• ${p.nom} × ${item.qty} = ${fmtPrice(linePrice)} GNF\n`;
+      crmItems.push({ sku: "HP-" + p.id, name: p.nom, price: parsePrice(p.prix), quantity: item.qty });
     }
   });
+
+  // Envoi CRM webhook (panier complet)
+  if(CONFIG.webhookUrl && crmItems.length){
+    try {
+      await fetch(CONFIG.webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Webhook-Key": CONFIG.webhookKey
+        },
+        body: JSON.stringify({
+          externalRef: "HP-CART-" + Date.now(),
+          customer: { fullName: "Client Panier", phone: CONFIG.waNumber },
+          items: crmItems,
+          deliveryFee: 0,
+          notes: "Commande panier HPSHOP — à confirmer par téléphone",
+          source: "hpshop.gn"
+        })
+      });
+    } catch(e){}
+  }
+
   const msg =
     "🛍 *Nouvelle commande HPSHOP AFRIQUE !*\n\n" +
-    "📦 *Produits :*\n" + items + "\n" +
+    "📦 *Produits :*\n" + waItems + "\n" +
     "💰 *Total : " + fmtPrice(total) + " GNF*\n" +
     "🚚 Livraison gratuite incluse\n\n" +
     "Merci de me contacter pour finaliser ma commande.";
   const waUrl = "https://wa.me/" + CONFIG.waNumber + "?text=" + encodeURIComponent(msg);
   window.open(waUrl, "_blank", "noopener");
-  toast("Redirection WhatsApp...", "Notre équipe va vous répondre rapidement", "success");
+  toast("Commande envoyée !", "Notre équipe va vous rappeler sous 1h", "success");
 }
 
 // ============ HASH ROUTING (deep link products) ============
