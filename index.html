@@ -137,7 +137,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dark);over
 /* NAV */
 nav{background:#fff;border-bottom:2px solid var(--border);padding:0 5%;height:80px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:40px;z-index:290;box-shadow:var(--shadow);transition:box-shadow .3s,padding .3s;}
 nav.scrolled{box-shadow:0 6px 25px rgba(0,0,0,.08);}
-.nav-logo{height:90px;object-fit:contain;}
+.nav-logo{height:52px;object-fit:contain;}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-brand-text{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;color:var(--dark);letter-spacing:1px;line-height:1;}
+.nav-brand-text span{color:var(--red);}
 .nav-links{display:flex;gap:1.5rem;list-style:none;align-items:center;}
 .nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;transition:color .3s;}
 .nav-links a:hover{color:var(--red);}
@@ -298,12 +301,40 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 @keyframes wap{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.5)}50%{box-shadow:0 4px 40px rgba(37,211,102,.8)}}
 
 /* SUCCESS MODAL */
+/* RECAP MODAL */
+.recap-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:590;align-items:center;justify-content:center;backdrop-filter:blur(6px);padding:1rem;}
+.recap-overlay.show{display:flex;}
+.recap-box{background:#fff;border-radius:16px;max-width:460px;width:100%;animation:zi .35s ease;box-shadow:0 25px 80px rgba(0,0,0,.25);overflow:hidden;max-height:90vh;display:flex;flex-direction:column;}
+.recap-header{background:linear-gradient(135deg,#E8001C,#b8001a);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;}
+.recap-title{color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:1px;}
+.recap-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+.recap-body{padding:18px 22px;overflow-y:auto;flex:1;}
+.recap-product{display:flex;gap:14px;background:#fff8f8;border:1px solid #fecaca;border-radius:10px;padding:14px;margin-bottom:14px;}
+.recap-product-img{width:70px;height:70px;object-fit:cover;border-radius:8px;flex-shrink:0;}
+.recap-product-info{flex:1;}
+.recap-product-name{font-weight:800;font-size:.95rem;color:var(--dark);margin-bottom:4px;}
+.recap-product-qty{font-size:.82rem;color:var(--muted);}
+.recap-product-price{font-weight:900;font-size:1.1rem;color:var(--red);margin-top:4px;}
+.recap-section{margin-bottom:12px;}
+.recap-section-title{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--muted);letter-spacing:.5px;margin-bottom:6px;}
+.recap-row{display:flex;justify-content:space-between;font-size:.85rem;padding:5px 0;border-bottom:1px solid #f1f5f9;}
+.recap-row:last-child{border:none;}
+.recap-row span:first-child{color:#64748b;}
+.recap-row span:last-child{font-weight:700;color:var(--dark);}
+.recap-total-row{display:flex;justify-content:space-between;align-items:center;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 14px;margin-top:10px;}
+.recap-total-label{font-size:.85rem;font-weight:700;color:#166534;}
+.recap-total-amount{font-size:1.2rem;font-weight:900;color:#16a34a;}
+.recap-footer{padding:16px 22px;border-top:1px solid #f1f5f9;display:flex;gap:10px;}
+.recap-btn-edit{flex:1;padding:11px;border:2px solid #e2e8f0;background:#fff;border-radius:8px;font-weight:700;font-size:.88rem;cursor:pointer;color:#64748b;transition:all .2s;}
+.recap-btn-edit:hover{border-color:#cbd5e1;background:#f8fafc;}
+.recap-btn-confirm{flex:2;padding:11px;border:none;border-radius:8px;font-weight:800;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
+/* SUCCESS MODAL */
 .success-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:600;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
 .success-overlay.show{display:flex;}
-.success-box{background:#fff;border-radius:16px;padding:3rem;text-align:center;max-width:400px;width:90%;animation:zi .4s ease;box-shadow:0 25px 80px rgba(0,0,0,.2);}
-.success-ico{font-size:4rem;margin-bottom:1rem;}
+.success-box{background:#fff;border-radius:16px;padding:2.2rem;text-align:center;max-width:420px;width:90%;animation:zi .4s ease;box-shadow:0 25px 80px rgba(0,0,0,.2);}
+.success-ico{font-size:3.5rem;margin-bottom:.8rem;}
 .success-box h3{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:1px;color:var(--dark);margin-bottom:.7rem;}
-.success-box p{font-size:.88rem;color:var(--muted);line-height:1.6;margin-bottom:1.5rem;}
+.success-box p{font-size:.88rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
 @keyframes zi{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
 
 /* REVEAL */
@@ -313,6 +344,7 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 /* RESPONSIVE */
 @media(max-width:900px){.pd-top{grid-template-columns:1fr;}.foot-top{grid-template-columns:1fr 1fr;}.pay-opts{grid-template-columns:repeat(3,1fr);}.frow{grid-template-columns:1fr;}}
 @media(max-width:600px){.prod-grid{grid-template-columns:repeat(2,1fr);}.foot-top{grid-template-columns:1fr;}.strip{gap:.8rem;}.hero h1{font-size:3rem;}.hero-stats{gap:1rem;}}
+@media(max-width:500px){.recap-footer{flex-direction:column;}.recap-btn-confirm,.recap-btn-edit{width:100%;}.nav-brand-text{font-size:1.15rem;}}
 
 /* LOGO ANIMATION */
 .nav-logo {
@@ -1104,7 +1136,10 @@ a, button, input, select{transition:all .25s ease;}
 
 <!-- NAV -->
 <nav id="mainNav">
-  <a href="#accueil" aria-label="Accueil HPSHOP"><img src="assets/logo.png" alt="HPSHOP Afrique" loading="eager" decoding="async" class="nav-logo"></a>
+  <a href="#accueil" aria-label="Accueil HPSHOP" class="nav-brand">
+    <img src="assets/logo.png" alt="HPSHOP Afrique" loading="eager" decoding="async" class="nav-logo">
+    <div class="nav-brand-text">HPSHOP <span>Afrique</span></div>
+  </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#accueil" onclick="closeMobileMenu()">Accueil</a></li>
     <li><a href="#produits" onclick="closeMobileMenu()">Produits</a></li>
@@ -1457,12 +1492,29 @@ a, button, input, select{transition:all .25s ease;}
   </div>
 </div>
 
+<!-- RECAP MODAL (avant confirmation) -->
+<div class="recap-overlay" id="recapOverlay">
+  <div class="recap-box">
+    <div class="recap-header">
+      <div class="recap-title">📋 Récapitulatif de commande</div>
+      <button class="recap-close" onclick="closeRecap()" aria-label="Fermer">✕</button>
+    </div>
+    <div class="recap-body" id="recapBody"></div>
+    <div class="recap-footer">
+      <button class="recap-btn-edit" onclick="closeRecap()">✏️ Modifier</button>
+      <button class="recap-btn-confirm btn-red" id="recapConfirmBtn" onclick="confirmerCommande()">✅ Confirmer ma commande</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL (après confirmation) -->
 <div class="success-overlay" id="successOverlay">
   <div class="success-box">
     <div class="success-ico">🎉</div>
     <h3>Commande confirmée !</h3>
-    <p>Merci ! Notre équipe vous contacte dans l'heure pour organiser votre livraison gratuite via Rapido.</p>
-    <button class="btn-red" style="width:100%;justify-content:center;margin-top:.5rem" onclick="closeSuccess()">Parfait, merci !</button>
+    <div id="successDetails" style="text-align:left;background:#f8fafc;border-radius:10px;padding:14px;margin:12px 0;font-size:.85rem;line-height:1.8;"></div>
+    <p style="color:#64748b;font-size:.82rem;">Notre équipe vous contacte <strong>sous 1h</strong> pour organiser votre livraison gratuite via Rapido 🚚</p>
+    <button class="btn-red" style="width:100%;justify-content:center;margin-top:.8rem" onclick="closeSuccess()">Parfait, merci ! 👍</button>
   </div>
 </div>
 
@@ -1722,7 +1774,14 @@ function restoreCustomer(){
 // ============================================
 // CONFIRMER COMMANDE
 // ============================================
-async function passerCommande(){
+// ============================================
+// RECAP AVANT CONFIRMATION
+// ============================================
+function closeRecap(){
+  document.getElementById("recapOverlay").classList.remove("show");
+}
+
+function passerCommande(){
   if(!currentProduct){ toast("Erreur", "Aucun produit sélectionné", "error"); return; }
   if(!currentProduct.stock){ toast("Rupture de stock", "Ce produit n'est plus disponible", "warning"); return; }
 
@@ -1731,7 +1790,6 @@ async function passerCommande(){
   const adr = document.getElementById("pdAdresse");
   const vil = document.getElementById("pdVille");
 
-  // Reset erreurs
   [nom,tel,adr,vil].forEach(f=>f.classList.remove("error"));
 
   let firstErr = null;
@@ -1752,9 +1810,8 @@ async function passerCommande(){
 
   const payEl = document.querySelector(".pay-opt.on");
   const payMode = payEl?.dataset.pay || "CASH";
-  let omId = "";
   if(payMode === "ORANGE"){
-    omId = document.getElementById("pdOMId").value.trim();
+    const omId = document.getElementById("pdOMId").value.trim();
     if(!omId){
       document.getElementById("pdOMId").classList.add("error");
       toast("ID Transaction requis", "Effectuez d'abord le paiement Orange Money", "error");
@@ -1763,15 +1820,81 @@ async function passerCommande(){
     }
   }
 
+  // Afficher le modal récap
+  const totalAmount = parsePrice(currentProduct.prix) * currentQty;
+  const payLabel = payMode === "ORANGE"
+    ? "🟠 Orange Money"
+    : "💵 Cash à la livraison";
+
+  const recapHTML = `
+    <div class="recap-product">
+      <img src="${currentProduct.img || 'assets/logo.png'}" alt="${currentProduct.nom}" class="recap-product-img" onerror="this.style.display='none'">
+      <div class="recap-product-info">
+        <div class="recap-product-name">${currentProduct.nom}</div>
+        <div class="recap-product-qty">Quantité : ${currentQty}</div>
+        <div class="recap-product-price">${fmtPrice(totalAmount)} GNF</div>
+      </div>
+    </div>
+    <div class="recap-section">
+      <div class="recap-section-title">📍 Livraison</div>
+      <div class="recap-row"><span>Nom</span><span>${nom.value.trim()}</span></div>
+      <div class="recap-row"><span>Téléphone</span><span>${tel.value.trim()}</span></div>
+      <div class="recap-row"><span>Adresse</span><span>${adr.value.trim()}</span></div>
+      <div class="recap-row"><span>Ville</span><span>${vil.value}</span></div>
+    </div>
+    <div class="recap-section">
+      <div class="recap-section-title">💳 Paiement</div>
+      <div class="recap-row"><span>Mode</span><span>${payLabel}</span></div>
+      <div class="recap-row"><span>Livraison</span><span style="color:#16a34a;font-weight:800;">GRATUITE 🚚</span></div>
+    </div>
+    <div class="recap-total-row">
+      <span class="recap-total-label">💰 Total à payer</span>
+      <span class="recap-total-amount">${fmtPrice(totalAmount)} GNF</span>
+    </div>`;
+
+  document.getElementById("recapBody").innerHTML = recapHTML;
+  document.getElementById("recapOverlay").classList.add("show");
+}
+
+async function confirmerCommande(){
+  const btn = document.getElementById("recapConfirmBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Envoi...';
+  closeRecap();
+
+  if(!currentProduct){ return; }
+
+  const nom = document.getElementById("pdNom");
+  const tel = document.getElementById("pdTel");
+  const adr = document.getElementById("pdAdresse");
+  const vil = document.getElementById("pdVille");
+  const payEl = document.querySelector(".pay-opt.on");
+  const payMode = payEl?.dataset.pay || "CASH";
+  const omId = document.getElementById("pdOMId").value.trim();
+
   saveCustomer();
 
   const totalAmount = parsePrice(currentProduct.prix) * currentQty;
   const phoneNorm = normalizePhoneGN(tel.value);
+  const orderRef = "HP-" + Date.now() + "-" + currentProduct.id;
 
-  const btn = document.getElementById("orderBtn");
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span>Envoi en cours...';
+  const orderBtn = document.getElementById("orderBtn");
+  orderBtn.disabled = true;
+  orderBtn.innerHTML = '<span class="spin"></span>Envoi en cours...';
   document.getElementById("sendingBar").classList.add("show");
+
+  // Reset le bouton récap pour la prochaine fois
+  setTimeout(()=>{ btn.disabled = false; btn.innerHTML = '✅ Confirmer ma commande'; }, 2000);
+
+  if(!currentProduct){ toast("Erreur", "Aucun produit sélectionné", "error"); return; }
+  if(!currentProduct.stock){ toast("Rupture de stock", "Ce produit n'est plus disponible", "warning"); return; }
+
+  // Ancienne fonction renommée en _envoyerCommande
+  await _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, phoneNorm, orderRef);
+}
+
+async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, phoneNorm, orderRef){
+  const orderBtn = document.getElementById("orderBtn");
 
   // ============================================
   // 1) ENVOI AU WEBHOOK CRM (si configuré)
@@ -1781,7 +1904,7 @@ async function passerCommande(){
     try {
       const payLabel = payMode === "ORANGE" ? `Orange Money — ID: ${omId}` : "Cash à la livraison";
       const payload = {
-        externalRef: "HP-" + Date.now() + "-" + currentProduct.id,
+        externalRef: orderRef,
         customer: {
           fullName: nom.value.trim(),
           phone: phoneNorm,
@@ -1829,20 +1952,27 @@ async function passerCommande(){
     "🕐 " + new Date().toLocaleString("fr-FR") + "\n\n" +
     "⚡ Livraison via *Rapido* — À confirmer rapidement !";
 
-  // Ouvre WhatsApp seulement si pas de CRM (sinon notif silencieuse)
   if(!crmOk){
     const waUrl = "https://wa.me/" + CONFIG.waNumber + "?text=" + encodeURIComponent(msg);
     window.open(waUrl, "_blank");
   }
 
   setTimeout(()=>{
-    btn.disabled = false;
-    btn.innerHTML = "🛒 CONFIRMER MA COMMANDE — LIVRAISON GRATUITE";
+    orderBtn.disabled = false;
+    orderBtn.innerHTML = "🛒 CONFIRMER MA COMMANDE — LIVRAISON GRATUITE";
     document.getElementById("sendingBar").classList.remove("show");
     closePD();
+
+    // Remplir le modal succès avec les détails
+    const shortRef = orderRef.split("-")[1] ?? orderRef;
+    document.getElementById("successDetails").innerHTML =
+      `<div style="margin-bottom:6px;">📦 <b>${currentProduct.nom}</b> × ${currentQty}</div>` +
+      `<div>💰 <b>${fmtPrice(totalAmount)} GNF</b> — ${payLabel}</div>` +
+      `<div>📍 ${adr.value.trim()}, ${vil.value}</div>` +
+      `<div style="margin-top:8px;font-size:.78rem;color:#94a3b8;">Réf : ${orderRef}</div>`;
+
     document.getElementById("successOverlay").classList.add("show");
     toast("Commande envoyée !", "Notre équipe vous rappelle sous 1h", "success");
-    // Reset uniquement l'ID Orange Money (on garde les coordonnées client)
     document.getElementById("pdOMId").value = "";
   }, 800);
 }
