@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#E8001C">
 
 <!-- Security headers -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://images.unsplash.com https://hpshop.gn; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https:; frame-ancestors 'none'; form-action 'self' https://wa.me; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://images.unsplash.com https://hpshop.gn; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https: https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net; frame-ancestors 'none'; form-action 'self' https://wa.me; base-uri 'self'; upgrade-insecure-requests">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()">
@@ -1147,6 +1147,43 @@ a, button, input, select{transition:all .25s ease;}
 ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#c00015,#d49500);}
 
 </style>
+
+<!-- Google Analytics GA4 — remplacez G-BFYZW97PJT par votre Measurement ID -->
+<!-- Pour obtenir votre ID : analytics.google.com → Admin → Data Streams → votre site -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BFYZW97PJT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-BFYZW97PJT', {
+    page_title: document.title,
+    page_location: window.location.href,
+    // Événements personnalisés pour HPSHOP
+    custom_map: { 'dimension1': 'product_name', 'dimension2': 'city' }
+  });
+
+  // Tracker les commandes passées
+  window.trackOrder = function(orderRef, total, items, city) {
+    gtag('event', 'purchase', {
+      transaction_id: orderRef,
+      value: total,
+      currency: 'GNF',
+      items: items.map(function(it){ return { item_name: it.name, quantity: it.qty, price: it.price }; }),
+      shipping: 0
+    });
+    gtag('event', 'conversion', { send_to: 'G-BFYZW97PJT', value: total, currency: 'GNF' });
+  };
+
+  // Tracker l'ajout au panier
+  window.trackAddToCart = function(productName, price) {
+    gtag('event', 'add_to_cart', { currency: 'GNF', value: price, items: [{ item_name: productName, price: price }] });
+  };
+
+  // Tracker ouverture fiche produit
+  window.trackViewProduct = function(productName, price) {
+    gtag('event', 'view_item', { currency: 'GNF', value: price, items: [{ item_name: productName, price: price }] });
+  };
+</script>
 </head>
 <body>
 
@@ -2350,6 +2387,36 @@ function checkoutCart(){
   `;
 
   document.getElementById("cartCheckoutOverlay").classList.add("show");
+
+  // ── UX : autofocus + bannière client connu ────────────────────────────
+  setTimeout(() => {
+    const nomEl = document.getElementById("ccoNom");
+    const telEl = document.getElementById("ccoTel");
+    // Client connu : afficher un message de bienvenue et sauter au premier champ vide
+    if(saved.nom && saved.tel) {
+      const welcomeEl = document.createElement('div');
+      welcomeEl.style.cssText = 'background:#f0fdf4;border:1.5px solid #86efac;color:#166534;font-size:.78rem;font-weight:700;padding:8px 12px;border-radius:8px;margin-bottom:10px;display:flex;align-items:center;gap:8px;';
+      welcomeEl.innerHTML = `👋 Bon retour <b>${saved.nom.split(' ')[0]}</b> ! Vos infos ont été pré-remplies.`;
+      const form = document.querySelector('.cco-form');
+      if(form) form.insertAdjacentElement('beforebegin', welcomeEl);
+      // Auto-scroll vers le bouton confirmer
+      setTimeout(() => { document.getElementById("ccoConfirmBtn")?.scrollIntoView({behavior:'smooth', block:'center'}); }, 200);
+    } else {
+      // Nouveau client : focus sur le premier champ
+      if(nomEl) nomEl.focus();
+    }
+
+    // Formatage téléphone en temps réel
+    if(telEl) {
+      telEl.addEventListener('input', function() {
+        let v = this.value.replace(/\D/g,'').slice(0, 9);
+        if(v.length > 3 && v.length <= 6) v = v.slice(0,3)+' '+v.slice(3);
+        else if(v.length > 6) v = v.slice(0,3)+' '+v.slice(3,5)+' '+v.slice(5,7)+' '+v.slice(7);
+        const pos = this.selectionStart;
+        this.value = v;
+      });
+    }
+  }, 150);
 }
 
 async function confirmerCommandePanier(){
@@ -2443,6 +2510,15 @@ async function confirmerCommandePanier(){
     const selectedIds = selectedItems.map(({p}) => p.id);
     cart = cart.filter(i => !selectedIds.includes(i.id));
     saveCart(); renderCart();
+
+    // ── Google Analytics : événement achat ─────────────────────────────
+    if(typeof window.trackOrder === 'function') {
+      window.trackOrder(
+        orderRef, total,
+        selectedItems.map(({p,qty}) => ({ name: p.nom, qty: qty, price: parsePrice(p.prix) })),
+        vil.value
+      );
+    }
 
     // Modal succès
     const itemsStr = selectedItems.map(({p,qty}) => `📦 <b>${p.nom}</b> × ${qty}`).join('<br>');
