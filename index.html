@@ -346,6 +346,40 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 @media(max-width:600px){.prod-grid{grid-template-columns:repeat(2,1fr);}.foot-top{grid-template-columns:1fr;}.strip{gap:.8rem;}.hero h1{font-size:3rem;}.hero-stats{gap:1rem;}}
 @media(max-width:500px){.recap-footer{flex-direction:column;}.recap-btn-confirm,.recap-btn-edit{width:100%;}.nav-brand-text{font-size:1.15rem;}}
 
+/* CART CHECKOUT MODAL */
+.cart-checkout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:570;align-items:flex-end;justify-content:center;backdrop-filter:blur(6px);}
+.cart-checkout-overlay.show{display:flex;}
+.cart-checkout-modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:540px;max-height:92vh;display:flex;flex-direction:column;animation:slideUp .35s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.cco-header{background:linear-gradient(135deg,#E8001C,#b8001a);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;border-radius:20px 20px 0 0;}
+.cco-title{color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:1px;}
+.cco-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+.cco-body{overflow-y:auto;flex:1;padding:16px 20px;}
+.cco-section-title{font-size:.72rem;font-weight:800;text-transform:uppercase;color:#94a3b8;letter-spacing:.5px;margin:14px 0 8px;}
+.cco-item{display:flex;align-items:center;gap:12px;padding:10px;background:#fafafa;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:8px;transition:background .2s;}
+.cco-item.unchecked{opacity:.45;background:#f8f8f8;}
+.cco-item-cb{width:20px;height:20px;accent-color:var(--red);cursor:pointer;flex-shrink:0;}
+.cco-item-img{width:52px;height:52px;object-fit:cover;border-radius:8px;background:#f1f5f9;flex-shrink:0;font-size:1.5rem;display:flex;align-items:center;justify-content:center;}
+.cco-item-info{flex:1;min-width:0;}
+.cco-item-name{font-weight:700;font-size:.88rem;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cco-item-qty{font-size:.78rem;color:#64748b;margin-top:2px;}
+.cco-item-price{font-weight:800;color:var(--red);font-size:.95rem;white-space:nowrap;}
+.cco-form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
+.cco-form .fg-full{grid-column:1/-1;}
+.cco-form input,.cco-form select{width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.88rem;font-family:inherit;outline:none;transition:border .2s;}
+.cco-form input:focus,.cco-form select:focus{border-color:var(--red);}
+.cco-form input.error,.cco-form select.error{border-color:#ef4444;background:#fff5f5;}
+.cco-pay-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
+.cco-pay-opt{border:2px solid #e2e8f0;border-radius:8px;padding:10px;text-align:center;cursor:pointer;font-size:.82rem;font-weight:700;transition:all .2s;}
+.cco-pay-opt.on{border-color:var(--red);background:#fff5f5;color:var(--red);}
+.cco-total-row{display:flex;justify-content:space-between;align-items:center;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 16px;margin:14px 0 4px;}
+.cco-total-label{font-size:.88rem;font-weight:700;color:#166534;}
+.cco-total-amount{font-size:1.25rem;font-weight:900;color:#16a34a;}
+.cco-footer{padding:14px 20px;border-top:1px solid #f1f5f9;}
+.cco-footer button{width:100%;padding:14px;border:none;border-radius:10px;font-weight:800;font-size:1rem;cursor:pointer;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s;}
+.cco-footer button:hover{background:#b8001a;}
+.cco-footer button:disabled{background:#fca5a5;cursor:not-allowed;}
+
 /* LOGO ANIMATION */
 .nav-logo {
   filter: drop-shadow(0 0 8px rgba(245,168,0,0.6));
@@ -1476,6 +1510,24 @@ a, button, input, select{transition:all .25s ease;}
   </div>
 </aside>
 
+<!-- CART CHECKOUT MODAL -->
+<div class="cart-checkout-overlay" id="cartCheckoutOverlay" onclick="if(event.target===this)closeCartCheckout()">
+  <div class="cart-checkout-modal" id="cartCheckoutModal">
+    <div class="cco-header">
+      <div class="cco-title">🛒 Finaliser ma commande</div>
+      <button class="cco-close" onclick="closeCartCheckout()" aria-label="Fermer">✕</button>
+    </div>
+    <div class="cco-body" id="ccoBody">
+      <!-- Rempli dynamiquement -->
+    </div>
+    <div class="cco-footer">
+      <button id="ccoConfirmBtn" onclick="confirmerCommandePanier()">
+        ✅ Confirmer ma commande
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- NEWSLETTER POPUP -->
 <div class="nl-overlay" id="nlOverlay" onclick="if(event.target===this)closeNL()">
   <div class="nl-box">
@@ -2199,51 +2251,206 @@ function renderCart(){
   document.getElementById('cartTotal').textContent = fmtPrice(total) + ' GNF';
   foot.style.display = 'block';
 }
-async function checkoutCart(){
-  if(cart.length === 0) return;
+// ============================================
+// CART CHECKOUT MODAL
+// ============================================
+function closeCartCheckout(){
+  document.getElementById("cartCheckoutOverlay").classList.remove("show");
+}
+
+function ccoUpdateTotal(){
   let total = 0;
-  let waItems = '';
-  const crmItems = [];
-  cart.forEach(item => {
+  document.querySelectorAll(".cco-item-cb").forEach(cb => {
+    if(cb.checked){
+      const id = parseInt(cb.dataset.id);
+      const qty = parseInt(cb.dataset.qty);
+      const p = produits.find(x => x.id === id);
+      if(p) total += parsePrice(p.prix) * qty;
+      cb.closest(".cco-item").classList.remove("unchecked");
+    } else {
+      cb.closest(".cco-item").classList.add("unchecked");
+    }
+  });
+  const el = document.getElementById("ccoTotalAmount");
+  if(el) el.textContent = fmtPrice(total) + " GNF";
+}
+
+function ccoSelPay(el){
+  document.querySelectorAll(".cco-pay-opt").forEach(o => o.classList.remove("on"));
+  el.classList.add("on");
+}
+
+function checkoutCart(){
+  if(cart.length === 0) return;
+  closeCart();
+
+  // Pré-remplir avec données client sauvegardées
+  const saved = JSON.parse(localStorage.getItem('hpshop_customer') || '{}');
+
+  let itemsHTML = cart.map(item => {
     const p = produits.find(x => x.id === item.id);
+    if(!p) return '';
+    const linePrice = parsePrice(p.prix) * item.qty;
+    return `
+      <div class="cco-item" id="cco-item-${p.id}">
+        <input type="checkbox" class="cco-item-cb" data-id="${p.id}" data-qty="${item.qty}" checked onchange="ccoUpdateTotal()">
+        <div class="cco-item-img" style="background-image:url('${p.img}');background-size:cover;background-position:center;">${p.img ? '' : p.emoji}</div>
+        <div class="cco-item-info">
+          <div class="cco-item-name">${p.nom}</div>
+          <div class="cco-item-qty">Qté : ${item.qty} · ${fmtPrice(parsePrice(p.prix))} GNF/u</div>
+        </div>
+        <div class="cco-item-price">${fmtPrice(linePrice)} GNF</div>
+      </div>`;
+  }).join('');
+
+  let total = cart.reduce((s, item) => {
+    const p = produits.find(x => x.id === item.id);
+    return s + (p ? parsePrice(p.prix) * item.qty : 0);
+  }, 0);
+
+  document.getElementById("ccoBody").innerHTML = `
+    <div class="cco-section-title">📦 Articles (décochez pour retirer)</div>
+    ${itemsHTML}
+
+    <div class="cco-total-row">
+      <span class="cco-total-label">💰 Total à payer</span>
+      <span class="cco-total-amount" id="ccoTotalAmount">${fmtPrice(total)} GNF</span>
+    </div>
+    <div style="font-size:.76rem;color:#16a34a;text-align:center;margin-bottom:14px;">🚚 Livraison gratuite incluse partout en Guinée</div>
+
+    <div class="cco-section-title">👤 Vos informations</div>
+    <div class="cco-form">
+      <div class="fg-full">
+        <input type="text" id="ccoNom" placeholder="Nom complet *" value="${saved.nom||''}" autocomplete="name">
+      </div>
+      <input type="tel" id="ccoTel" placeholder="Téléphone * (6XX XX XX)" value="${saved.tel||''}" autocomplete="tel">
+      <select id="ccoVille">
+        <option value="">-- Ville * --</option>
+        <option ${saved.ville==='Conakry — Kaloum'?'selected':''}>Conakry — Kaloum</option>
+        <option ${saved.ville==='Conakry — Ratoma'?'selected':''}>Conakry — Ratoma</option>
+        <option ${saved.ville==='Conakry — Matam'?'selected':''}>Conakry — Matam</option>
+        <option ${saved.ville==='Conakry — Dixinn'?'selected':''}>Conakry — Dixinn</option>
+        <option ${saved.ville==='Conakry — Matoto'?'selected':''}>Conakry — Matoto</option>
+        <option>Kindia</option><option>Labé</option><option>Kankan</option>
+        <option>Mamou</option><option>Boké</option><option>Faranah</option>
+        <option>Nzérékoré</option><option>Coyah</option><option>Dubréka</option>
+        <option>Forécariah</option><option>Télimélé</option><option>Pita</option>
+        <option>Dalaba</option><option>Autre ville</option>
+      </select>
+      <div class="fg-full">
+        <input type="text" id="ccoAdresse" placeholder="Adresse de livraison *" value="${saved.adresse||''}" autocomplete="street-address">
+      </div>
+    </div>
+
+    <div class="cco-section-title">💳 Mode de paiement</div>
+    <div class="cco-pay-opts">
+      <div class="cco-pay-opt on" data-pay="CASH" onclick="ccoSelPay(this)">💵 Cash à la livraison</div>
+      <div class="cco-pay-opt" data-pay="ORANGE" onclick="ccoSelPay(this)">🟠 Orange Money</div>
+    </div>
+  `;
+
+  document.getElementById("cartCheckoutOverlay").classList.add("show");
+}
+
+async function confirmerCommandePanier(){
+  const nom = document.getElementById("ccoNom");
+  const tel = document.getElementById("ccoTel");
+  const vil = document.getElementById("ccoVille");
+  const adr = document.getElementById("ccoAdresse");
+
+  [nom,tel,vil,adr].forEach(f=>f.classList.remove("error"));
+  let firstErr = null;
+  if(!nom.value.trim()){ nom.classList.add("error"); firstErr=firstErr||nom; }
+  if(!tel.value.trim()||!validatePhoneGN(tel.value)){ tel.classList.add("error"); firstErr=firstErr||tel; }
+  if(!vil.value){ vil.classList.add("error"); firstErr=firstErr||vil; }
+  if(!adr.value.trim()){ adr.classList.add("error"); firstErr=firstErr||adr; }
+  if(firstErr){
+    firstErr.focus();
+    toast("Champs requis", "Remplissez tous les champs obligatoires", "error");
+    return;
+  }
+
+  // Articles cochés seulement
+  const selectedItems = [];
+  let total = 0;
+  document.querySelectorAll(".cco-item-cb:checked").forEach(cb => {
+    const id = parseInt(cb.dataset.id);
+    const qty = parseInt(cb.dataset.qty);
+    const p = produits.find(x => x.id === id);
     if(p){
-      const linePrice = parsePrice(p.prix) * item.qty;
+      const linePrice = parsePrice(p.prix) * qty;
       total += linePrice;
-      waItems += `• ${p.nom} × ${item.qty} = ${fmtPrice(linePrice)} GNF\n`;
-      crmItems.push({ sku: "HP-" + p.id, name: p.nom, price: parsePrice(p.prix), quantity: item.qty });
+      selectedItems.push({ p, qty, linePrice });
     }
   });
 
-  // Envoi CRM webhook (panier complet)
-  if(CONFIG.webhookUrl && crmItems.length){
+  if(selectedItems.length === 0){
+    toast("Panier vide", "Cochez au moins un article", "warning");
+    return;
+  }
+
+  const payEl = document.querySelector(".cco-pay-opt.on");
+  const payMode = payEl?.dataset.pay || "CASH";
+  const payLabel = payMode === "ORANGE" ? "🟠 Orange Money" : "💵 Cash à la livraison";
+  const phoneNorm = normalizePhoneGN(tel.value);
+  const orderRef = "HP-CART-" + Date.now();
+
+  // Sauvegarder infos client
+  localStorage.setItem('hpshop_customer', JSON.stringify({
+    nom: nom.value.trim(), tel: tel.value.trim(),
+    adresse: adr.value.trim(), ville: vil.value
+  }));
+
+  const btn = document.getElementById("ccoConfirmBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Envoi en cours...';
+
+  // Envoi CRM
+  let crmOk = false;
+  if(CONFIG.webhookUrl){
     try {
-      await fetch(CONFIG.webhookUrl, {
+      const r = await fetch(CONFIG.webhookUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Webhook-Key": CONFIG.webhookKey
-        },
+        headers: { "Content-Type": "application/json", "X-Webhook-Key": CONFIG.webhookKey },
         body: JSON.stringify({
-          externalRef: "HP-CART-" + Date.now(),
-          customer: { fullName: "Client Panier", phone: CONFIG.waNumber },
-          items: crmItems,
+          externalRef: orderRef,
+          customer: { fullName: nom.value.trim(), phone: phoneNorm, address: adr.value.trim(), city: vil.value },
+          items: selectedItems.map(({p,qty}) => ({ sku:"HP-"+p.id, name:p.nom, price:parsePrice(p.prix), quantity:qty })),
           deliveryFee: 0,
-          notes: "Commande panier HPSHOP — à confirmer par téléphone",
+          paymentMethod: payMode,
+          notes: payLabel,
+          total,
           source: "hpshop.gn"
         })
       });
+      crmOk = r.ok;
     } catch(e){}
   }
 
-  const msg =
-    "🛍 *Nouvelle commande HPSHOP AFRIQUE !*\n\n" +
-    "📦 *Produits :*\n" + waItems + "\n" +
-    "💰 *Total : " + fmtPrice(total) + " GNF*\n" +
-    "🚚 Livraison gratuite incluse\n\n" +
-    "Merci de me contacter pour finaliser ma commande.";
-  const waUrl = "https://wa.me/" + CONFIG.waNumber + "?text=" + encodeURIComponent(msg);
-  window.open(waUrl, "_blank", "noopener");
-  toast("Commande envoyée !", "Notre équipe va vous rappeler sous 1h", "success");
+  // Fallback WhatsApp
+  if(!crmOk){
+    const waItems = selectedItems.map(({p,qty,linePrice}) => `• ${p.nom} × ${qty} = ${fmtPrice(linePrice)} GNF`).join('\n');
+    const msg = `🛍 *Commande HPSHOP AFRIQUE !*\n\n👤 ${nom.value.trim()}\n📞 ${tel.value.trim()}\n📍 ${adr.value.trim()}, ${vil.value}\n\n📦 *Articles :*\n${waItems}\n\n💰 *Total : ${fmtPrice(total)} GNF*\n💳 ${payLabel}\n🚚 Livraison gratuite\n\n🕐 ${new Date().toLocaleString('fr-FR')}`;
+    window.open("https://wa.me/" + CONFIG.waNumber + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
+  }
+
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.innerHTML = '✅ Confirmer ma commande';
+    closeCartCheckout();
+
+    // Retirer du panier seulement les articles cochés
+    const selectedIds = selectedItems.map(({p}) => p.id);
+    cart = cart.filter(i => !selectedIds.includes(i.id));
+    saveCart(); renderCart();
+
+    // Modal succès
+    const itemsStr = selectedItems.map(({p,qty}) => `📦 <b>${p.nom}</b> × ${qty}`).join('<br>');
+    document.getElementById("successDetails").innerHTML =
+      `${itemsStr}<br>💰 <b>${fmtPrice(total)} GNF</b> — ${payLabel}<br>📍 ${adr.value.trim()}, ${vil.value}<br><span style="font-size:.76rem;color:#94a3b8;margin-top:6px;display:block;">Réf : ${orderRef}</span>`;
+    document.getElementById("successOverlay").classList.add("show");
+    toast("Commande envoyée !", "Notre équipe vous rappelle sous 1h", "success");
+  }, 900);
 }
 
 // ============ HASH ROUTING (deep link products) ============
@@ -2513,20 +2720,7 @@ const _origPasserCommande = passerCommande;
 const _onSuccess = ()=>{ if(document.getElementById('successOverlay').classList.contains('show')) fireConfetti(); };
 new MutationObserver(_onSuccess).observe(document.getElementById('successOverlay'), {attributes:true, attributeFilter:['class']});
 
-// Also fire confetti when checkout completes
-const _origCheckout = checkoutCart;
-checkoutCart = function(){
-  if(cart.length === 0) return;
-  _origCheckout();
-  fireConfetti();
-  // Clear cart after order
-  setTimeout(()=>{
-    cart = [];
-    saveCart();
-    renderCart();
-    closeCart();
-  }, 1500);
-};
+// Confetti also fires when success overlay appears (handles cart checkout too)
 
 // ============ NAV SCROLL SHADOW ============
 window.addEventListener('scroll', ()=>{
