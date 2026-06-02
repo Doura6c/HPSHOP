@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#E8001C">
 
 <!-- Security headers -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://images.unsplash.com https://hpshop.gn; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https: https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net; frame-ancestors 'none'; form-action 'self' https://wa.me; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://images.unsplash.com https://hpshop-afrique.vercel.app; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https: https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net; frame-ancestors 'none'; form-action 'self' https://wa.me; base-uri 'self'; upgrade-insecure-requests">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()">
@@ -16,7 +16,7 @@
 <meta name="keywords" content="HPSHOP, boutique en ligne Guinée, livraison gratuite Conakry, paiement à la livraison, Orange Money, e-commerce Guinée, achat en ligne Conakry">
 <meta name="author" content="HPSHOP Afrique">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<link rel="canonical" href="https://hpshop.gn/">
+<link rel="canonical" href="https://hpshop-afrique.vercel.app/">
 
 <!-- Open Graph / Facebook / WhatsApp -->
 <meta property="og:type" content="website">
@@ -24,16 +24,16 @@
 <meta property="og:site_name" content="HPSHOP Afrique">
 <meta property="og:title" content="HPSHOP Afrique — La boutique de la bonne fortune 🇬🇳">
 <meta property="og:description" content="Livraison gratuite partout en Guinée. Paiement à la livraison ou Orange Money. 50+ produits sélectionnés.">
-<meta property="og:image" content="https://hpshop.gn/assets/og-image.jpg">
+<meta property="og:image" content="https://hpshop-afrique.vercel.app/assets/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://hpshop.gn/">
+<meta property="og:url" content="https://hpshop-afrique.vercel.app/">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HPSHOP Afrique — La boutique de la bonne fortune 🇬🇳">
 <meta name="twitter:description" content="Livraison gratuite partout en Guinée. Paiement à la livraison ou Orange Money.">
-<meta name="twitter:image" content="https://hpshop.gn/assets/og-image.jpg">
+<meta name="twitter:image" content="https://hpshop-afrique.vercel.app/assets/og-image.jpg">
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -59,19 +59,19 @@
   "@graph":[
     {
       "@type":"Organization",
-      "@id":"https://hpshop.gn/#organization",
+      "@id":"https://hpshop-afrique.vercel.app/#organization",
       "name":"HPSHOP Afrique",
-      "url":"https://hpshop.gn/",
-      "logo":"https://hpshop.gn/assets/logo.png",
+      "url":"https://hpshop-afrique.vercel.app/",
+      "logo":"https://hpshop-afrique.vercel.app/assets/logo.png",
       "slogan":"La boutique de la bonne fortune",
       "sameAs":["https://wa.me/224621881210"]
     },
     {
       "@type":"OnlineStore",
-      "@id":"https://hpshop.gn/#store",
+      "@id":"https://hpshop-afrique.vercel.app/#store",
       "name":"HPSHOP Afrique",
-      "url":"https://hpshop.gn/",
-      "image":"https://hpshop.gn/assets/logo.png",
+      "url":"https://hpshop-afrique.vercel.app/",
+      "image":"https://hpshop-afrique.vercel.app/assets/logo.png",
       "telephone":"+224621881210",
       "priceRange":"170 000 - 250 000 GNF",
       "currenciesAccepted":"GNF",
@@ -91,13 +91,13 @@
     },
     {
       "@type":"WebSite",
-      "@id":"https://hpshop.gn/#website",
-      "url":"https://hpshop.gn/",
+      "@id":"https://hpshop-afrique.vercel.app/#website",
+      "url":"https://hpshop-afrique.vercel.app/",
       "name":"HPSHOP Afrique",
-      "publisher":{"@id":"https://hpshop.gn/#organization"},
+      "publisher":{"@id":"https://hpshop-afrique.vercel.app/#organization"},
       "potentialAction":{
         "@type":"SearchAction",
-        "target":"https://hpshop.gn/?search={search_term_string}",
+        "target":"https://hpshop-afrique.vercel.app/?search={search_term_string}",
         "query-input":"required name=search_term_string"
       }
     }
@@ -2010,7 +2010,7 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
           quantity: currentQty
         }],
         total: totalAmount,
-        source: "hpshop.gn"
+        source: "hpshop-afrique.vercel.app"
       };
       const r = await fetch(CONFIG.webhookUrl, {
         method: "POST",
@@ -2487,7 +2487,7 @@ async function confirmerCommandePanier(){
           paymentMethod: payMode,
           notes: payLabel,
           total,
-          source: "hpshop.gn"
+          source: "hpshop-afrique.vercel.app"
         })
       });
       crmOk = r.ok;
