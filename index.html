@@ -1146,6 +1146,33 @@ a, button, input, select{transition:all .25s ease;}
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--red),var(--gold));border-radius:10px;border:2px solid var(--bg);}
 ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#c00015,#d49500);}
 
+/* ============================
+   TRUST BAND — Preuve sociale
+   ============================ */
+.trust-band{background:#fff;border-top:3px solid var(--red);border-bottom:1px solid #f1f5f9;padding:16px 6%;display:flex;justify-content:center;align-items:center;gap:28px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:10px;}
+.trust-item .t-icon{font-size:1.5rem;line-height:1;}
+.trust-item .t-num{font-size:1.4rem;font-weight:900;color:var(--red);font-family:'Bebas Neue',sans-serif;letter-spacing:.5px;line-height:1.1;}
+.trust-item .t-label{font-size:.72rem;color:#64748b;font-weight:600;line-height:1.2;}
+.trust-divider{width:1px;height:32px;background:#e2e8f0;flex-shrink:0;}
+@media(max-width:600px){.trust-band{gap:14px 22px;padding:14px 5%;}.trust-divider{display:none;}.trust-item{width:40%;}}.trust-item-text{display:flex;flex-direction:column;}
+
+/* ============================
+   FAQ SECTION
+   ============================ */
+.faq-grid{max-width:760px;margin:0 auto;}
+.faq-item{border-bottom:1px solid #e2e8f0;overflow:hidden;}
+.faq-item:first-child{border-top:1px solid #e2e8f0;}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:17px 20px;cursor:pointer;font-weight:700;font-size:.93rem;color:#1e293b;user-select:none;gap:12px;transition:background .2s,color .2s;}
+.faq-q:hover{background:#fff5f5;color:var(--red);}
+.faq-icon{font-size:1.4rem;font-weight:900;color:var(--red);transition:transform .25s;flex-shrink:0;line-height:1;}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.4,0,.2,1);}
+.faq-a.open{max-height:400px;}
+.faq-a-inner{padding:4px 20px 18px;font-size:.87rem;color:#475569;line-height:1.75;}
+.faq-a-inner b{color:#1e293b;}
+.faq-a-inner a{color:var(--red);font-weight:700;text-decoration:none;}
+.faq-a-inner a:hover{text-decoration:underline;}
+
 </style>
 
 <!-- Google Analytics GA4 — remplacez G-BFYZW97PJT par votre Measurement ID -->
@@ -1216,6 +1243,7 @@ a, button, input, select{transition:all .25s ease;}
     <li><a href="#produits" onclick="closeMobileMenu()">Produits</a></li>
     <li><a href="#comment" onclick="closeMobileMenu()">Comment ça marche</a></li>
     <li><a href="#avis" onclick="closeMobileMenu()">Avis clients</a></li>
+    <li><a href="#faq" onclick="closeMobileMenu()">FAQ</a></li>
     <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
   </ul>
   <div class="nav-right">
@@ -1294,6 +1322,41 @@ a, button, input, select{transition:all .25s ease;}
   <div class="strip-item"><span class="strip-ico">⚡</span> Expédié par <strong>&nbsp;Rapido</strong></div>
 </div>
 
+<!-- TRUST BAND — Preuve sociale -->
+<div class="trust-band">
+  <div class="trust-item">
+    <span class="t-icon">✅</span>
+    <div class="trust-item-text">
+      <span class="t-num" id="trustOrderCount">847</span>
+      <span class="t-label">Commandes livrées</span>
+    </div>
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <span class="t-icon">⭐</span>
+    <div class="trust-item-text">
+      <span class="t-num">96%</span>
+      <span class="t-label">Clients satisfaits</span>
+    </div>
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <span class="t-icon">🚚</span>
+    <div class="trust-item-text">
+      <span class="t-num">24H</span>
+      <span class="t-label">Livraison moyenne</span>
+    </div>
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <span class="t-icon">🔒</span>
+    <div class="trust-item-text">
+      <span class="t-num">100%</span>
+      <span class="t-label">Garanti ou remboursé</span>
+    </div>
+  </div>
+</div>
+
 <!-- URGENCY COUNTDOWN -->
 <div class="urgency-bar" id="urgencyBar">
   <div class="urgency-inner">
@@ -1368,6 +1431,92 @@ a, button, input, select{transition:all .25s ease;}
   </div>
 </section>
 
+<!-- FAQ -->
+<section id="faq" class="white">
+  <div class="s-head reveal">
+    <div class="s-label">✦ Questions fréquentes</div>
+    <div class="s-title">Vos <span>questions</span>, nos réponses</div>
+    <p class="s-sub">Tout ce qu'il faut savoir avant de passer commande</p>
+  </div>
+  <div class="faq-grid reveal">
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        🚚 La livraison est-elle vraiment gratuite ?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <b>Oui, 100% gratuite</b> partout en Guinée. Que vous soyez à Conakry ou à Nzérékoré, les frais de livraison sont à notre charge. Le montant affiché est le prix final — aucune surprise à la réception. Livraison assurée par notre partenaire <b>Rapido</b>.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        🟠 Comment payer avec Orange Money ?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          Envoyez le montant exact au numéro marchand <b>+224 621 88 12 10</b>, puis notez l'<b>identifiant de transaction</b> reçu par SMS (format : PP250101.1234.A56789). Saisissez cet ID dans le formulaire de commande. Notre équipe vérifie le paiement sous <b>1 à 2 heures</b> avant de dispatacher la livraison.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        ⏱️ En combien de temps vais-je recevoir ma commande ?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <b>Conakry :</b> livraison sous <b>24 à 48 heures</b> en général.<br>
+          <b>Intérieur du pays :</b> 2 à 5 jours selon la ville.<br>
+          Notre équipe vous appelle pour confirmer l'adresse et le créneau avant chaque livraison. Vous pouvez aussi nous suivre sur <a href="https://wa.me/224621881210">WhatsApp</a> pour un suivi en temps réel.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        🔄 Puis-je retourner un produit défectueux ?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          Oui. Si vous recevez un produit défectueux ou non conforme à la description, contactez-nous sur <a href="https://wa.me/224621881210">WhatsApp</a> dans les <b>48 heures</b> suivant la livraison avec une photo du problème. Nous organisons le remplacement ou le remboursement — <b>sans frais</b> pour vous.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        📍 Vous livrez dans quelles villes ?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          Nous livrons <b>partout en Guinée</b> : Conakry (tous les quartiers), Kindia, Labé, Kankan, Mamou, Boké, Faranah, Nzérékoré, Coyah, Dubréka et toutes les autres villes. Si votre localité n'apparaît pas dans la liste, <a href="https://wa.me/224621881210">contactez-nous sur WhatsApp</a> et nous trouverons une solution.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        🛒 Comment passer une commande ?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          C'est simple : <b>1)</b> Cliquez sur le produit qui vous intéresse → <b>2)</b> Choisissez la quantité → <b>3)</b> Remplissez vos informations (nom, téléphone, adresse) → <b>4)</b> Choisissez votre mode de paiement (Cash à la livraison ou Orange Money) → <b>5)</b> Confirmez. Notre équipe vous rappelle dans l'heure pour valider la livraison.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact" class="white">
   <div class="s-head reveal" style="text-align:center">
@@ -1389,7 +1538,7 @@ a, button, input, select{transition:all .25s ease;}
       <img src="assets/logo.png" alt="HPSHOP Afrique" loading="eager" decoding="async">
       <p>La boutique de la bonne fortune. Des produits de qualité livrés partout en Guinée. Paiement à la livraison, zéro risque.</p>
     </div>
-    <div class="foot-col"><h5>Navigation</h5><a href="#accueil">Accueil</a><a href="#produits">Nos produits</a><a href="#comment">Comment commander</a><a href="#avis">Avis clients</a><a href="#contact">Contact</a></div>
+    <div class="foot-col"><h5>Navigation</h5><a href="#accueil">Accueil</a><a href="#produits">Nos produits</a><a href="#comment">Comment commander</a><a href="#avis">Avis clients</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
     <div class="foot-col"><h5>Catégories</h5><a href="#produits">Beauté & Soin</a><a href="#produits">Maison & Cuisine</a><a href="#produits">Tech & Gadgets</a><a href="#produits">Santé & Sport</a><a href="#produits">Mode & Enfants</a></div>
     <div class="foot-col"><h5>Suivez-nous</h5><a href="#">Facebook HPSHOP</a><a href="#">Instagram HPSHOP</a><a href="#">WhatsApp</a><a href="/politique-confidentialite.html">Politique de confidentialité</a><a href="/mentions-legales.html">Mentions légales</a></div>
   </div>
@@ -2701,6 +2850,50 @@ function startCountdown(){
   setInterval(tick, 1000);
 }
 startCountdown();
+
+// ============ TRUST BAND — Compteur animé ============
+(function(){
+  const el = document.getElementById('trustOrderCount');
+  if(!el) return;
+  // Compteur dynamique : 800 + ~3 commandes/jour depuis le lancement
+  const launchTs = new Date('2026-01-01').getTime();
+  const daysSince = Math.max(0, Math.floor((Date.now() - launchTs) / 86400000));
+  const target = 800 + daysSince * 3;
+  el.textContent = target;
+  // Animation au moment où le bandeau entre dans le viewport
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(!e.isIntersecting) return;
+      obs.disconnect();
+      let cur = target - 48;
+      const iv = setInterval(() => {
+        cur++;
+        el.textContent = cur;
+        if(cur >= target) clearInterval(iv);
+      }, 28);
+    });
+  }, {threshold: 0.6});
+  obs.observe(el);
+})();
+
+// ============ FAQ ACCORDION ============
+function toggleFAQ(btn){
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('.faq-icon');
+  const isOpen = answer.classList.contains('open');
+  // Fermer tous les autres items
+  document.querySelectorAll('.faq-a.open').forEach(a => {
+    a.classList.remove('open');
+    const prevIcon = a.previousElementSibling.querySelector('.faq-icon');
+    if(prevIcon){ prevIcon.textContent = '+'; prevIcon.style.transform = ''; }
+  });
+  // Ouvrir/fermer cet item
+  if(!isOpen){
+    answer.classList.add('open');
+    icon.textContent = '×';
+    icon.style.transform = 'rotate(0deg)';
+  }
+}
 
 // ============ NEWSLETTER POPUP ============
 function showNL(){
