@@ -1765,8 +1765,7 @@ a, button, input, select{transition:all .25s ease;}
 const CONFIG = {
   waNumber: "224621881210",
   waDisplay: "+224 621 88 12 10",
-  webhookUrl: "https://cod-crm-zeta.vercel.app/api/webhook/order",
-  webhookKey: "FviI7sM0c8tVH78D9PzNXvICbNC2NAdD0Xdc8d8Z",
+  webhookUrl: "/api/submit-order",
   omMerchant: "+224 621 88 12 10",
 };
 
@@ -2180,8 +2179,7 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
       const r = await fetch(CONFIG.webhookUrl, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "X-Webhook-Key": CONFIG.webhookKey
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(payload)
       });
@@ -2695,7 +2693,7 @@ async function confirmerCommandePanier(){
     try {
       const r = await fetch(CONFIG.webhookUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-Webhook-Key": CONFIG.webhookKey },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           externalRef: orderRef,
           customer: { fullName: nom.value.trim(), phone: phoneNorm, address: adr.value.trim(), city: vil.value },
@@ -2927,7 +2925,7 @@ function submitNL(){
   const nlMsg = `🔔 Nouvelle inscription newsletter HPSHOP\n👤 ${name}\n📞 ${phone}`;
   fetch(CONFIG.webhookUrl, {
     method:'POST',
-    headers:{'Content-Type':'application/json','X-Webhook-Key':CONFIG.webhookKey},
+    headers:{'Content-Type':'application/json'},
     body:JSON.stringify({externalRef:'NL-'+Date.now(),type:'newsletter',customer:{fullName:name,phone:normalizePhoneGN(phone)},notes:nlMsg,source:'hpshop-afrique.vercel.app'})
   }).catch(()=>{});
   setTimeout(()=>{
