@@ -210,8 +210,8 @@ section{padding:5.5rem 6%;}
 .prod-body{padding:1rem;}
 .prod-cat{font-size:.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem;}
 .prod-name{font-size:.85rem;font-weight:800;color:var(--dark);margin-bottom:.4rem;line-height:1.3;}
-.prod-price{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;color:var(--red);}
-.prod-old{font-size:.68rem;color:var(--muted2);text-decoration:line-through;margin-left:.3rem;}
+.prod-price{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;color:var(--red);white-space:nowrap;}
+.prod-old{font-size:.68rem;color:var(--muted2);text-decoration:line-through;margin-left:.3rem;white-space:nowrap;}
 .prod-stock-txt{font-size:.63rem;font-weight:700;margin-top:.3rem;}
 .in-stock{color:#2ECC71;}
 .out-stock{color:#E74C3C;}
@@ -348,7 +348,7 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 
 /* RESPONSIVE */
 @media(max-width:900px){.pd-top{grid-template-columns:1fr;}.foot-top{grid-template-columns:1fr 1fr;}.pay-opts{grid-template-columns:repeat(3,1fr);}.frow{grid-template-columns:1fr;}}
-@media(max-width:600px){.prod-grid{grid-template-columns:repeat(2,1fr);}.foot-top{grid-template-columns:1fr;}.strip{gap:.8rem;}.hero h1{font-size:3rem;}.hero-stats{gap:1rem;}}
+@media(max-width:600px){.prod-grid{grid-template-columns:repeat(2,1fr);}.foot-top{grid-template-columns:1fr;}.strip{gap:.8rem;}.hero h1{font-size:3rem;}.hero-stats{gap:1rem;}.prod-badge{font-size:.52rem;padding:2px 6px;letter-spacing:.5px;max-width:46%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.prod-stock-low{font-size:.5rem;padding:2px 5px;letter-spacing:.3px;max-width:46%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}}
 @media(max-width:500px){.recap-footer{flex-direction:column;}.recap-btn-confirm,.recap-btn-edit{width:100%;}.nav-brand-text{font-size:1.15rem;}}
 
 /* CART CHECKOUT MODAL */
@@ -1601,11 +1601,6 @@ a, button, input, select{transition:all .25s ease;}
               <span id="pdPhotoEmoji3">🛍</span>
             </div>
           </div>
-          <div class="pd-video-box">
-            <span class="play-btn">▶️</span>
-            <strong>Vidéo publicitaire</strong>
-            <small>Ajoutez votre vidéo produit ici<br>(MP4, YouTube, TikTok embed)</small>
-          </div>
         </div>
         <div class="pd-info">
           <div class="pd-cat-tag" id="pdCat">Catégorie</div>
@@ -1731,15 +1726,30 @@ a, button, input, select{transition:all .25s ease;}
 <div class="nl-overlay" id="nlOverlay" onclick="if(event.target===this)closeNL()">
   <div class="nl-box">
     <button class="nl-close" onclick="closeNL()" aria-label="Fermer">✕</button>
-    <div class="nl-ico">🎁</div>
-    <h3>Bienvenue chez HPSHOP !</h3>
-    <p class="nl-sub">Inscris-toi et reçois <b>-10%</b> sur ta première commande, plus toutes nos offres flash en avant-première.</p>
-    <div class="nl-form">
-      <input type="text" id="nlName" placeholder="Votre prénom" maxlength="40">
-      <input type="tel" id="nlPhone" placeholder="6XX XX XX XX (WhatsApp)" maxlength="14">
-      <button class="btn-red nl-submit" onclick="submitNL()">🎯 Je veux mon -10%</button>
+    <!-- Vue formulaire -->
+    <div id="nlFormView">
+      <div class="nl-ico">🎁</div>
+      <h3>Bienvenue chez HPSHOP !</h3>
+      <p class="nl-sub">Inscris-toi et reçois <b>-10%</b> sur ta première commande, plus toutes nos offres flash en avant-première.</p>
+      <div class="nl-form">
+        <input type="text" id="nlName" placeholder="Votre prénom" maxlength="40">
+        <input type="tel" id="nlPhone" placeholder="6XX XX XX XX (WhatsApp)" maxlength="14">
+        <button class="btn-red nl-submit" onclick="submitNL()">🎯 Je veux mon -10%</button>
+      </div>
+      <small class="nl-foot">🔒 Ton numéro reste privé. Pas de spam, promis.</small>
     </div>
-    <small class="nl-foot">🔒 Ton numéro reste privé. Pas de spam, promis.</small>
+    <!-- Vue succès avec code -->
+    <div id="nlSuccessView" style="display:none;text-align:center;">
+      <div class="nl-ico">🎉</div>
+      <h3>Bravo <span id="nlSuccessName"></span> !</h3>
+      <p class="nl-sub">Voici ton code de réduction. Montre-le sur WhatsApp lors de ta première commande pour obtenir <b>-10%</b>.</p>
+      <div id="nlCodeBox" style="margin:1rem auto;padding:1rem;border:2px dashed var(--red);border-radius:12px;background:#FFF5F5;max-width:280px;">
+        <div style="font-size:.7rem;font-weight:800;letter-spacing:1px;color:var(--muted2);text-transform:uppercase;margin-bottom:.3rem;">Ton code -10%</div>
+        <div id="nlCodeValue" style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--red);letter-spacing:2px;">BV10-XXXX</div>
+      </div>
+      <button class="btn-red nl-submit" id="nlWaBtn" onclick="nlSendWhatsApp()">📱 Envoyer mon code sur WhatsApp</button>
+      <small class="nl-foot">💡 Capture cet écran ou note ton code. Valable sur ta 1ère commande.</small>
+    </div>
   </div>
 </div>
 
@@ -2078,21 +2088,24 @@ function passerCommande(){
     ? "🟠 Orange Money"
     : "💵 Cash à la livraison";
 
+  // Échapper les données utilisateur avant injection innerHTML (fix XSS)
+  const _escR = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
   const recapHTML = `
     <div class="recap-product">
-      <img src="${currentProduct.img || 'assets/logo.png'}" alt="${currentProduct.nom}" class="recap-product-img" onerror="this.style.display='none'">
+      <img src="${currentProduct.img || 'assets/logo.png'}" alt="${_escR(currentProduct.nom)}" class="recap-product-img" onerror="this.style.display='none'">
       <div class="recap-product-info">
-        <div class="recap-product-name">${currentProduct.nom}</div>
+        <div class="recap-product-name">${_escR(currentProduct.nom)}</div>
         <div class="recap-product-qty">Quantité : ${currentQty}</div>
         <div class="recap-product-price">${fmtPrice(totalAmount)} GNF</div>
       </div>
     </div>
     <div class="recap-section">
       <div class="recap-section-title">📍 Livraison</div>
-      <div class="recap-row"><span>Nom</span><span>${nom.value.trim()}</span></div>
-      <div class="recap-row"><span>Téléphone</span><span>${tel.value.trim()}</span></div>
-      <div class="recap-row"><span>Adresse</span><span>${adr.value.trim()}</span></div>
-      <div class="recap-row"><span>Ville</span><span>${vil.value}</span></div>
+      <div class="recap-row"><span>Nom</span><span>${_escR(nom.value.trim())}</span></div>
+      <div class="recap-row"><span>Téléphone</span><span>${_escR(tel.value.trim())}</span></div>
+      <div class="recap-row"><span>Adresse</span><span>${_escR(adr.value.trim())}</span></div>
+      <div class="recap-row"><span>Ville</span><span>${_escR(vil.value)}</span></div>
     </div>
     <div class="recap-section">
       <div class="recap-section-title">💳 Paiement</div>
@@ -2925,6 +2938,14 @@ function closeNL(){
   document.getElementById('nlOverlay').classList.remove('show');
   localStorage.setItem('hpshop_nl_seen', '1');
 }
+// Génère un code de réduction unique et mémorisable (ex: BV10-7K2P)
+function genWelcomeCode(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sans I,O,0,1 pour lisibilité
+  let suffix = '';
+  for(let i=0;i<4;i++) suffix += chars[Math.floor(Math.random()*chars.length)];
+  return 'BV10-' + suffix;
+}
+
 function submitNL(){
   const name = document.getElementById('nlName').value.trim();
   const phone = document.getElementById('nlPhone').value.trim();
@@ -2936,20 +2957,38 @@ function submitNL(){
     toast("Numéro invalide", "Format : 6XX XX XX XX", "error");
     return;
   }
-  // Store + show success (ACTION 7 — code promo fictif supprimé)
-  localStorage.setItem('hpshop_nl_subscriber', JSON.stringify({name,phone,date:Date.now()}));
+  // Réutilise le code existant si déjà inscrit, sinon en génère un nouveau
+  let existing = null;
+  try { existing = JSON.parse(localStorage.getItem('hpshop_nl_subscriber') || 'null'); } catch(e){}
+  const code = (existing && existing.code) ? existing.code : genWelcomeCode();
+
+  localStorage.setItem('hpshop_nl_subscriber', JSON.stringify({name,phone,code,date:Date.now()}));
   localStorage.setItem('hpshop_nl_seen', '1');
-  closeNL();
-  // Envoyer le numéro au CRM via WhatsApp boutique pour suivi
-  const nlMsg = `🔔 Nouvelle inscription newsletter HPSHOP\n👤 ${name}\n📞 ${phone}`;
+
+  // Envoyer l'inscription + le code au CRM pour que l'équipe applique -10% à la 1ère commande
+  const nlMsg = `🔔 Nouvelle inscription newsletter HPSHOP\n👤 ${name}\n📞 ${phone}\n🎟️ Code -10% : ${code} (à appliquer sur 1ère commande)`;
   fetch(CONFIG.webhookUrl, {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({externalRef:'NL-'+Date.now(),type:'newsletter',customer:{fullName:name,phone:normalizePhoneGN(phone)},notes:nlMsg,source:'hpshop-afrique.vercel.app'})
+    body:JSON.stringify({externalRef:'NL-'+Date.now(),type:'newsletter',promoCode:code,customer:{fullName:name,phone:normalizePhoneGN(phone)},notes:nlMsg,source:'hpshop-afrique.vercel.app'})
   }).catch(()=>{});
-  setTimeout(()=>{
-    toast("🎉 Bienvenue " + name + " !", "Inscription confirmée ! Offres exclusives par WhatsApp dès ce soir.", "success");
-  }, 300);
+
+  // Afficher la vue succès avec le code (persistant, pas un toast éphémère)
+  document.getElementById('nlSuccessName').textContent = name.split(' ')[0];
+  document.getElementById('nlCodeValue').textContent = code;
+  document.getElementById('nlFormView').style.display = 'none';
+  document.getElementById('nlSuccessView').style.display = 'block';
+}
+
+// Ouvre WhatsApp pré-rempli avec le code pour que le client le réclame facilement
+function nlSendWhatsApp(){
+  let sub = null;
+  try { sub = JSON.parse(localStorage.getItem('hpshop_nl_subscriber') || 'null'); } catch(e){}
+  const code = sub && sub.code ? sub.code : '';
+  const name = sub && sub.name ? sub.name.split(' ')[0] : '';
+  const msg = `Bonjour HPSHOP ! 👋\nJe viens de m'inscrire (${name}).\nVoici mon code de réduction : *${code}*\nJe souhaite l'utiliser sur ma première commande. 🎁`;
+  window.open('https://wa.me/' + CONFIG.waNumber + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  closeNL();
 }
 
 // Auto-open newsletter after 18s or scroll 50%

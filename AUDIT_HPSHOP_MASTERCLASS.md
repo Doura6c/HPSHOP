@@ -1584,4 +1584,494 @@ Les 10 actions prioritaires ci-dessus représentent ~30 heures de travail techni
 ---
 
 *Audit HPSHOP Masterclass — Phases 0 à 8 complétées.*
-*Phase 9 (Corrections techniques) disponible sur validation explicite.*
+*Phase 9 (Corrections techniques) appliquées — voir ci-dessous pour le rapport d'audit live.*
+
+---
+
+---
+
+# AUDIT LIVE 9 AXES — HPSHOP AFRIQUE
+> Exécution automatisée : curl / bash / lecture de sources
+> Date : 2026-06-07 | URL : https://hpshop-afrique.vercel.app
+
+---
+
+## 🔴 RÉSUMÉ EXÉCUTIF
+
+| | Avant corrections | Après corrections |
+|---|---|---|
+| **Score global** | 3.6 / 10 | **7.1 / 10** |
+| **Webhook key exposée** | ✅ Oui (ligne 1618 HTML) | ✅ Non (proxy serveur) |
+| **XSS critique** | ✅ Oui (innerHTML user data) | ⚠️ Partiellement fixé |
+| **Tunnel CRM bout-en-bout** | ❌ Clé brute dans JS | ✅ Proxy + env var + test réel |
+| **OG image** | ❌ 404 | ✅ HTTP 200 (42 KB) |
+| **Performance TTFB** | — | ✅ 134 ms (Vercel Edge) |
+| **Taille HTML gzip** | 173 KB brut | ✅ **46 KB** transmis (−73%) |
+| **Crédibilité/Trust** | ❌ Aucune | ✅ Trust band + FAQ + légal |
+
+**État de préparation pour campagnes pub :** 🟡 **Quasi-prêt** — 3 corrections bloquantes restantes avant activation Meta Ads.
+
+---
+
+## AXE 1 — INFRASTRUCTURE & PERFORMANCE HTTP
+
+### Mesures live (curl depuis FR)
+
+| Métrique | Valeur | Seuil cible | Verdict |
+|---|---|---|---|
+| HTTP status | 200 | 200 | ✅ |
+| TTFB | **134 ms** | < 200 ms | ✅ |
+| DNS lookup | 2.6 ms | — | ✅ |
+| TLS handshake | 84 ms | < 100 ms | ✅ |
+| Transfert total | 179 ms | < 300 ms | ✅ |
+| HTML brut | 177 259 octets | — | ℹ️ |
+| **HTML gzip** | **46 866 octets** | < 100 KB | ✅ **−73%** |
+
+### Headers sécurité
+
+| Header | Valeur | Verdict |
+|---|---|---|
+| Strict-Transport-Security | max-age=63072000; includeSubDomains; preload | ✅ Excellent |
+| X-Frame-Options | DENY | ✅ |
+| X-Content-Type-Options | nosniff | ✅ |
+| Referrer-Policy | strict-origin-when-cross-origin | ✅ |
+| **Content-Security-Policy** | **ABSENT** | ❌ Manquant |
+| **Permissions-Policy** | **ABSENT** | ⚠️ Recommandé |
+
+**Score axe 1 : 9/10** *(−1 : CSP absent)*
+
+---
+
+## AXE 2 — CATALOGUE & INTERFACE PRODUITS
+
+### Inventaire
+- **50 produits** en 6 catégories ✅
+- Répartition : 14 maison | 10 tech | 8 beauté | 6 santé | 6 mode | 6 enfant
+- **5 hors-stock** (badges "Rupture") ✅
+- 50/50 avec prix barré (toutes promos) ✅
+
+### Fourchette de prix
+
+| Métrique | Valeur | Analyse |
+|---|---|---|
+| Prix minimum | 170 000 GNF | ≈ 19 USD |
+| Prix maximum | 250 000 GNF | ≈ 28 USD |
+| Écart min-max | +47% | ⚠️ Gamme très resserrée |
+
+> **⚠️ Point de vigilance** : toute la gamme se situe entre 170K–250K GNF. Pas de produit d'entrée de gamme (< 100K GNF). Frein à l'acquisition sur cible large. Recommandation : ajouter 5–8 produits à 50K–100K GNF.
+
+### Fonctionnalités
+- Lazy loading IntersectionObserver (rootMargin 200px) ✅
+- Recherche fulltext ✅
+- Filtres catégorie ✅
+- Fiche produit modale : emoji, badge, desc, stock, OM section ✅
+
+**Score axe 2 : 7/10** *(−2 : gamme de prix trop resserrée, −1 : pas de produit < 100K GNF)*
+
+---
+
+## AXE 3 — TUNNEL DE COMMANDE & INTÉGRATION CRM
+
+### Architecture sécurisée
+
+```
+Navigateur → /api/submit-order (proxy Vercel)
+             ↓ ajoute X-Webhook-Key depuis env var
+             → cod-crm-zeta.vercel.app/api/webhook/order
+```
+
+**La clé webhook N'EST PLUS exposée dans le HTML.** ✅
+
+### Test bout-en-bout (exécuté le 2026-06-07 07:23)
+
+```json
+POST /api/submit-order  (Origin: https://hpshop-afrique.vercel.app)
+→ {"ok":true,"order":{
+    "code":"CMD-07062026-MEEY6G",
+    "status":"NOUVEAU",
+    "totalAmount":170000,
+    "deliveryFee":0,
+    "source":"WEBHOOK"
+  }}
+```
+
+✅ **Commande créée dans le CRM en temps réel** — livraison GRATUITE confirmée (deliveryFee: 0)
+
+### Vérifications
+
+| Point | Résultat |
+|---|---|
+| Proxy /api/submit-order répond | ✅ HTTP 200 |
+| Origin allowlist (403 sans header) | ✅ Actif |
+| Rate limiting serveur (10 req/min/IP) | ✅ Actif |
+| Rate limiting client (60s localStorage) | ✅ Actif |
+| CRMCOD_API_KEY env var Vercel | ✅ Configurée |
+| Section OM (ID transaction) | ✅ Présente |
+| Validation OM obligatoire | ✅ Actif |
+| Status OM → "EN_ATTENTE_VERIFICATION_OM" | ✅ Correct |
+
+### XSS résiduel dans recapHTML ⚠️
+
+```javascript
+// Modal récap avant confirmation — lignes ~2080-2110
+// nom.value, tel.value, adr.value, vil.value injectés NON échappés dans innerHTML
+<div class="recap-row"><span>Nom</span><span>${nom.value.trim()}</span></div>
+```
+
+Risque : payload `<img src=x onerror=alert(1)>` dans le champ nom → exécuté dans le recap.
+*Mitigant* : valeur également envoyée au CRM côté serveur → impact limité (auto-XSS).
+**Fix requis** : entourer chaque `${field.value}` de `_esc()`.
+
+**Score axe 3 : 8.5/10** *(−1.5 : XSS recapHTML non corrigé)*
+
+---
+
+## AXE 4 — BACK-OFFICE /ADMIN
+
+### Diagnostic
+
+| Vérification | Résultat |
+|---|---|
+| HTTP status /admin | ✅ HTTP 200 (Vercel sert la page) |
+| Contenu | Decap CMS + Netlify Identity |
+| Fonctionnel sur Vercel | ❌ **CASSÉ** — Netlify Identity requis |
+| robots.txt | ✅ `Disallow: /admin/` |
+| Accès sans authentification | Page blanche (JS error) |
+
+### Impact opérationnel
+L'URL `/admin` est accessible à tout le monde mais ne fonctionne pas. Il n'y a pas de risque sécurité immédiat (l'interface ne charge pas) mais l'admin est **inopérant** — tout changement catalogue nécessite de modifier le code source sur GitHub.
+
+### Options
+1. **Court terme** (recommandé) : Ajouter une redirection `/admin → /` dans `vercel.json` pour éviter confusion
+2. **Moyen terme** : Migrer vers un CMS compatible Vercel (Sanity, Contentful, ou simple JSON editable sur GitHub)
+
+**Score axe 4 : 2/10** *(CMS cassé, aucune gestion contenu autonome possible)*
+
+---
+
+## AXE 5 — SEO
+
+### Balises meta
+
+| Élément | Valeur | Verdict |
+|---|---|---|
+| `<title>` | "HPSHOP Afrique — La boutique de la bonne fortune 🇬🇳 \| Livraison gratuite Guinée" | ✅ |
+| `<meta description>` | Présente | ✅ |
+| `<link rel="canonical">` | https://hpshop-afrique.vercel.app/ | ✅ |
+| OG title/desc/image | Présents | ✅ |
+| OG image HTTP | 200 (42 KB) | ✅ |
+| `lang="fr"` | ✅ | ✅ |
+
+### Structured Data (JSON-LD)
+
+| Schema | Type | Verdict |
+|---|---|---|
+| Organization | ✅ Présent | ✅ |
+| OnlineStore | ✅ avec aggregateRating 4.8★ | ✅ |
+| WebSite + SearchAction | ✅ Présent | ✅ |
+| **Product individuel** | ❌ ABSENT | ❌ |
+
+### Crawlabilité
+
+| Point | Résultat |
+|---|---|
+| robots.txt | ✅ Correct (Sitemap lié) |
+| sitemap.xml | ✅ 7 URLs servies |
+| URLs produits (`#produit-19`) | ❌ Hash = non crawlables |
+| `/suivi-commande` | ❌ 404 |
+| Pages légales indexation | ✅ `noindex` (volontaire) |
+
+> **Limitation architecturale** : L'URL des produits est basée sur des hash (`#produit-19`). Google ne crawle pas les fragments d'URL. Aucune fiche produit n'est indexée individuellement. Solution à long terme : migrer vers des URLs dédiées ou générer des pages statiques par produit.
+
+**Score axe 5 : 5/10** *(−2 : hash URLs, −2 : pas de Product schema, −1 : /suivi-commande 404)*
+
+---
+
+## AXE 6 — ASSETS & PWA
+
+### Assets statiques
+
+| Fichier | HTTP | Taille | Verdict |
+|---|---|---|---|
+| `/assets/logo.png` | 200 | 27 KB | ✅ |
+| `/assets/og-image.jpg` | 200 | 42 KB | ✅ |
+| `/manifest.json` | 200 | Correct | ✅ |
+| `/sw.js` | 200 (supposé) | 3.1 KB | ✅ |
+
+### manifest.json
+
+```json
+{
+  "lang": "fr-GN",          ← Guinée ✅
+  "display": "standalone",   ← PWA ✅
+  "theme_color": "#E8001C",  ← Cohérent marque ✅
+  "categories": ["shopping", "lifestyle"], ✅
+  "shortcuts": [produits, WhatsApp] ✅
+}
+```
+
+### Service Worker (v2)
+- 5 stratégies de cache : bypass CRM, stale-while-revalidate Unsplash, cache-first fonts/assets, network-first HTML ✅
+- skipWaiting + clients.claim ✅
+- Ancien cache supprimé à l'activation ✅
+
+**Score axe 6 : 9/10** *(−1 : logo.png utilisé en icône PWA 192px et 512px = même fichier, qualité sub-optimale)*
+
+---
+
+## AXE 7 — SÉCURITÉ APPLICATIVE
+
+### Inventaire innerHTML à risque
+
+| Localisation | Données injectées | Sanitisé ? |
+|---|---|---|
+| `renderProducts()` — grille produits | Données catalogue (contrôlées) | ⚠️ Non (mais données internes) |
+| `openPD()` — fiche produit | `textContent` pour nom/desc | ✅ |
+| **`checkoutModal()` — recapHTML** | **nom, tel, adr, vil (user input)** | ❌ **XSS risque réel** |
+| `_envoyerCommande()` — successDetails | `_esc()` appliqué | ✅ |
+| `toast()` — notifications | Valeurs app-contrôlées | ⚠️ Faible risque |
+| `ccoModal()` — panier | Données catalogue + user input | ⚠️ Partiellement |
+
+### Tableau sécurité global
+
+| Vecteur | Statut |
+|---|---|
+| Webhook key exposée | ✅ Corrigé (proxy) |
+| Origin allowlist | ✅ Actif |
+| Rate limiting serveur | ✅ 10 req/min/IP |
+| Rate limiting client | ✅ 60s localStorage |
+| HTTPS / HSTS preload | ✅ |
+| X-Frame-Options: DENY | ✅ |
+| **Content-Security-Policy** | ❌ Absent |
+| **XSS recapHTML** | ❌ Non corrigé |
+| Orange Money vérification | ⚠️ Manuelle (acceptable) |
+| Données GA4 anonymisées | ✅ (à vérifier config) |
+
+**Score axe 7 : 7/10** *(−1.5 : XSS recapHTML, −1 : CSP absent, −0.5 : Permissions-Policy absent)*
+
+---
+
+## AXE 8 — EXPÉRIENCE MOBILE
+
+### Signaux positifs
+
+| Élément | Implémentation | Verdict |
+|---|---|---|
+| Viewport meta | `width=device-width, max-scale=5` | ✅ |
+| iOS PWA meta | `apple-mobile-web-app-capable` | ✅ |
+| Sticky CTA mobile | `.mobile-cta` (position: fixed bottom) | ✅ |
+| Bouton panier navbar | `44×44px` | ✅ WCAG AA |
+| Breakpoints CSS | Présents (`max-width: 600px`, 768px) | ✅ |
+| Touch targets CTA produit | Large (padding .75rem) | ✅ |
+| Lazy loading images | IntersectionObserver rootMargin 200px | ✅ |
+
+### Points de vigilance
+
+| Élément | Issue |
+|---|---|
+| Quantité +/- dans fiche produit | Boutons `qty-btn` sans taille min explicite | ⚠️ |
+| Police Bebas Neue | Non-blocking ✅, mais fallback générique si lent réseau | ℹ️ |
+| Réseau 3G Guinea (avg 5–8 Mbps) | 46KB gzip → chargé en < 100ms ✅ | ✅ |
+
+**Score axe 8 : 8/10** *(−1 : boutons qty sans min-size explicite, −1 : Core Web Vitals non mesurables sans browser)*
+
+---
+
+## AXE 9 — CONTENU & CRÉDIBILITÉ
+
+### Éléments de réassurance
+
+| Élément | Présent | Notes |
+|---|---|---|
+| Trust band (4 chiffres) | ✅ | Compteur animé (847+ commandes) |
+| FAQ (6 questions) | ✅ | Accordion interactif |
+| Section avis clients | ✅ | (#avis) |
+| Countdown urgency | ✅ | 4–12h aléatoire, localStorage |
+| Badge PROMO sur cartes | ✅ | Ribbon diagonal |
+| Section newsletter | ✅ | WhatsApp-first (pas email) |
+| Mentions légales | ✅ | Loi L/2016/037/AN Guinée |
+| Politique confidentialité | ✅ | Tableau données + RGPD |
+| WhatsApp contact | ✅ | Floating button + footer |
+| Numéro téléphone | ✅ | +224 621 88 12 10 |
+
+### Éléments manquants pour la publicité
+
+| Élément | Statut | Impact |
+|---|---|---|
+| Pixel Meta (Facebook) | ❌ Absent | 🔴 Bloquant pour Meta Ads |
+| TikTok Pixel | ❌ Absent | ⚠️ Si cible TikTok |
+| Retargeting | ❌ Absent | ⚠️ |
+
+**Score axe 9 : 7.5/10** *(−1.5 : Pixel Meta absent = bloquant pour pub, −1 : pas de preuve sociale vérifiable)*
+
+---
+
+## 📊 TABLEAU DE BORD — SCORES PAR AXE
+
+| Axe | Domaine | Score | Évolution |
+|---|---|---|---|
+| 1 | Infrastructure HTTP | **9/10** | ↑ +6 vs audit initial |
+| 2 | Catalogue & Produits | **7/10** | ↑ +3 |
+| 3 | Tunnel CRM | **8.5/10** | ↑ +7 |
+| 4 | Back-office /admin | **2/10** | = 0 (non traité) |
+| 5 | SEO | **5/10** | ↑ +2 |
+| 6 | Assets & PWA | **9/10** | ↑ +5 |
+| 7 | Sécurité applicative | **7/10** | ↑ +5 |
+| 8 | Expérience mobile | **8/10** | ↑ +2 |
+| 9 | Contenu & Crédibilité | **7.5/10** | ↑ +6 |
+| | **SCORE GLOBAL** | **🟡 7.1/10** | **↑ +3.5 pts** |
+
+---
+
+## 🐛 BUGS CRITIQUES RESTANTS
+
+### CRITIQUE — Bloquer avant pub
+
+| # | Bug | Fichier / Ligne | Priorité |
+|---|---|---|---|
+| C1 | **Pixel Meta absent** — sans lui, aucun retargeting Facebook/Instagram possible | index.html `<head>` | 🔴 P0 |
+| C2 | **XSS recapHTML** — nom/tel/adr/vil non échappés dans innerHTML (modal recap) | index.html ~l.2080–2110 | 🔴 P0 |
+| C3 | **/suivi-commande → 404** — lien mort dans les confirmations et mentions | Vercel / index.html | 🟠 P1 |
+
+### IMPORTANT — Corriger sous 2 semaines
+
+| # | Bug | Impact |
+|---|---|---|
+| I1 | **CSP (Content-Security-Policy) absent** | Vecteur XSS amplifié |
+| I2 | **/admin cassé** (Netlify Identity sur Vercel) | Pas de gestion contenu |
+| I3 | **Gamme de prix trop haute** (min 170K GNF) | Frein acquisition mobile |
+| I4 | **Product schema absent** | Zéro rich result Google Shopping |
+
+---
+
+## 🚀 PLAN DE LANCEMENT — 10 CORRECTIONS AVANT ACTIVATION PUBS
+
+*Liste ordonnée par impact/effort — à faire dans cet ordre.*
+
+### ✅ Déjà fait (dans cette session)
+- [x] Webhook key cachée (proxy /api/submit-order)
+- [x] XSS successDetails (_esc)
+- [x] Lazy loading images
+- [x] Trust band + compteur animé
+- [x] FAQ 6 questions
+- [x] OG image créée (42KB)
+- [x] Mentions légales + Politique confidentialité
+- [x] Service Worker v2 (5 stratégies)
+- [x] Rate limiting (client + serveur)
+- [x] WhatsApp auto post-commande
+
+### 🔴 À faire AVANT activation pubs
+
+**1. Installer le Pixel Meta (Facebook/Instagram)** *(30 min)*
+```html
+<!-- Coller dans <head> AVANT </head> -->
+<!-- Remplacer VOTRE_PIXEL_ID par l'ID récupéré dans Meta Business Manager -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', 'VOTRE_PIXEL_ID');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=VOTRE_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+```
+Puis dans `_envoyerCommande()` après succès CRM :
+```javascript
+if(typeof fbq !== 'undefined'){
+  fbq('track','Purchase',{value:totalAmount/1000000,currency:'GNF',
+    content_name: currentProduct.nom, content_ids:[String(currentProduct.id)]});
+}
+```
+
+**2. Corriger XSS recapHTML** *(15 min)*
+
+Remplacer dans `checkoutModal()` les 4 lignes non-échappées :
+```javascript
+// Avant (lignes ~2090-2096) — DANGEREUX
+<span>${nom.value.trim()}</span>
+<span>${tel.value.trim()}</span>
+<span>${adr.value.trim()}</span>
+<span>${vil.value}</span>
+
+// Après — SÉCURISÉ
+// Ajouter en haut de checkoutModal() :
+const _escR = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// Puis :
+<span>${_escR(nom.value.trim())}</span>
+<span>${_escR(tel.value.trim())}</span>
+<span>${_escR(adr.value.trim())}</span>
+<span>${_escR(vil.value)}</span>
+```
+
+**3. Créer une page /suivi-commande.html** *(1h)*
+
+Page simple expliquant : "Votre commande sera livrée sous 24–48h. Pour tout suivi, contactez-nous sur WhatsApp [bouton]." Ou redirection vers le WhatsApp de contact.
+
+**4. Ajouter CSP basique dans vercel.json** *(20 min)*
+```json
+{"key":"Content-Security-Policy","value":"default-src 'self' https:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://www.google-analytics.com https://unpkg.com; img-src 'self' data: https:; connect-src 'self' https:;"}
+```
+
+**5. Rediriger /admin vers /** *(5 min)*
+```json
+// Dans vercel.json, ajouter dans "redirects":
+{"source":"/admin","destination":"/","statusCode":302}
+```
+
+---
+
+## ⚡ 5 QUICK WINS — TAUX DE CONVERSION COD MOBILE GUINÉEN
+
+### QW1 — Ajouter 5 produits < 100 000 GNF
+*Impact : +25–35% nouvelles acquisitions*
+La gamme actuelle (170K–250K GNF) cible uniquement des acheteurs qualifiés. Ajouter des produits à 50K–80K GNF (accessoires téléphone, produits beauté unitaires, jouets enfants) pour capturer les primo-acheteurs mobile.
+
+### QW2 — Bump de commande "Produit complémentaire"
+*Impact : +15% panier moyen*
+Après sélection d'un produit, afficher : *"Les clients qui ont acheté [produit] ont aussi pris [produit complémentaire] — Ajoutez-le pour seulement +X GNF ?"* Implémentable en pur JS avec 2h de code.
+
+### QW3 — Confirmation SMS via Orange Money API (ou simulation)
+*Impact : −30% fraude OM*
+Même sans API OM officielle : envoyer un SMS de confirmation WhatsApp automatique dès réception d'une commande OM. Le client reçoit "Votre commande HPSHOP #CODE est en attente de vérification paiement" → renforce la légitimité et réduit les demandes de remboursement.
+
+### QW4 — Testimonials avec photos réelles
+*Impact : +20% confiance first-visitor*
+Remplacer les avis texte par 3–5 photos WhatsApp de vrais clients (produit reçu / livraison Rapido). Demander à chaque client livré de partager sa photo en échange d'un bon de réduction. Stocker en `assets/reviews/` et hard-coder dans le HTML.
+
+### QW5 — Pop-up sortie (exit intent)
+*Impact : −15% taux d'abandon*
+Détecter `mouseleave` sur `<html>` sur desktop, ou scroll-back rapide sur mobile. Afficher : *"Attendez ! 🎁 Livraison GRATUITE + garantie 7 jours — Votre panier vous attend."* avec bouton "Finaliser ma commande". Implémentable en < 30 lignes JS.
+
+---
+
+## 📋 SYNTHÈSE — CE QUI MARCHE, CE QUI BLOQUE
+
+### ✅ Fonctionnel et solide
+- Pipeline CRM complet et sécurisé (proxy + env var + rate limiting)
+- Performance serveur excellente (134ms TTFB, 46KB gzip)
+- PWA bien configurée (manifest, SW v2, iOS meta)
+- Éléments de réassurance présents (trust band, FAQ, légal)
+- SEO on-page correct (JSON-LD, canonical, OG)
+- Catalogue 50 produits pertinents pour le marché guinéen
+
+### ❌ Bloquant avant pub
+1. **Pixel Meta absent** — sans tracking conversions, impossible d'optimiser les pubs
+2. **XSS recapHTML** — risque sécurité réel (auto-XSS via champ nom)
+3. **Gamme de prix trop haute** — pas de produit d'entrée de gamme
+
+### ⚠️ Dettes techniques à planifier
+- /admin cassé (Netlify Identity ≠ Vercel)
+- CSP absent
+- Hash URLs (SEO produits non indexables)
+- /suivi-commande 404
+
+---
+
+*Audit live 9 axes — HPSHOP Afrique — 2026-06-07*
+*Exécution : curl/bash automatisé + analyse de sources. Score : 7.1/10 (vs 3.6/10 initial, +3.5 pts)*
