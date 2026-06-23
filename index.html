@@ -537,6 +537,7 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 .prod-img-real{height:180px;background-size:cover;background-position:center;background-repeat:no-repeat;position:relative;transition:transform .4s ease;}
 .prod-card:hover .prod-img-real{transform:scale(1.05);}
 .pd-media-img{width:100%;min-height:340px;background-size:cover;background-position:center;border-radius:10px;}
+.pd-video{width:100%;max-height:440px;background:#000;border-radius:10px;display:block;object-fit:cover;}
 
 /* Quantity selector */
 .qty-row{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;}
@@ -1588,6 +1589,8 @@ a, button, input, select{transition:all .25s ease;}
     <div class="pd-box">
       <div class="pd-top">
         <div class="pd-media">
+          <!-- VIDÉO DÉMO (affichée si le produit a un champ "video") -->
+          <video id="pdVideo" class="pd-video" muted loop playsinline controls preload="none" style="display:none"></video>
           <div class="pd-emoji" id="pdEmoji">🛍</div>
           <!-- 3 PHOTOS PRODUIT -->
           <div class="pd-photos">
@@ -1796,30 +1799,30 @@ const CONFIG = {
 const UNSPLASH = (q,w=400)=>`https://images.unsplash.com/${q}?auto=format&fit=crop&w=${w}&q=70`;
 
 const produits=[
-  {id:1,nom:"Shilajit Gummies Himalayen — Énergie & Vitalité",cat:"sante",emoji:"🍯",img:UNSPLASH("photo-1607619056574-7b8d3ee536b2"),prix:"245 000",old:"360 000",stock:true,badge:"chaud",desc:"Cure de minéraux purs de l'Himalaya pour booster énergie, endurance et immunité. 1 gomme par jour, effet ressenti dès la 1ʳᵉ semaine."},
-  {id:2,nom:"Crème Kojic Anti-Taches & Anti-Acné",cat:"beaute",emoji:"✨",img:UNSPLASH("photo-1620916566398-39f1143ab7be"),prix:"165 000",old:"250 000",stock:true,badge:"new",desc:"Estompe taches brunes, boutons et cicatrices pour un teint clair et uniforme. Formule à l'acide kojique, résultats visibles en 14 jours."},
-  {id:3,nom:"Poudre Minérale AQA — Restauration de l'Émail",cat:"beaute",emoji:"🦷",img:UNSPLASH("photo-1606811841689-23dfddce3e95"),prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Reminéralise et blanchit les dents en comblant les micro-fissures de l'émail. Un sourire éclatant à la maison, sans dentiste."},
-  {id:4,nom:"Power Back — Correcteur de Posture Dos",cat:"sante",emoji:"💪",img:UNSPLASH("photo-1573461160327-b450ce3d8e7f"),prix:"175 000",old:"260 000",stock:true,badge:"",desc:"Redresse les épaules et soulage les douleurs de dos au quotidien. Discret sous les vêtements, ajustable à toutes les morphologies."},
-  {id:5,nom:"BeeNail™ — Spray au Venin d'Abeille (Ongles)",cat:"beaute",emoji:"💅",img:UNSPLASH("photo-1604654894610-df63bc536371"),prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Traite les ongles abîmés, jaunis ou fragiles et stoppe la mycose. Des ongles sains et brillants en quelques semaines."},
-  {id:6,nom:"Savon au Curcuma 100% Naturel",cat:"beaute",emoji:"🧼",img:UNSPLASH("photo-1600857544200-b2f666a9a2ec"),prix:"150 000",old:"220 000",stock:true,badge:"",desc:"Éclaircit, purifie et unifie la peau tout en luttant contre l'acné. Curcuma pur, parfaitement adapté aux peaux africaines."},
-  {id:7,nom:"Crème Colorante Cheveux aux Fruits Naturels",cat:"beaute",emoji:"💇",img:UNSPLASH("photo-1522337660859-02fbefca4702"),prix:"175 000",old:"260 000",stock:true,badge:"new",desc:"Couvre les cheveux blancs d'une couleur riche et durable, sans ammoniaque. Aux extraits de fruits qui nourrissent la fibre."},
-  {id:8,nom:"Masque Anti-Rides Or · Venin de Serpent · Rétinol",cat:"beaute",emoji:"🐍",img:UNSPLASH("photo-1598440947619-2c35fc9aa908"),prix:"230 000",old:"340 000",stock:true,badge:"chaud",desc:"Lisse les rides et raffermit la peau pour un effet lifting immédiat. Trio premium or + rétinol + peptide de venin."},
-  {id:9,nom:"Gaine Minceur Invisible Ventre Plat",cat:"mode",emoji:"🩱",img:UNSPLASH("photo-1540555700478-4be289fbecef"),prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Affine la taille et gomme les bourrelets instantanément sous toute tenue. Maintien ferme et respirant toute la journée."},
-  {id:10,nom:"Genouillère Anti-Arthrose Compression",cat:"sante",emoji:"🦵",img:UNSPLASH("photo-1517344884509-a0c97ec11bcc"),prix:"165 000",old:"250 000",stock:true,badge:"",desc:"Soutient le genou et soulage les douleurs d'arthrose et articulaires. Compression chauffante pour bouger à nouveau sans douleur."},
-  {id:11,nom:"Coupe-Ongles & Polisseur Électrique 2-en-1",cat:"beaute",emoji:"💅",img:UNSPLASH("photo-1610992015732-2449b76344bc"),prix:"175 000",old:"260 000",stock:true,badge:"new",desc:"Coupe et polit les ongles sans effort, mains comme pieds. Rechargeable et sûr pour toute la famille, même les enfants."},
-  {id:12,nom:"Masque de Protection Visage Réutilisable",cat:"sante",emoji:"😷",img:UNSPLASH("photo-1588872657578-7efd1f1555ed"),prix:"155 000",old:"230 000",stock:true,badge:"",desc:"Filtre poussière et particules avec un confort respirant longue durée. Lavable et ajusté, idéal en ville et dans les transports."},
-  {id:13,nom:"Additif Huile Moteur Anti-Usure Protectant",cat:"auto",emoji:"🛢️",img:UNSPLASH("photo-1605559424843-9e4c228bf1c2"),prix:"190 000",old:"280 000",stock:true,badge:"top",desc:"Protège le moteur, réduit les frottements et prolonge sa durée de vie. Moins de bruit et plus de puissance dès le 1er plein."},
-  {id:14,nom:"CarboStyle™ — Blanchiment Dentaire Charbon Actif",cat:"beaute",emoji:"🦷",img:UNSPLASH("photo-1588776814546-1ffcf47267a5"),prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Élimine les taches de café, thé et tabac pour des dents nettement plus blanches. Charbon actif naturel, sans abîmer l'émail."},
-  {id:15,nom:"Chargeur Voiture Rapide 100W Double USB-C",cat:"auto",emoji:"🔌",img:UNSPLASH("photo-1632823469850-2f77dd9c7f93"),prix:"175 000",old:"260 000",stock:true,badge:"new",desc:"Recharge 2 appareils à pleine vitesse en voiture. Compatible smartphones, tablettes et GPS, avec sécurité anti-surchauffe."},
-  {id:16,nom:"Phares Voiture H7 C6 Ultra Lumineux (x2)",cat:"auto",emoji:"💡",img:UNSPLASH("photo-1542362567-b07e54358753"),prix:"185 000",old:"280 000",stock:true,badge:"chaud",desc:"Éclairage blanc puissant pour une visibilité maximale la nuit. Installation facile, longue durée et faible consommation."},
-  {id:17,nom:"Spray d'Étanchéité Anti-Fuite IPX6",cat:"maison",emoji:"🧴",img:UNSPLASH("photo-1527515637462-cff94eecc1ac"),prix:"165 000",old:"250 000",stock:true,badge:"",desc:"Stoppe instantanément fuites et infiltrations sur toit, gouttière et tuyaux. Film caoutchouc imperméable, intérieur comme extérieur."},
-  {id:18,nom:"Mini Karcher — Pistolet Haute Pression Sans Fil",cat:"maison",emoji:"💦",img:UNSPLASH("photo-1581578731548-c64695cc6952"),prix:"235 000",old:"340 000",stock:true,badge:"chaud",desc:"Nettoie voiture, terrasse et moto avec une pression puissante. Sans fil et rechargeable, prêt partout en quelques secondes."},
-  {id:19,nom:"Crème Nettoyante & Entretien Cuir",cat:"auto",emoji:"🪑",img:UNSPLASH("photo-1449965408869-eaa3f722e40d"),prix:"170 000",old:"250 000",stock:true,badge:"",desc:"Nettoie, nourrit et protège sièges, canapés et sacs en cuir. Ravive l'éclat d'origine et prévient les craquelures."},
-  {id:20,nom:"FlexiMag — Câble Magnétique de Charge 3-en-1",cat:"tech",emoji:"🔌",img:UNSPLASH("photo-1583394838336-acd977736f90"),prix:"150 000",old:"220 000",stock:true,badge:"top",desc:"Recharge tous vos appareils avec un seul câble aimanté (USB-C, Lightning, Micro). Connexion instantanée et charge rapide anti-usure."},
-  {id:21,nom:"Ventilateur Brumisateur Double Hélice",cat:"maison",emoji:"🌬️",img:UNSPLASH("photo-1565374395542-0ce18882c857"),prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Rafraîchit et humidifie l'air pour braver la chaleur de Conakry. Rechargeable, silencieux, avec brumisation fine réglable."},
-  {id:22,nom:"Pack iRed Ultra — Montre + Écouteurs + Powerbank",cat:"tech",emoji:"⌚",img:UNSPLASH("photo-1542751110-97427bbecf20"),prix:"320 000",old:"470 000",stock:true,badge:"chaud",desc:"Trio connecté complet : montre intelligente, écouteurs sans fil et batterie externe. Le coffret tech parfait à offrir ou s'offrir."},
-  {id:23,nom:"Pack Santé 4-en-1 — Tension · Oxymètre · Glycémie · Thermomètre",cat:"sante",emoji:"🩺",img:UNSPLASH("photo-1576091160550-2173dba999ef"),prix:"295 000",old:"430 000",stock:true,badge:"chaud",desc:"Surveillez tension, oxygène, glycémie et température à la maison. Le kit familial complet pour veiller sur vos proches."},
-  {id:24,nom:"Carbostyle — Coupe-Ongles Inox Premium",cat:"beaute",emoji:"✂️",img:UNSPLASH("photo-1599351431202-1e0f0137899a"),prix:"165 000",old:"250 000",stock:true,badge:"",desc:"Coupe nette et précise pour les ongles des mains et des pieds. Acier inoxydable robuste avec récupérateur intégré."},
+  {id:1,nom:"Shilajit Gummies Himalayen — Énergie & Vitalité",cat:"sante",emoji:"🍯",img:UNSPLASH("photo-1607619056574-7b8d3ee536b2"),prix:"245 000",old:"360 000",stock:true,badge:"chaud",desc:"Cure de minéraux purs de l'Himalaya pour booster énergie, endurance et immunité. 1 gomme par jour, effet ressenti dès la 1ʳᵉ semaine.",video:""},
+  {id:2,nom:"Crème Kojic Anti-Taches & Anti-Acné",cat:"beaute",emoji:"✨",img:UNSPLASH("photo-1620916566398-39f1143ab7be"),prix:"165 000",old:"250 000",stock:true,badge:"new",desc:"Estompe taches brunes, boutons et cicatrices pour un teint clair et uniforme. Formule à l'acide kojique, résultats visibles en 14 jours.",video:""},
+  {id:3,nom:"Poudre Minérale AQA — Restauration de l'Émail",cat:"beaute",emoji:"🦷",img:UNSPLASH("photo-1606811841689-23dfddce3e95"),prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Reminéralise et blanchit les dents en comblant les micro-fissures de l'émail. Un sourire éclatant à la maison, sans dentiste.",video:""},
+  {id:4,nom:"Power Back — Correcteur de Posture Dos",cat:"sante",emoji:"💪",img:UNSPLASH("photo-1573461160327-b450ce3d8e7f"),prix:"175 000",old:"260 000",stock:true,badge:"",desc:"Redresse les épaules et soulage les douleurs de dos au quotidien. Discret sous les vêtements, ajustable à toutes les morphologies.",video:""},
+  {id:5,nom:"BeeNail™ — Spray au Venin d'Abeille (Ongles)",cat:"beaute",emoji:"💅",img:UNSPLASH("photo-1604654894610-df63bc536371"),prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Traite les ongles abîmés, jaunis ou fragiles et stoppe la mycose. Des ongles sains et brillants en quelques semaines.",video:""},
+  {id:6,nom:"Savon au Curcuma 100% Naturel",cat:"beaute",emoji:"🧼",img:UNSPLASH("photo-1600857544200-b2f666a9a2ec"),prix:"150 000",old:"220 000",stock:true,badge:"",desc:"Éclaircit, purifie et unifie la peau tout en luttant contre l'acné. Curcuma pur, parfaitement adapté aux peaux africaines.",video:""},
+  {id:7,nom:"Crème Colorante Cheveux aux Fruits Naturels",cat:"beaute",emoji:"💇",img:UNSPLASH("photo-1522337660859-02fbefca4702"),prix:"175 000",old:"260 000",stock:true,badge:"new",desc:"Couvre les cheveux blancs d'une couleur riche et durable, sans ammoniaque. Aux extraits de fruits qui nourrissent la fibre.",video:""},
+  {id:8,nom:"Masque Anti-Rides Or · Venin de Serpent · Rétinol",cat:"beaute",emoji:"🐍",img:UNSPLASH("photo-1598440947619-2c35fc9aa908"),prix:"230 000",old:"340 000",stock:true,badge:"chaud",desc:"Lisse les rides et raffermit la peau pour un effet lifting immédiat. Trio premium or + rétinol + peptide de venin.",video:""},
+  {id:9,nom:"Gaine Minceur Invisible Ventre Plat",cat:"mode",emoji:"🩱",img:UNSPLASH("photo-1540555700478-4be289fbecef"),prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Affine la taille et gomme les bourrelets instantanément sous toute tenue. Maintien ferme et respirant toute la journée.",video:""},
+  {id:10,nom:"Genouillère Anti-Arthrose Compression",cat:"sante",emoji:"🦵",img:UNSPLASH("photo-1517344884509-a0c97ec11bcc"),prix:"165 000",old:"250 000",stock:true,badge:"",desc:"Soutient le genou et soulage les douleurs d'arthrose et articulaires. Compression chauffante pour bouger à nouveau sans douleur.",video:""},
+  {id:11,nom:"Coupe-Ongles & Polisseur Électrique 2-en-1",cat:"beaute",emoji:"💅",img:UNSPLASH("photo-1610992015732-2449b76344bc"),prix:"175 000",old:"260 000",stock:true,badge:"new",desc:"Coupe et polit les ongles sans effort, mains comme pieds. Rechargeable et sûr pour toute la famille, même les enfants.",video:""},
+  {id:12,nom:"Masque de Protection Visage Réutilisable",cat:"sante",emoji:"😷",img:UNSPLASH("photo-1588872657578-7efd1f1555ed"),prix:"155 000",old:"230 000",stock:true,badge:"",desc:"Filtre poussière et particules avec un confort respirant longue durée. Lavable et ajusté, idéal en ville et dans les transports.",video:""},
+  {id:13,nom:"Additif Huile Moteur Anti-Usure Protectant",cat:"auto",emoji:"🛢️",img:UNSPLASH("photo-1605559424843-9e4c228bf1c2"),prix:"190 000",old:"280 000",stock:true,badge:"top",desc:"Protège le moteur, réduit les frottements et prolonge sa durée de vie. Moins de bruit et plus de puissance dès le 1er plein.",video:""},
+  {id:14,nom:"CarboStyle™ — Blanchiment Dentaire Charbon Actif",cat:"beaute",emoji:"🦷",img:UNSPLASH("photo-1588776814546-1ffcf47267a5"),prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Élimine les taches de café, thé et tabac pour des dents nettement plus blanches. Charbon actif naturel, sans abîmer l'émail.",video:""},
+  {id:15,nom:"Chargeur Voiture Rapide 100W Double USB-C",cat:"auto",emoji:"🔌",img:UNSPLASH("photo-1632823469850-2f77dd9c7f93"),prix:"175 000",old:"260 000",stock:true,badge:"new",desc:"Recharge 2 appareils à pleine vitesse en voiture. Compatible smartphones, tablettes et GPS, avec sécurité anti-surchauffe.",video:""},
+  {id:16,nom:"Phares Voiture H7 C6 Ultra Lumineux (x2)",cat:"auto",emoji:"💡",img:UNSPLASH("photo-1542362567-b07e54358753"),prix:"185 000",old:"280 000",stock:true,badge:"chaud",desc:"Éclairage blanc puissant pour une visibilité maximale la nuit. Installation facile, longue durée et faible consommation.",video:""},
+  {id:17,nom:"Spray d'Étanchéité Anti-Fuite IPX6",cat:"maison",emoji:"🧴",img:UNSPLASH("photo-1527515637462-cff94eecc1ac"),prix:"165 000",old:"250 000",stock:true,badge:"",desc:"Stoppe instantanément fuites et infiltrations sur toit, gouttière et tuyaux. Film caoutchouc imperméable, intérieur comme extérieur.",video:""},
+  {id:18,nom:"Mini Karcher — Pistolet Haute Pression Sans Fil",cat:"maison",emoji:"💦",img:UNSPLASH("photo-1581578731548-c64695cc6952"),prix:"235 000",old:"340 000",stock:true,badge:"chaud",desc:"Nettoie voiture, terrasse et moto avec une pression puissante. Sans fil et rechargeable, prêt partout en quelques secondes.",video:""},
+  {id:19,nom:"Crème Nettoyante & Entretien Cuir",cat:"auto",emoji:"🪑",img:UNSPLASH("photo-1449965408869-eaa3f722e40d"),prix:"170 000",old:"250 000",stock:true,badge:"",desc:"Nettoie, nourrit et protège sièges, canapés et sacs en cuir. Ravive l'éclat d'origine et prévient les craquelures.",video:""},
+  {id:20,nom:"FlexiMag — Câble Magnétique de Charge 3-en-1",cat:"tech",emoji:"🔌",img:UNSPLASH("photo-1583394838336-acd977736f90"),prix:"150 000",old:"220 000",stock:true,badge:"top",desc:"Recharge tous vos appareils avec un seul câble aimanté (USB-C, Lightning, Micro). Connexion instantanée et charge rapide anti-usure.",video:""},
+  {id:21,nom:"Ventilateur Brumisateur Double Hélice",cat:"maison",emoji:"🌬️",img:UNSPLASH("photo-1565374395542-0ce18882c857"),prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Rafraîchit et humidifie l'air pour braver la chaleur de Conakry. Rechargeable, silencieux, avec brumisation fine réglable.",video:""},
+  {id:22,nom:"Pack iRed Ultra — Montre + Écouteurs + Powerbank",cat:"tech",emoji:"⌚",img:UNSPLASH("photo-1542751110-97427bbecf20"),prix:"320 000",old:"470 000",stock:true,badge:"chaud",desc:"Trio connecté complet : montre intelligente, écouteurs sans fil et batterie externe. Le coffret tech parfait à offrir ou s'offrir.",video:""},
+  {id:23,nom:"Pack Santé 4-en-1 — Tension · Oxymètre · Glycémie · Thermomètre",cat:"sante",emoji:"🩺",img:UNSPLASH("photo-1576091160550-2173dba999ef"),prix:"295 000",old:"430 000",stock:true,badge:"chaud",desc:"Surveillez tension, oxygène, glycémie et température à la maison. Le kit familial complet pour veiller sur vos proches.",video:""},
+  {id:24,nom:"Carbostyle — Coupe-Ongles Inox Premium",cat:"beaute",emoji:"✂️",img:UNSPLASH("photo-1599351431202-1e0f0137899a"),prix:"165 000",old:"250 000",stock:true,badge:"",desc:"Coupe nette et précise pour les ongles des mains et des pieds. Acier inoxydable robuste avec récupérateur intégré.",video:""},
 ];
 
 const CATS = {beaute:"💄 Beauté",sante:"💪 Santé",auto:"🚗 Auto & Moto",maison:"🏠 Maison",tech:"📱 Tech",mode:"👗 Mode"};
@@ -1897,8 +1900,26 @@ function openPD(id){
     bigImg.className = "pd-media-img";
     media.insertBefore(bigImg, document.getElementById("pdEmoji"));
   }
-  bigImg.style.backgroundImage = `url('${UNSPLASH(p.img.match(/photo-[a-z0-9-]+/)?.[0]||"",800)}'),linear-gradient(135deg,#FFF8F0,#FFF0D0)`;
+  const bigUrl = UNSPLASH(p.img.match(/photo-[a-z0-9-]+/)?.[0]||"",800);
+  bigImg.style.backgroundImage = `url('${bigUrl}'),linear-gradient(135deg,#FFF8F0,#FFF0D0)`;
   document.getElementById("pdEmoji").style.display = "none";
+
+  // Vidéo démo : chargée UNIQUEMENT à l'ouverture du produit (preload=none), en sourdine.
+  // Pour activer : ajouter video:"https://....mp4" sur le produit dans le tableau `produits`.
+  const pdVideo = document.getElementById("pdVideo");
+  if(p.video){
+    pdVideo.poster = bigUrl;
+    pdVideo.src = p.video;
+    pdVideo.style.display = "block";
+    bigImg.style.display = "none";
+    pdVideo.play().catch(()=>{});
+  } else {
+    pdVideo.pause();
+    pdVideo.removeAttribute("src");
+    pdVideo.load();
+    pdVideo.style.display = "none";
+    bigImg.style.display = "";
+  }
 
   ["pdPhotoEmoji1","pdPhotoEmoji2","pdPhotoEmoji3"].forEach(id=>{
     document.getElementById(id).textContent = p.emoji;
@@ -1919,6 +1940,9 @@ function openPD(id){
 }
 
 function closePD(){
+  // Stopper la vidéo et libérer le téléchargement (data) à la fermeture
+  const pdVideo = document.getElementById("pdVideo");
+  if(pdVideo){ pdVideo.pause(); pdVideo.removeAttribute("src"); pdVideo.load(); }
   document.getElementById("pdOverlay").classList.remove("show");
   document.body.style.overflow="";
 }
