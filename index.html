@@ -219,18 +219,22 @@ section{padding:5.5rem 6%;}
 /* PRODUCT DETAIL OVERLAY */
 .pd-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;overflow-y:auto;padding:2rem;backdrop-filter:blur(4px);}
 .pd-overlay.show{display:block;}
-.pd-container{max-width:900px;margin:0 auto;position:relative;}
+.pd-container{max-width:980px;margin:0 auto;position:relative;}
 .pd-close{position:absolute;top:-15px;right:-15px;background:var(--red);border:none;color:#fff;width:42px;height:42px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;box-shadow:0 4px 15px rgba(232,0,28,.4);transition:background .3s;}
 .pd-close:hover{background:#8b0000;}
-.pd-box{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.25);}
-.pd-top{display:grid;grid-template-columns:1fr 1fr;}
-.pd-media{background:linear-gradient(135deg,#FFF8F0,#FFF0D0);min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;padding:2.5rem;}
+.pd-box{background:#fff;border-radius:16px;overflow:visible;box-shadow:0 25px 80px rgba(0,0,0,.25);}
+.pd-split{display:grid;grid-template-columns:minmax(0,0.92fr) minmax(0,1.08fr);align-items:start;}
+.pd-visual{position:sticky;top:.5rem;align-self:start;padding:1.4rem 1.4rem 1.6rem;background:linear-gradient(135deg,#FFF8F0,#FFF0D0);border-radius:16px 0 0 0;}
+.pd-order{border-radius:0 16px 0 0;}
+.pd-details{position:relative;z-index:2;background:#fff;border-radius:0 0 16px 0;}
+@media(max-width:900px){.pd-details{border-radius:0;}}
+.pd-media{display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .pd-emoji{font-size:7rem;filter:drop-shadow(0 8px 20px rgba(245,168,0,0.3));}
 .pd-video-box{width:100%;background:rgba(0,0,0,0.05);border:2px dashed rgba(245,168,0,0.4);border-radius:10px;padding:1.5rem;text-align:center;}
 .play-btn{font-size:2.5rem;display:block;margin-bottom:.4rem;}
 .pd-video-box strong{display:block;color:var(--dark);font-size:.88rem;margin-bottom:.2rem;}
 .pd-video-box small{color:var(--muted2);font-size:.72rem;}
-.pd-info{padding:2.5rem;border-left:1px solid var(--border);}
+.pd-visual-info{margin-top:1.1rem;}
 .pd-cat-tag{display:inline-block;background:rgba(245,168,0,.1);color:var(--gold);font-size:.65rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:30px;margin-bottom:.8rem;}
 .pd-name{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:1px;color:var(--dark);margin-bottom:.7rem;line-height:1.1;}
 .pd-stars{color:var(--gold);font-size:.9rem;margin-bottom:.8rem;}
@@ -241,7 +245,7 @@ section{padding:5.5rem 6%;}
 .pd-saving{font-size:.75rem;font-weight:800;color:#fff;background:var(--green);padding:3px 10px;border-radius:30px;}
 .pd-delivery{background:#F0FDF4;border:1.5px solid rgba(26,138,46,0.25);border-radius:8px;padding:.8rem 1rem;font-size:.82rem;color:var(--green);font-weight:700;margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem;}
 .pd-stock-status{font-size:.8rem;font-weight:700;margin-bottom:1rem;}
-.pd-form-section{background:var(--bg);border-top:2px solid var(--border);padding:2.5rem;}
+.pd-order{padding:1.5rem 1.6rem 1.8rem;display:flex;flex-direction:column;}
 .pd-form-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;color:var(--dark);margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem;}
 .fg{margin-bottom:1.1rem;}
 .fg label{display:block;font-size:.72rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem;}
@@ -255,7 +259,53 @@ section{padding:5.5rem 6%;}
 .pay-ico{font-size:1.3rem;display:block;margin-bottom:.2rem;}
 .order-btn{width:100%;background:linear-gradient(90deg,var(--red),#c00015);color:#fff;border:none;padding:16px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;cursor:pointer;transition:all .35s;margin-top:1rem;box-shadow:0 6px 20px rgba(232,0,28,.35);}
 .order-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(232,0,28,.45);}
-.form-note{text-align:center;font-size:.72rem;color:var(--muted2);margin-top:.8rem;display:flex;align-items:center;justify-content:center;gap:.4rem;}
+.form-note{text-align:center;font-size:.72rem;color:var(--muted2);margin-top:.8rem;display:flex;align-items:center;justify-content:center;gap:.4rem;flex-wrap:wrap;}
+
+/* ===== REFONTE PAGE COMMANDE — split sticky, mobile-first ===== */
+.pd-thumbs{display:grid;grid-auto-flow:column;grid-auto-columns:58px;justify-content:start;gap:.5rem;margin-top:.9rem;}
+.pd-thumbs .pd-photo{width:58px;height:58px;font-size:1.3rem;border-radius:8px;}
+.pd-thumbs .pd-photo::after{display:none;}
+.pd-stars-lbl{color:var(--muted2);font-size:.72rem;}
+.pd-visual-info .pd-name{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.5px;color:var(--dark);margin-bottom:.4rem;line-height:1.05;}
+.pd-visual-info .pd-desc{font-size:.84rem;color:var(--muted);line-height:1.65;margin-top:.7rem;margin-bottom:0;}
+.pd-visual-info .pd-price-row{margin-bottom:0;flex-wrap:wrap;}
+.pd-order .pd-form-title{margin-bottom:1rem;font-size:1.45rem;}
+.pd-trust{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.8rem;}
+.pd-trust-item{display:flex;align-items:center;gap:.5rem;background:#F0FDF4;border:1.5px solid rgba(26,138,46,.22);border-radius:8px;padding:.6rem .7rem;font-size:.74rem;font-weight:700;color:var(--green);line-height:1.2;}
+.pd-trust-item span{font-size:1.15rem;line-height:1;}
+.pd-social{display:flex;align-items:center;gap:.5rem;font-size:.76rem;color:var(--muted);background:#fff;border:1px solid var(--border);border-radius:8px;padding:.55rem .7rem;margin-bottom:1rem;}
+.pd-social b{color:var(--dark);}
+.pd-social-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:cartPulse 2s infinite;flex-shrink:0;}
+.pd-summary{display:flex;align-items:center;gap:.7rem;background:#fff8f8;border:1px solid #fecaca;border-radius:10px;padding:.7rem;margin-bottom:1rem;}
+.pd-sum-img{width:54px;height:54px;border-radius:8px;background:#fff center/contain no-repeat;border:1px solid var(--border);flex-shrink:0;}
+.pd-sum-info{flex:1;min-width:0;}
+.pd-sum-name{font-size:.82rem;font-weight:800;color:var(--dark);line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.pd-sum-stock{font-size:.68rem;font-weight:700;color:var(--green);margin-top:.15rem;}
+.pd-sum-total{text-align:right;flex-shrink:0;}
+.pd-sum-total span{display:block;font-size:.58rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted2);font-weight:700;}
+.pd-sum-total strong{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:var(--red);letter-spacing:.5px;}
+/* touch targets + 16px (anti-zoom iOS) */
+.pd-order .fg input,.pd-order .fg select{font-size:16px;min-height:48px;padding:13px 14px;}
+.pd-order .pay-opt{min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;font-size:.72rem;}
+.pd-order .order-btn{min-height:56px;border-radius:10px;letter-spacing:1.5px;}
+@media(max-width:900px){
+  .pd-overlay{padding:0;}
+  .pd-container{max-width:100%;}
+  .pd-box{border-radius:0;min-height:100vh;}
+  .pd-close{position:fixed;top:9px;right:9px;width:38px;height:38px;z-index:20;}
+  .pd-split{grid-template-columns:1fr;}
+  .pd-visual{position:sticky;top:0;z-index:6;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"media info" "thumbs thumbs";gap:.1rem .9rem;align-items:center;padding:.65rem .85rem .65rem;border-bottom:2px solid var(--border);box-shadow:0 5px 16px rgba(0,0,0,.08);}
+  .pd-visual-info{padding-right:44px;}
+  .pd-visual .pd-media{grid-area:media;width:88px;}
+  .pd-visual .pd-media-img{height:88px;width:88px;}
+  .pd-emoji{font-size:2.6rem;}
+  .pd-visual-info{grid-area:info;margin-top:0;}
+  .pd-visual-info .pd-name{font-size:1.05rem;margin-bottom:.15rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .pd-cat-tag,.pd-stars,.pd-visual-info .pd-desc{display:none;}
+  .pd-visual-info .pd-price{font-size:1.35rem;}
+  .pd-thumbs{grid-area:thumbs;margin-top:.5rem;}
+  .pd-order{padding:1.1rem 1rem 1.6rem;}
+}
 
 /* HOW */
 .how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-top:3rem;}
@@ -347,7 +397,7 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 .reveal.in{opacity:1;transform:translateY(0);}
 
 /* RESPONSIVE */
-@media(max-width:900px){.pd-top{grid-template-columns:1fr;}.foot-top{grid-template-columns:1fr 1fr;}.pay-opts{grid-template-columns:repeat(3,1fr);}.frow{grid-template-columns:1fr;}}
+@media(max-width:900px){.foot-top{grid-template-columns:1fr 1fr;}.frow{grid-template-columns:1fr;}}
 @media(max-width:600px){.prod-grid{grid-template-columns:repeat(2,1fr);}.foot-top{grid-template-columns:1fr;}.strip{gap:.8rem;}.hero h1{font-size:3rem;}.hero-stats{gap:1rem;}.prod-badge{font-size:.52rem;padding:2px 6px;letter-spacing:.5px;max-width:46%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.prod-stock-low{font-size:.5rem;padding:2px 5px;letter-spacing:.3px;max-width:46%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}}
 @media(max-width:500px){.recap-footer{flex-direction:column;}.recap-btn-confirm,.recap-btn-edit{width:100%;}.nav-brand-text{font-size:1.15rem;}}
 
@@ -552,7 +602,7 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 /* Photos produits réelles (Unsplash) */
 .prod-img-real{height:180px;background-size:contain !important;background-position:center;background-repeat:no-repeat;position:relative;transition:transform .4s ease;}
 .prod-card:hover .prod-img-real{transform:scale(1.05);}
-.pd-media-img{width:100%;min-height:340px;background-size:contain;background-repeat:no-repeat;background-position:center;border-radius:10px;}
+.pd-media-img{width:100%;height:300px;background-size:contain;background-repeat:no-repeat;background-position:center;border-radius:10px;}
 .pd-video{width:100%;max-height:440px;background:#000;border-radius:10px;display:block;object-fit:cover;}
 
 /* Quantity selector */
@@ -1603,58 +1653,67 @@ a, button, input, select{transition:all .25s ease;}
   <div class="pd-container">
     <button class="pd-close" onclick="closePD()">✕</button>
     <div class="pd-box">
-      <div class="pd-top">
-        <div class="pd-media">
-          <!-- VIDÉO DÉMO (affichée si le produit a un champ "video") -->
-          <video id="pdVideo" class="pd-video" muted loop playsinline controls preload="none" style="display:none"></video>
-          <div class="pd-emoji" id="pdEmoji">🛍</div>
-          <!-- 3 PHOTOS PRODUIT -->
-          <div class="pd-photos">
-            <div class="pd-photo active" id="pdPhoto1" data-label="Vue face" onclick="selectPhoto(this, 'face')">
-              <span id="pdPhotoEmoji1">🛍</span>
-            </div>
-            <div class="pd-photo" id="pdPhoto2" data-label="Vue côté" onclick="selectPhoto(this, 'cote')">
-              <span id="pdPhotoEmoji2">🛍</span>
-            </div>
-            <div class="pd-photo" id="pdPhoto3" data-label="En usage" onclick="selectPhoto(this, 'usage')">
-              <span id="pdPhotoEmoji3">🛍</span>
-            </div>
+      <div class="pd-split">
+        <!-- ===== GAUCHE : visuel produit (sticky) ===== -->
+        <div class="pd-visual">
+          <div class="pd-media">
+            <!-- VIDÉO DÉMO (affichée si le produit a un champ "video") -->
+            <video id="pdVideo" class="pd-video" muted loop playsinline controls preload="none" style="display:none"></video>
+            <div class="pd-emoji" id="pdEmoji">🛍</div>
           </div>
-        </div>
-        <div class="pd-info">
-          <div class="pd-cat-tag" id="pdCat">Catégorie</div>
-          <div class="pd-name" id="pdName">Nom du produit</div>
-          <div class="pd-stars">★★★★★ <span style="color:var(--muted2);font-size:.78rem">(Avis vérifiés)</span></div>
-          <div class="pd-desc" id="pdDesc">Description</div>
-          <div class="pd-price-row">
-            <div class="pd-price" id="pdPrice">200 000 GNF</div>
-            <div class="pd-old-price" id="pdOld">300 000 GNF</div>
-            <div class="pd-saving" id="pdSaving">-33%</div>
+          <!-- GALERIE MINIATURES (sous l'image principale) -->
+          <div class="pd-thumbs pd-photos">
+            <div class="pd-photo active" id="pdPhoto1" onclick="selectPhoto(this, 'face')"><span id="pdPhotoEmoji1">🛍</span></div>
+            <div class="pd-photo" id="pdPhoto2" onclick="selectPhoto(this, 'cote')"><span id="pdPhotoEmoji2">🛍</span></div>
+            <div class="pd-photo" id="pdPhoto3" onclick="selectPhoto(this, 'usage')"><span id="pdPhotoEmoji3">🛍</span></div>
           </div>
-          <div class="pd-delivery">🚚 Livraison GRATUITE partout en Guinée via Rapido</div>
-          <div class="pd-stock-status" id="pdStock">✅ En stock — Livraison sous 24–48h</div>
-        </div>
-      </div>
-      <!-- DÉTAILS : mode d'emploi + vidéo démo + images pub (rempli par openPD) -->
-      <div class="pd-details" id="pdDetails"></div>
-      <div class="pd-form-section">
-        <div class="pd-form-title">📦 Passer ma commande</div>
-
-        <div class="qty-row">
-          <span class="qty-label">Quantité</span>
-          <div class="qty-box">
-            <button class="qty-btn" type="button" onclick="updateQty(-1)">−</button>
-            <span class="qty-val" id="pdQty">1</span>
-            <button class="qty-btn" type="button" onclick="updateQty(1)">+</button>
+          <div class="pd-visual-info">
+            <div class="pd-cat-tag" id="pdCat">Catégorie</div>
+            <div class="pd-name" id="pdName">Nom du produit</div>
+            <div class="pd-stars">★★★★★ <span class="pd-stars-lbl">(Avis vérifiés)</span></div>
+            <div class="pd-price-row">
+              <div class="pd-price" id="pdPrice">200 000 GNF</div>
+              <div class="pd-old-price" id="pdOld">300 000 GNF</div>
+              <div class="pd-saving" id="pdSaving">-33%</div>
+            </div>
+            <div class="pd-desc" id="pdDesc">Description</div>
           </div>
         </div>
 
-        <div class="pd-total-row">
-          <span>Total à payer</span>
-          <strong id="pdTotal">0 GNF</strong>
-        </div>
+        <!-- ===== DROITE : commande + détails (colonne défilante) ===== -->
+        <div class="pd-right">
+        <div class="pd-order">
+          <div class="pd-form-title">📦 Passer ma commande</div>
 
-        <div class="frow">
+          <!-- Réassurance COD -->
+          <div class="pd-trust">
+            <div class="pd-trust-item"><span>🚚</span>Livraison Conakry<br>sous 24–48h</div>
+            <div class="pd-trust-item"><span>💵</span>Paiement à<br>la réception</div>
+          </div>
+
+          <!-- Preuve sociale -->
+          <div class="pd-social"><span class="pd-social-dot"></span><b id="pdRecentCount">18</b>&nbsp;personnes ont commandé aujourd'hui&nbsp;·&nbsp;★★★★★ 4,8/5</div>
+
+          <!-- Résumé commande : photo + nom + total -->
+          <div class="pd-summary">
+            <div class="pd-sum-img" id="pdSumImg"></div>
+            <div class="pd-sum-info">
+              <div class="pd-sum-name" id="pdSumName">Produit</div>
+              <div class="pd-sum-stock" id="pdStock">✅ En stock — 24–48h</div>
+            </div>
+            <div class="pd-sum-total"><span>Total</span><strong id="pdTotal">0 GNF</strong></div>
+          </div>
+
+          <div class="qty-row">
+            <span class="qty-label">Quantité</span>
+            <div class="qty-box">
+              <button class="qty-btn" type="button" onclick="updateQty(-1)">−</button>
+              <span class="qty-val" id="pdQty">1</span>
+              <button class="qty-btn" type="button" onclick="updateQty(1)">+</button>
+            </div>
+          </div>
+
+          <div class="frow">
           <div class="fg"><label>Prénom & Nom *</label><input type="text" id="pdNom" placeholder="Ex: Fatoumata Diallo" autocomplete="name"></div>
           <div class="fg"><label>Téléphone *</label><input type="tel" id="pdTel" placeholder="622 00 00 00" autocomplete="tel" maxlength="13"></div>
         </div>
@@ -1690,8 +1749,12 @@ a, button, input, select{transition:all .25s ease;}
             <p class="om-info-steps"><b>Comment payer :</b><br>1. Composez <b>#144#</b><br>2. Envoyer de l'argent → <b>+224 621 88 12 10</b><br>3. Copiez l'ID de transaction reçu par SMS<br>4. Collez-le ci-dessus et confirmez</p>
           </div>
         </div>
-        <button class="order-btn" id="orderBtn" onclick="passerCommande()">🛒 CONFIRMER MA COMMANDE — LIVRAISON GRATUITE</button>
-        <p class="form-note">🔒 Données confidentielles &nbsp;·&nbsp; Réponse de notre équipe sous 1h</p>
+          <button class="order-btn" id="orderBtn" onclick="passerCommande()">🛒 Commander maintenant</button>
+          <p class="form-note">🔒 Données confidentielles &nbsp;·&nbsp; Sans paiement en ligne &nbsp;·&nbsp; Réponse sous 1h</p>
+        </div>
+        <!-- DÉTAILS : mode d'emploi + vidéo démo + images pub (rempli par openPD) -->
+        <div class="pd-details" id="pdDetails"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1925,6 +1988,14 @@ function openPD(id){
   const bigUrl = gallery[0];
   bigImg.style.backgroundImage = `url('${bigUrl}'),linear-gradient(135deg,#FFF8F0,#FFF0D0)`;
   document.getElementById("pdEmoji").style.display = "none";
+
+  // Résumé commande (photo + nom produit) + preuve sociale
+  const _sumImg = document.getElementById("pdSumImg");
+  if(_sumImg) _sumImg.style.backgroundImage = `url('${bigUrl}')`;
+  const _sumName = document.getElementById("pdSumName");
+  if(_sumName) _sumName.textContent = p.nom;
+  const _rc = document.getElementById("pdRecentCount");
+  if(_rc) _rc.textContent = 8 + Math.floor(Math.random()*22);
 
   // La vidéo n'est PLUS en haut : le haut affiche la galerie d'images.
   // (la démo vidéo est déplacée dans la section détails, plus bas)
@@ -2902,8 +2973,8 @@ function renderCrossSell(currentId){
     csBox = document.createElement('div');
     csBox.id = 'crossSell';
     csBox.className = 'cross-sell';
-    const formSection = document.querySelector('.pd-form-section');
-    if(formSection) formSection.parentNode.insertBefore(csBox, formSection);
+    const anchor = document.getElementById('pdDetails');
+    if(anchor) anchor.parentNode.insertBefore(csBox, anchor);
   }
   csBox.innerHTML = picks.length ? `
     <div class="cross-sell-title">✨ Vous aimerez aussi</div>
