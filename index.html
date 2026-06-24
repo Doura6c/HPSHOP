@@ -517,7 +517,18 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
   box-shadow: 0 4px 15px rgba(232,0,28,.2);
   transform: scale(1.05);
 }
-.pd-photo.active { border-color: var(--red); border-width: 2px; }
+.pd-photo.active { border-color: var(--gold); border-width: 3px; box-shadow:0 4px 16px rgba(245,168,0,.4); transform:scale(1.05); }
+/* SECTION DÉTAILS PRODUIT : mode d'emploi + vidéo + images pub */
+.pd-details{padding:0 2.5rem 1.6rem;background:#fff;}
+.pd-det-block{margin-top:1.9rem;}
+.pd-det-title{font-weight:900;font-size:1.08rem;color:#1a1a1a;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;border-left:4px solid var(--red);padding-left:.7rem;}
+.pd-usage{margin:0;padding:0;list-style:none;counter-reset:step;display:flex;flex-direction:column;gap:.7rem;}
+.pd-usage li{position:relative;padding:.75rem 1rem .75rem 3.1rem;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;font-size:.93rem;line-height:1.45;counter-increment:step;}
+.pd-usage li::before{content:counter(step);position:absolute;left:.75rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;background:linear-gradient(135deg,var(--red),#b8001a);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem;}
+.pd-video-detail{width:100%;max-height:480px;background:#000;border-radius:12px;display:block;}
+.pd-pub{display:flex;flex-direction:column;gap:1rem;}
+.pd-pub img{width:100%;border-radius:12px;display:block;background:var(--bg);}
+@media(max-width:600px){.pd-details{padding:0 1.2rem 1.2rem;}}
 
 /* NAV LOGO GRAND */
 .nav-logo { height: 90px !important; object-fit: contain; }
@@ -1619,6 +1630,8 @@ a, button, input, select{transition:all .25s ease;}
           <div class="pd-stock-status" id="pdStock">✅ En stock — Livraison sous 24–48h</div>
         </div>
       </div>
+      <!-- DÉTAILS : mode d'emploi + vidéo démo + images pub (rempli par openPD) -->
+      <div class="pd-details" id="pdDetails"></div>
       <div class="pd-form-section">
         <div class="pd-form-title">📦 Passer ma commande</div>
 
@@ -1799,31 +1812,31 @@ const CONFIG = {
 const UNSPLASH = (q,w=400)=>`https://images.unsplash.com/${q}?auto=format&fit=crop&w=${w}&q=70`;
 
 const produits=[
-  {id:1,nom:"Shilajit Gummies Himalayen — Énergie & Vitalité",cat:"sante",emoji:"🍯",img:"assets/products/p01-shilajit.jpg",prix:"245 000",old:"360 000",stock:true,badge:"chaud",desc:"Cure de minéraux purs de l'Himalaya pour booster énergie, endurance et immunité. 1 gomme par jour, effet ressenti dès la 1ʳᵉ semaine.",imgs:["assets/products/p01b-lifestyle.jpg"],video:"assets/videos/p01-shilajit.mp4"},
-  {id:2,nom:"Crème Kojic Anti-Taches & Anti-Acné",cat:"beaute",emoji:"✨",img:"assets/products/p02-kojic.jpg",prix:"165 000",old:"250 000",stock:true,badge:"new",desc:"Estompe taches brunes, boutons et cicatrices pour un teint clair et uniforme. Formule à l'acide kojique, résultats visibles en 14 jours.",imgs:["assets/products/p02b-avant-apres.jpg","assets/products/p02c-jars.jpg"],video:"assets/videos/p02-kojic.mp4"},
-  {id:3,nom:"Poudre Minérale AQA — Restauration de l'Émail",cat:"beaute",emoji:"🦷",img:"assets/products/p03-aqa-dents.jpg",prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Reminéralise et blanchit les dents en comblant les micro-fissures de l'émail. Un sourire éclatant à la maison, sans dentiste.",imgs:["assets/products/p03b-benefices.jpg","assets/products/p03c-action.jpg"],video:""},
+  {id:1,nom:"Shilajit Gummies Himalayen — Énergie & Vitalité",cat:"sante",emoji:"🍯",img:"assets/products/p01-shilajit.jpg",prix:"245 000",old:"360 000",stock:true,badge:"chaud",desc:"Cure de minéraux purs de l'Himalaya pour booster énergie, endurance et immunité. 1 gomme par jour, effet ressenti dès la 1ʳᵉ semaine.",usage:["Prenez 1 à 2 gommes par jour, de préférence le matin.","Mâchez bien avant d'avaler — inutile de prendre avec de l'eau.","Faites une cure régulière pour une énergie et une vitalité durables."],pub:["assets/products/p01b-lifestyle.jpg"],video:"assets/videos/p01-shilajit.mp4"},
+  {id:2,nom:"Crème Kojic Anti-Taches & Anti-Acné",cat:"beaute",emoji:"✨",img:"assets/products/p02-kojic.jpg",prix:"165 000",old:"250 000",stock:true,badge:"new",desc:"Estompe taches brunes, boutons et cicatrices pour un teint clair et uniforme. Formule à l'acide kojique, résultats visibles en 14 jours.",imgs:["assets/products/p02c-jars.jpg"],usage:["Nettoyez et séchez votre visage matin et soir.","Appliquez une fine couche de crème sur les zones à traiter.","Massez délicatement jusqu'à absorption, en évitant le contour des yeux.","Le jour, appliquez une protection solaire pour de meilleurs résultats."],pub:["assets/products/p02b-avant-apres.jpg"],video:"assets/videos/p02-kojic.mp4"},
+  {id:3,nom:"Poudre Minérale AQA — Restauration de l'Émail",cat:"beaute",emoji:"🦷",img:"assets/products/p03-aqa-dents.jpg",prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Reminéralise et blanchit les dents en comblant les micro-fissures de l'émail. Un sourire éclatant à la maison, sans dentiste.",imgs:["assets/products/p03b-benefices.jpg"],usage:["Humidifiez votre brosse à dents.","Trempez-la dans la poudre minérale AQA.","Brossez doucement 2 minutes, matin et soir.","Rincez à l'eau : un sourire plus blanc dès les premiers jours."],pub:["assets/products/p03c-action.jpg","assets/products/_extras/aqa-oyikey.jpg"],video:""},
   {id:4,nom:"Power Back — Correcteur de Posture Dos",cat:"sante",emoji:"💪",img:UNSPLASH("photo-1573461160327-b450ce3d8e7f"),prix:"175 000",old:"260 000",stock:true,badge:"",desc:"Redresse les épaules et soulage les douleurs de dos au quotidien. Discret sous les vêtements, ajustable à toutes les morphologies.",video:""},
-  {id:5,nom:"BeeNail™ — Spray au Venin d'Abeille (Ongles)",cat:"beaute",emoji:"💅",img:"assets/products/p05-beenail.jpg",prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Traite les ongles abîmés, jaunis ou fragiles et stoppe la mycose. Des ongles sains et brillants en quelques semaines.",video:""},
+  {id:5,nom:"BeeNail™ — Spray au Venin d'Abeille (Ongles)",cat:"beaute",emoji:"💅",img:"assets/products/p05-beenail.jpg",prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Traite les ongles abîmés, jaunis ou fragiles et stoppe la mycose. Des ongles sains et brillants en quelques semaines.",usage:["Nettoyez et séchez l'ongle concerné.","Vaporisez 2 à 3 fois sur l'ongle et son pourtour.","Laissez sécher sans rincer, matin et soir.","Répétez chaque jour jusqu'à réparation complète de l'ongle."],video:""},
   {id:6,nom:"Savon au Curcuma 100% Naturel",cat:"beaute",emoji:"🧼",img:UNSPLASH("photo-1600857544200-b2f666a9a2ec"),prix:"150 000",old:"220 000",stock:true,badge:"",desc:"Éclaircit, purifie et unifie la peau tout en luttant contre l'acné. Curcuma pur, parfaitement adapté aux peaux africaines.",video:""},
   {id:7,nom:"Crème Colorante Cheveux aux Fruits Naturels",cat:"beaute",emoji:"💇",img:"assets/products/p07-teinture-cheveux.jpg",prix:"175 000",old:"260 000",stock:true,badge:"new",desc:"Couvre les cheveux blancs d'une couleur riche et durable, sans ammoniaque. Aux extraits de fruits qui nourrissent la fibre.",video:""},
   {id:8,nom:"Masque Anti-Rides Or · Venin de Serpent · Rétinol",cat:"beaute",emoji:"🐍",img:"assets/products/p08-masque-or-serpent.jpg",prix:"230 000",old:"340 000",stock:true,badge:"chaud",desc:"Lisse les rides et raffermit la peau pour un effet lifting immédiat. Trio premium or + rétinol + peptide de venin.",video:""},
   {id:9,nom:"Gaine Minceur Invisible Ventre Plat",cat:"mode",emoji:"🩱",img:UNSPLASH("photo-1540555700478-4be289fbecef"),prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Affine la taille et gomme les bourrelets instantanément sous toute tenue. Maintien ferme et respirant toute la journée.",video:""},
   {id:10,nom:"Genouillère Anti-Arthrose Compression",cat:"sante",emoji:"🦵",img:UNSPLASH("photo-1517344884509-a0c97ec11bcc"),prix:"165 000",old:"250 000",stock:true,badge:"",desc:"Soutient le genou et soulage les douleurs d'arthrose et articulaires. Compression chauffante pour bouger à nouveau sans douleur.",video:""},
   {id:11,nom:"Coupe-Ongles & Polisseur Électrique 2-en-1",cat:"beaute",emoji:"💅",img:"assets/products/p11-coupe-ongles-electrique.jpg",prix:"175 000",old:"260 000",stock:true,badge:"new",desc:"Coupe et polit les ongles sans effort, mains comme pieds. Rechargeable et sûr pour toute la famille, même les enfants.",video:""},
-  {id:12,nom:"Masque de Protection Visage Réutilisable",cat:"sante",emoji:"😷",img:"assets/products/p12-masque-protection.jpg",prix:"155 000",old:"230 000",stock:true,badge:"",desc:"Filtre poussière et particules avec un confort respirant longue durée. Lavable et ajusté, idéal en ville et dans les transports.",video:"assets/videos/p12-masque-protection.mp4"},
+  {id:12,nom:"Masque de Protection Visage Réutilisable",cat:"sante",emoji:"😷",img:"assets/products/p12-masque-protection.jpg",prix:"155 000",old:"230 000",stock:true,badge:"",desc:"Filtre poussière et particules avec un confort respirant longue durée. Lavable et ajusté, idéal en ville et dans les transports.",usage:["Dépliez le masque sur le nez et la bouche.","Passez les élastiques derrière les oreilles.","Pincez la barrette nasale pour bien l'ajuster.","Lavable et réutilisable : rincez à l'eau savonneuse après usage."],video:"assets/videos/p12-masque-protection.mp4"},
   {id:13,nom:"Additif Huile Moteur Anti-Usure Protectant",cat:"auto",emoji:"🛢️",img:"assets/products/p13-huile-moteur.jpg",prix:"190 000",old:"280 000",stock:true,badge:"top",desc:"Protège le moteur, réduit les frottements et prolonge sa durée de vie. Moins de bruit et plus de puissance dès le 1er plein.",video:""},
   {id:14,nom:"CarboStyle™ — Cache Frein à Main Fibre de Carbone",cat:"auto",emoji:"🏎️",img:"assets/products/p14-carbostyle-frein.jpg",prix:"165 000",old:"250 000",stock:true,badge:"chaud",desc:"Habille le frein à main de votre voiture d'un cache fibre de carbone premium. Pose clipsable en 30 s, look sportif et anti-rayures.",video:""},
   {id:15,nom:"Chargeur Moto & Scooter Étanche — 2 USB + Interrupteur",cat:"auto",emoji:"🔌",img:"assets/products/p15-chargeur-moto.jpg",prix:"175 000",old:"260 000",stock:true,badge:"new",desc:"Rechargez téléphone et GPS directement sur le guidon, par tous les temps. Étanche, double USB et interrupteur, montage facile.",video:""},
   {id:16,nom:"Phares Voiture H7 C6 Ultra Lumineux (x2)",cat:"auto",emoji:"💡",img:UNSPLASH("photo-1542362567-b07e54358753"),prix:"185 000",old:"280 000",stock:true,badge:"chaud",desc:"Éclairage blanc puissant pour une visibilité maximale la nuit. Installation facile, longue durée et faible consommation.",video:""},
   {id:17,nom:"Spray d'Étanchéité Anti-Fuite IPX6",cat:"maison",emoji:"🧴",img:UNSPLASH("photo-1527515637462-cff94eecc1ac"),prix:"165 000",old:"250 000",stock:true,badge:"",desc:"Stoppe instantanément fuites et infiltrations sur toit, gouttière et tuyaux. Film caoutchouc imperméable, intérieur comme extérieur.",video:""},
   {id:18,nom:"Mini Karcher — Pistolet Haute Pression Sans Fil",cat:"maison",emoji:"💦",img:UNSPLASH("photo-1581578731548-c64695cc6952"),prix:"235 000",old:"340 000",stock:true,badge:"chaud",desc:"Nettoie voiture, terrasse et moto avec une pression puissante. Sans fil et rechargeable, prêt partout en quelques secondes.",video:""},
-  {id:19,nom:"Crème Nettoyante & Entretien Cuir",cat:"auto",emoji:"🪑",img:"assets/products/p19-cuir.jpg",prix:"170 000",old:"250 000",stock:true,badge:"",desc:"Nettoie, nourrit et protège sièges, canapés et sacs en cuir. Ravive l'éclat d'origine et prévient les craquelures.",imgs:["assets/products/p19b-usages.jpg"],video:""},
+  {id:19,nom:"Crème Nettoyante & Entretien Cuir",cat:"auto",emoji:"🪑",img:"assets/products/p19-cuir.jpg",prix:"170 000",old:"250 000",stock:true,badge:"",desc:"Nettoie, nourrit et protège sièges, canapés et sacs en cuir. Ravive l'éclat d'origine et prévient les craquelures.",imgs:["assets/products/p19b-usages.jpg"],usage:["Appliquez un peu de crème sur une éponge ou un chiffon doux.","Étalez en mouvements circulaires sur le cuir.","Laissez pénétrer quelques minutes.","Lustrez avec un chiffon sec pour faire briller."],video:""},
   {id:20,nom:"FlexiMag — Câble Magnétique de Charge 3-en-1",cat:"tech",emoji:"🔌",img:UNSPLASH("photo-1583394838336-acd977736f90"),prix:"150 000",old:"220 000",stock:true,badge:"top",desc:"Recharge tous vos appareils avec un seul câble aimanté (USB-C, Lightning, Micro). Connexion instantanée et charge rapide anti-usure.",video:""},
   {id:21,nom:"Ventilateur Brumisateur Double Hélice",cat:"maison",emoji:"🌬️",img:UNSPLASH("photo-1565374395542-0ce18882c857"),prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Rafraîchit et humidifie l'air pour braver la chaleur de Conakry. Rechargeable, silencieux, avec brumisation fine réglable.",video:""},
   {id:22,nom:"Pack iRed Ultra — Montre + Écouteurs + Powerbank",cat:"tech",emoji:"⌚",img:UNSPLASH("photo-1542751110-97427bbecf20"),prix:"320 000",old:"470 000",stock:true,badge:"chaud",desc:"Trio connecté complet : montre intelligente, écouteurs sans fil et batterie externe. Le coffret tech parfait à offrir ou s'offrir.",video:""},
   {id:23,nom:"Pack Santé 4-en-1 — Tension · Oxymètre · Glycémie · Thermomètre",cat:"sante",emoji:"🩺",img:UNSPLASH("photo-1576091160550-2173dba999ef"),prix:"295 000",old:"430 000",stock:true,badge:"chaud",desc:"Surveillez tension, oxygène, glycémie et température à la maison. Le kit familial complet pour veiller sur vos proches.",video:""},
   {id:24,nom:"Carbostyle — Coupe-Ongles Inox Premium",cat:"beaute",emoji:"✂️",img:UNSPLASH("photo-1599351431202-1e0f0137899a"),prix:"165 000",old:"250 000",stock:true,badge:"",desc:"Coupe nette et précise pour les ongles des mains et des pieds. Acier inoxydable robuste avec récupérateur intégré.",video:""},
-  {id:25,nom:"Mini Machine à Coudre Portable Sans Fil",cat:"maison",emoji:"🧵",img:"assets/products/p25-machine-couture.jpg",prix:"230 000",old:"330 000",stock:true,badge:"new",desc:"Cousez ourlets, rideaux et vêtements à la main en quelques secondes, sans fil. Légère et facile, idéale à la maison comme en déplacement.",imgs:["assets/products/p25b-lifestyle.jpg"],video:"assets/videos/p25-machine-couture.mp4"},
+  {id:25,nom:"Mini Machine à Coudre Portable Sans Fil",cat:"maison",emoji:"🧵",img:"assets/products/p25-machine-couture.jpg",prix:"230 000",old:"330 000",stock:true,badge:"new",desc:"Cousez ourlets, rideaux et vêtements à la main en quelques secondes, sans fil. Légère et facile, idéale à la maison comme en déplacement.",usage:["Insérez les piles ou branchez l'appareil.","Enfilez le fil et placez le tissu sous l'aiguille.","Appuyez sur le bouton et guidez doucement le tissu.","Coupez le fil et nouez : c'est cousu !"],pub:["assets/products/p25b-lifestyle.jpg"],video:"assets/videos/p25-machine-couture.mp4"},
 ];
 
 const CATS = {beaute:"💄 Beauté",sante:"💪 Santé",auto:"🚗 Auto & Moto",maison:"🏠 Maison",tech:"📱 Tech",mode:"👗 Mode"};
@@ -1908,24 +1921,11 @@ function openPD(id){
   bigImg.style.backgroundImage = `url('${bigUrl}'),linear-gradient(135deg,#FFF8F0,#FFF0D0)`;
   document.getElementById("pdEmoji").style.display = "none";
 
-  // Vidéo démo : chargée UNIQUEMENT à l'ouverture du produit (preload=none), en sourdine.
-  // Pour activer : ajouter video:"https://....mp4" sur le produit dans le tableau `produits`.
-  const pdVideo = document.getElementById("pdVideo");
-  if(p.video){
-    pdVideo.poster = bigUrl;
-    pdVideo.src = p.video;
-    pdVideo.style.display = "block";
-    bigImg.style.display = "none";
-    const tryPlay = ()=>pdVideo.play().catch(()=>{});
-    tryPlay();
-    pdVideo.addEventListener("canplay", tryPlay, {once:true});
-  } else {
-    pdVideo.pause();
-    pdVideo.removeAttribute("src");
-    pdVideo.load();
-    pdVideo.style.display = "none";
-    bigImg.style.display = "";
-  }
+  // La vidéo n'est PLUS en haut : le haut affiche la galerie d'images.
+  // (la démo vidéo est déplacée dans la section détails, plus bas)
+  const pdVideoTop = document.getElementById("pdVideo");
+  if(pdVideoTop){ pdVideoTop.pause(); pdVideoTop.removeAttribute("src"); pdVideoTop.style.display = "none"; }
+  bigImg.style.display = "";
 
   // Vignettes : afficher chaque image de la galerie (sinon masquer)
   [1,2,3].forEach((idx,i)=>{
@@ -1934,7 +1934,8 @@ function openPD(id){
     if(gallery[i]){
       ph.style.display = "";
       ph.style.backgroundImage = `url('${gallery[i]}')`;
-      ph.style.backgroundSize = "cover";
+      ph.style.backgroundSize = "contain";
+      ph.style.backgroundRepeat = "no-repeat";
       ph.style.backgroundPosition = "center";
       ph.dataset.img = gallery[i];
       ph.setAttribute("data-label","");
@@ -1951,6 +1952,27 @@ function openPD(id){
   document.querySelectorAll(".pd-photo").forEach(ph=>ph.classList.remove("active"));
   document.getElementById("pdPhoto1").classList.add("active");
 
+  // ===== SECTION DÉTAILS : mode d'emploi + vidéo démo + images pub =====
+  const det = document.getElementById("pdDetails");
+  let dHtml = "";
+  if(p.usage && p.usage.length){
+    dHtml += '<div class="pd-det-block"><div class="pd-det-title">📖 Mode d\'emploi</div><ol class="pd-usage">'
+           + p.usage.map(s=>`<li>${s}</li>`).join("") + '</ol></div>';
+  }
+  if(p.video){
+    dHtml += '<div class="pd-det-block"><div class="pd-det-title">🎬 Démonstration en vidéo</div>'
+           + `<video class="pd-video-detail" muted loop playsinline controls preload="none" poster="${bigUrl}"><source src="${p.video}" type="video/mp4"></video></div>`;
+  }
+  if(p.pub && p.pub.length){
+    dHtml += '<div class="pd-det-block"><div class="pd-det-title">✨ Le produit en images</div><div class="pd-pub">'
+           + p.pub.map(s=>`<img src="${resolveImg(s)}" loading="lazy" alt="${p.nom}">`).join("") + '</div></div>';
+  }
+  det.innerHTML = dHtml;
+  det.style.display = dHtml ? "" : "none";
+  // Lecture auto de la vidéo détail uniquement quand elle devient visible (économie de data)
+  const detVid = det.querySelector(".pd-video-detail");
+  if(detVid) attachDetailVideoAutoplay(detVid);
+
   window.currentEmoji = p.emoji;
   updateTotal();
   // Reset Orange Money
@@ -1963,10 +1985,26 @@ function openPD(id){
   restoreCustomer();
 }
 
+// Lecture auto de la vidéo détail quand elle entre dans la vue (root = modal défilant)
+let _detailVidObs = null;
+function attachDetailVideoAutoplay(v){
+  if(!_detailVidObs){
+    _detailVidObs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.play().catch(()=>{});
+        else e.target.pause();
+      });
+    }, {root:document.getElementById("pdOverlay"), threshold:0.35});
+  }
+  _detailVidObs.observe(v);
+}
+
 function closePD(){
-  // Stopper la vidéo et libérer le téléchargement (data) à la fermeture
+  // Stopper toutes les vidéos (haut + détails) et libérer le téléchargement (data)
   const pdVideo = document.getElementById("pdVideo");
   if(pdVideo){ pdVideo.pause(); pdVideo.removeAttribute("src"); pdVideo.load(); }
+  const detVid = document.querySelector(".pd-video-detail");
+  if(detVid){ detVid.pause(); }
   document.getElementById("pdOverlay").classList.remove("show");
   document.body.style.overflow="";
 }
