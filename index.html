@@ -534,9 +534,9 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 /* ====== AMÉLIORATIONS V2 ====== */
 
 /* Photos produits réelles (Unsplash) */
-.prod-img-real{height:180px;background-size:cover;background-position:center;background-repeat:no-repeat;position:relative;transition:transform .4s ease;}
+.prod-img-real{height:180px;background-size:contain !important;background-position:center;background-repeat:no-repeat;position:relative;transition:transform .4s ease;}
 .prod-card:hover .prod-img-real{transform:scale(1.05);}
-.pd-media-img{width:100%;min-height:340px;background-size:cover;background-position:center;border-radius:10px;}
+.pd-media-img{width:100%;min-height:340px;background-size:contain;background-repeat:no-repeat;background-position:center;border-radius:10px;}
 .pd-video{width:100%;max-height:440px;background:#000;border-radius:10px;display:block;object-fit:cover;}
 
 /* Quantity selector */
@@ -1799,9 +1799,9 @@ const CONFIG = {
 const UNSPLASH = (q,w=400)=>`https://images.unsplash.com/${q}?auto=format&fit=crop&w=${w}&q=70`;
 
 const produits=[
-  {id:1,nom:"Shilajit Gummies Himalayen — Énergie & Vitalité",cat:"sante",emoji:"🍯",img:"assets/products/p01-shilajit.jpg",prix:"245 000",old:"360 000",stock:true,badge:"chaud",desc:"Cure de minéraux purs de l'Himalaya pour booster énergie, endurance et immunité. 1 gomme par jour, effet ressenti dès la 1ʳᵉ semaine.",video:""},
-  {id:2,nom:"Crème Kojic Anti-Taches & Anti-Acné",cat:"beaute",emoji:"✨",img:"assets/products/p02-kojic.jpg",prix:"165 000",old:"250 000",stock:true,badge:"new",desc:"Estompe taches brunes, boutons et cicatrices pour un teint clair et uniforme. Formule à l'acide kojique, résultats visibles en 14 jours.",video:""},
-  {id:3,nom:"Poudre Minérale AQA — Restauration de l'Émail",cat:"beaute",emoji:"🦷",img:"assets/products/p03-aqa-dents.jpg",prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Reminéralise et blanchit les dents en comblant les micro-fissures de l'émail. Un sourire éclatant à la maison, sans dentiste.",video:""},
+  {id:1,nom:"Shilajit Gummies Himalayen — Énergie & Vitalité",cat:"sante",emoji:"🍯",img:"assets/products/p01-shilajit.jpg",prix:"245 000",old:"360 000",stock:true,badge:"chaud",desc:"Cure de minéraux purs de l'Himalaya pour booster énergie, endurance et immunité. 1 gomme par jour, effet ressenti dès la 1ʳᵉ semaine.",imgs:["assets/products/p01b-lifestyle.jpg"],video:"assets/videos/p01-shilajit.mp4"},
+  {id:2,nom:"Crème Kojic Anti-Taches & Anti-Acné",cat:"beaute",emoji:"✨",img:"assets/products/p02-kojic.jpg",prix:"165 000",old:"250 000",stock:true,badge:"new",desc:"Estompe taches brunes, boutons et cicatrices pour un teint clair et uniforme. Formule à l'acide kojique, résultats visibles en 14 jours.",imgs:["assets/products/p02b-avant-apres.jpg","assets/products/p02c-jars.jpg"],video:"assets/videos/p02-kojic.mp4"},
+  {id:3,nom:"Poudre Minérale AQA — Restauration de l'Émail",cat:"beaute",emoji:"🦷",img:"assets/products/p03-aqa-dents.jpg",prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Reminéralise et blanchit les dents en comblant les micro-fissures de l'émail. Un sourire éclatant à la maison, sans dentiste.",imgs:["assets/products/p03b-benefices.jpg","assets/products/p03c-action.jpg"],video:""},
   {id:4,nom:"Power Back — Correcteur de Posture Dos",cat:"sante",emoji:"💪",img:UNSPLASH("photo-1573461160327-b450ce3d8e7f"),prix:"175 000",old:"260 000",stock:true,badge:"",desc:"Redresse les épaules et soulage les douleurs de dos au quotidien. Discret sous les vêtements, ajustable à toutes les morphologies.",video:""},
   {id:5,nom:"BeeNail™ — Spray au Venin d'Abeille (Ongles)",cat:"beaute",emoji:"💅",img:"assets/products/p05-beenail.jpg",prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Traite les ongles abîmés, jaunis ou fragiles et stoppe la mycose. Des ongles sains et brillants en quelques semaines.",video:""},
   {id:6,nom:"Savon au Curcuma 100% Naturel",cat:"beaute",emoji:"🧼",img:UNSPLASH("photo-1600857544200-b2f666a9a2ec"),prix:"150 000",old:"220 000",stock:true,badge:"",desc:"Éclaircit, purifie et unifie la peau tout en luttant contre l'acné. Curcuma pur, parfaitement adapté aux peaux africaines.",video:""},
@@ -1810,14 +1810,14 @@ const produits=[
   {id:9,nom:"Gaine Minceur Invisible Ventre Plat",cat:"mode",emoji:"🩱",img:UNSPLASH("photo-1540555700478-4be289fbecef"),prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Affine la taille et gomme les bourrelets instantanément sous toute tenue. Maintien ferme et respirant toute la journée.",video:""},
   {id:10,nom:"Genouillère Anti-Arthrose Compression",cat:"sante",emoji:"🦵",img:UNSPLASH("photo-1517344884509-a0c97ec11bcc"),prix:"165 000",old:"250 000",stock:true,badge:"",desc:"Soutient le genou et soulage les douleurs d'arthrose et articulaires. Compression chauffante pour bouger à nouveau sans douleur.",video:""},
   {id:11,nom:"Coupe-Ongles & Polisseur Électrique 2-en-1",cat:"beaute",emoji:"💅",img:"assets/products/p11-coupe-ongles-electrique.jpg",prix:"175 000",old:"260 000",stock:true,badge:"new",desc:"Coupe et polit les ongles sans effort, mains comme pieds. Rechargeable et sûr pour toute la famille, même les enfants.",video:""},
-  {id:12,nom:"Masque de Protection Visage Réutilisable",cat:"sante",emoji:"😷",img:"assets/products/p12-masque-protection.jpg",prix:"155 000",old:"230 000",stock:true,badge:"",desc:"Filtre poussière et particules avec un confort respirant longue durée. Lavable et ajusté, idéal en ville et dans les transports.",video:""},
+  {id:12,nom:"Masque de Protection Visage Réutilisable",cat:"sante",emoji:"😷",img:"assets/products/p12-masque-protection.jpg",prix:"155 000",old:"230 000",stock:true,badge:"",desc:"Filtre poussière et particules avec un confort respirant longue durée. Lavable et ajusté, idéal en ville et dans les transports.",video:"assets/videos/p12-masque-protection.mp4"},
   {id:13,nom:"Additif Huile Moteur Anti-Usure Protectant",cat:"auto",emoji:"🛢️",img:"assets/products/p13-huile-moteur.jpg",prix:"190 000",old:"280 000",stock:true,badge:"top",desc:"Protège le moteur, réduit les frottements et prolonge sa durée de vie. Moins de bruit et plus de puissance dès le 1er plein.",video:""},
   {id:14,nom:"CarboStyle™ — Cache Frein à Main Fibre de Carbone",cat:"auto",emoji:"🏎️",img:"assets/products/p14-carbostyle-frein.jpg",prix:"165 000",old:"250 000",stock:true,badge:"chaud",desc:"Habille le frein à main de votre voiture d'un cache fibre de carbone premium. Pose clipsable en 30 s, look sportif et anti-rayures.",video:""},
   {id:15,nom:"Chargeur Moto & Scooter Étanche — 2 USB + Interrupteur",cat:"auto",emoji:"🔌",img:"assets/products/p15-chargeur-moto.jpg",prix:"175 000",old:"260 000",stock:true,badge:"new",desc:"Rechargez téléphone et GPS directement sur le guidon, par tous les temps. Étanche, double USB et interrupteur, montage facile.",video:""},
   {id:16,nom:"Phares Voiture H7 C6 Ultra Lumineux (x2)",cat:"auto",emoji:"💡",img:UNSPLASH("photo-1542362567-b07e54358753"),prix:"185 000",old:"280 000",stock:true,badge:"chaud",desc:"Éclairage blanc puissant pour une visibilité maximale la nuit. Installation facile, longue durée et faible consommation.",video:""},
   {id:17,nom:"Spray d'Étanchéité Anti-Fuite IPX6",cat:"maison",emoji:"🧴",img:UNSPLASH("photo-1527515637462-cff94eecc1ac"),prix:"165 000",old:"250 000",stock:true,badge:"",desc:"Stoppe instantanément fuites et infiltrations sur toit, gouttière et tuyaux. Film caoutchouc imperméable, intérieur comme extérieur.",video:""},
   {id:18,nom:"Mini Karcher — Pistolet Haute Pression Sans Fil",cat:"maison",emoji:"💦",img:UNSPLASH("photo-1581578731548-c64695cc6952"),prix:"235 000",old:"340 000",stock:true,badge:"chaud",desc:"Nettoie voiture, terrasse et moto avec une pression puissante. Sans fil et rechargeable, prêt partout en quelques secondes.",video:""},
-  {id:19,nom:"Crème Nettoyante & Entretien Cuir",cat:"auto",emoji:"🪑",img:"assets/products/p19-cuir.jpg",prix:"170 000",old:"250 000",stock:true,badge:"",desc:"Nettoie, nourrit et protège sièges, canapés et sacs en cuir. Ravive l'éclat d'origine et prévient les craquelures.",video:""},
+  {id:19,nom:"Crème Nettoyante & Entretien Cuir",cat:"auto",emoji:"🪑",img:"assets/products/p19-cuir.jpg",prix:"170 000",old:"250 000",stock:true,badge:"",desc:"Nettoie, nourrit et protège sièges, canapés et sacs en cuir. Ravive l'éclat d'origine et prévient les craquelures.",imgs:["assets/products/p19b-usages.jpg"],video:""},
   {id:20,nom:"FlexiMag — Câble Magnétique de Charge 3-en-1",cat:"tech",emoji:"🔌",img:UNSPLASH("photo-1583394838336-acd977736f90"),prix:"150 000",old:"220 000",stock:true,badge:"top",desc:"Recharge tous vos appareils avec un seul câble aimanté (USB-C, Lightning, Micro). Connexion instantanée et charge rapide anti-usure.",video:""},
   {id:21,nom:"Ventilateur Brumisateur Double Hélice",cat:"maison",emoji:"🌬️",img:UNSPLASH("photo-1565374395542-0ce18882c857"),prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Rafraîchit et humidifie l'air pour braver la chaleur de Conakry. Rechargeable, silencieux, avec brumisation fine réglable.",video:""},
   {id:22,nom:"Pack iRed Ultra — Montre + Écouteurs + Powerbank",cat:"tech",emoji:"⌚",img:UNSPLASH("photo-1542751110-97427bbecf20"),prix:"320 000",old:"470 000",stock:true,badge:"chaud",desc:"Trio connecté complet : montre intelligente, écouteurs sans fil et batterie externe. Le coffret tech parfait à offrir ou s'offrir.",video:""},
@@ -1900,7 +1900,10 @@ function openPD(id){
     bigImg.className = "pd-media-img";
     media.insertBefore(bigImg, document.getElementById("pdEmoji"));
   }
-  const bigUrl = /unsplash/.test(p.img) ? UNSPLASH(p.img.match(/photo-[a-z0-9-]+/)?.[0]||"",800) : p.img;
+  // Galerie : image principale (carte) + images détail optionnelles (p.imgs)
+  const resolveImg = s => /unsplash/.test(s) ? UNSPLASH(s.match(/photo-[a-z0-9-]+/)?.[0]||"",800) : s;
+  const gallery = [p.img].concat(p.imgs||[]).map(resolveImg);
+  const bigUrl = gallery[0];
   bigImg.style.backgroundImage = `url('${bigUrl}'),linear-gradient(135deg,#FFF8F0,#FFF0D0)`;
   document.getElementById("pdEmoji").style.display = "none";
 
@@ -1912,7 +1915,9 @@ function openPD(id){
     pdVideo.src = p.video;
     pdVideo.style.display = "block";
     bigImg.style.display = "none";
-    pdVideo.play().catch(()=>{});
+    const tryPlay = ()=>pdVideo.play().catch(()=>{});
+    tryPlay();
+    pdVideo.addEventListener("canplay", tryPlay, {once:true});
   } else {
     pdVideo.pause();
     pdVideo.removeAttribute("src");
@@ -1921,9 +1926,27 @@ function openPD(id){
     bigImg.style.display = "";
   }
 
-  ["pdPhotoEmoji1","pdPhotoEmoji2","pdPhotoEmoji3"].forEach(id=>{
-    document.getElementById(id).textContent = p.emoji;
+  // Vignettes : afficher chaque image de la galerie (sinon masquer)
+  [1,2,3].forEach((idx,i)=>{
+    const ph = document.getElementById("pdPhoto"+idx);
+    const em = document.getElementById("pdPhotoEmoji"+idx);
+    if(gallery[i]){
+      ph.style.display = "";
+      ph.style.backgroundImage = `url('${gallery[i]}')`;
+      ph.style.backgroundSize = "cover";
+      ph.style.backgroundPosition = "center";
+      ph.dataset.img = gallery[i];
+      ph.setAttribute("data-label","");
+      if(em) em.style.display = "none";
+    } else {
+      ph.style.display = "none";
+      ph.style.backgroundImage = "";
+    }
   });
+  // Masquer la rangée de vignettes s'il n'y a qu'une seule image
+  const pdPhotosRow = document.querySelector(".pd-photos");
+  pdPhotosRow.style.display = gallery.length>1 ? "grid" : "none";
+  pdPhotosRow.style.width = "100%"; // sinon la grille se réduit (align-items:center du conteneur)
   document.querySelectorAll(".pd-photo").forEach(ph=>ph.classList.remove("active"));
   document.getElementById("pdPhoto1").classList.add("active");
 
@@ -2301,14 +2324,14 @@ document.querySelectorAll(".reveal").forEach(el=>ro.observe(el));
 function selectPhoto(el, view) {
   document.querySelectorAll(".pd-photo").forEach(ph=>ph.classList.remove("active"));
   el.classList.add("active");
-  const em = document.getElementById("pdEmoji");
-  em.style.transform = "scale(0.85)";
-  em.style.opacity = "0.5";
-  setTimeout(()=>{
-    em.style.transform = "scale(1)";
-    em.style.opacity = "1";
-    em.style.transition = "all .3s ease";
-  }, 150);
+  // Affiche l'image de la vignette dans la grande zone (et stoppe la vidéo si active)
+  const big = document.getElementById("pdBigImg");
+  const vid = document.getElementById("pdVideo");
+  if(vid){ vid.pause(); vid.style.display = "none"; }
+  if(big && el.dataset.img){
+    big.style.display = "";
+    big.style.backgroundImage = `url('${el.dataset.img}'),linear-gradient(135deg,#FFF8F0,#FFF0D0)`;
+  }
 }
 
 // ============================================
