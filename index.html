@@ -257,11 +257,21 @@ section{padding:5.5rem 6%;}
 .pay-opt{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:.7rem .3rem;text-align:center;cursor:pointer;transition:all .3s;font-size:.62rem;font-weight:800;color:var(--muted);box-shadow:var(--shadow);}
 .pay-opt.on,.pay-opt:hover{border-color:var(--red);background:rgba(232,0,28,.05);color:var(--red);}
 .pay-ico{font-size:1.3rem;display:block;margin-bottom:.2rem;}
-.order-btn{width:100%;background:linear-gradient(90deg,var(--red),#c00015);color:#fff;border:none;padding:16px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;cursor:pointer;transition:all .35s;margin-top:1rem;box-shadow:0 6px 20px rgba(232,0,28,.35);}
-.order-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(232,0,28,.45);}
+.order-btn{width:100%;background:linear-gradient(90deg,#1A8A2E,#13a83a);color:#fff;border:none;padding:16px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;cursor:pointer;transition:all .35s;margin-top:1rem;box-shadow:0 6px 20px rgba(26,138,46,.38);}
+.order-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(26,138,46,.5);}
 .form-note{text-align:center;font-size:.72rem;color:var(--muted2);margin-top:.8rem;display:flex;align-items:center;justify-content:center;gap:.4rem;flex-wrap:wrap;}
 .fg-hint{font-size:.76rem;color:var(--muted);margin:-.4rem 0 1rem;line-height:1.45;background:#F0FDF4;border:1px solid rgba(26,138,46,.18);border-radius:8px;padding:.5rem .7rem;}
 .fg-hint b{color:var(--green);}
+/* CTA sticky mobile */
+.pd-sticky-cta{display:none;}
+.pd-sticky-info{display:flex;flex-direction:column;line-height:1.05;flex-shrink:0;}
+.pd-sticky-info span{font-size:.58rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted2);font-weight:700;}
+.pd-sticky-info strong{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:var(--red);}
+.pd-sticky-btn{flex:1;min-height:50px;border:none;border-radius:10px;background:linear-gradient(135deg,#1A8A2E,#13a83a);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 14px rgba(26,138,46,.35);}
+@media(max-width:900px){
+  .pd-sticky-cta.show{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:560;align-items:center;gap:.7rem;background:#fff;border-top:1.5px solid var(--border);box-shadow:0 -6px 20px rgba(0,0,0,.12);padding:.55rem .9rem;padding-bottom:calc(.55rem + env(safe-area-inset-bottom));}
+  .pd-box{padding-bottom:74px;}
+}
 
 /* ===== REFONTE PAGE COMMANDE — split sticky, mobile-first ===== */
 .pd-thumbs{display:flex;gap:.5rem;margin-top:.7rem;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
@@ -1202,7 +1212,7 @@ footer::before{
 
 /* PREMIUM SHIMMER on order button */
 .order-btn{
-  background:linear-gradient(135deg,var(--red) 0%,#c00015 50%,var(--red) 100%);
+  background:linear-gradient(135deg,#1A8A2E 0%,#13a83a 50%,#1A8A2E 100%);
   background-size:200% 200%;
   animation:gradientShift 3s ease infinite;
 }
@@ -1805,6 +1815,11 @@ a, button, input, select{transition:all .25s ease;}
     </div>
   </div>
 </div>
+<!-- CTA STICKY MOBILE (hors overlay pour un position:fixed fiable) -->
+<div class="pd-sticky-cta" id="pdStickyCta">
+  <div class="pd-sticky-info"><span>Total à payer</span><strong id="pdStickyTotal">0 GNF</strong></div>
+  <button type="button" class="pd-sticky-btn" onclick="passerCommande()">🛒 Commander</button>
+</div>
 
 <!-- SUCCESS -->
 <!-- CART DRAWER -->
@@ -2107,6 +2122,7 @@ function openPD(id){
   document.querySelectorAll(".pay-opt").forEach(o=>o.classList.toggle("on", o.dataset.pay==="CASH"));
   document.getElementById("omInfo").classList.remove("show");
   document.getElementById("pdOverlay").classList.add("show");
+  document.getElementById("pdStickyCta").classList.add("show");
   document.body.style.overflow="hidden";
 
   // Restaurer données client depuis localStorage
@@ -2219,6 +2235,7 @@ function closePD(){
   const formVid = document.getElementById("pdFormVideo");
   if(formVid){ formVid.pause(); }
   document.getElementById("pdOverlay").classList.remove("show");
+  document.getElementById("pdStickyCta").classList.remove("show");
   document.body.style.overflow="";
 }
 
@@ -2232,6 +2249,8 @@ function updateTotal(){
   if(!currentProduct) return;
   const total = parsePrice(currentProduct.prix) * currentQty;
   document.getElementById("pdTotal").textContent = fmtPrice(total) + " GNF";
+  const st = document.getElementById("pdStickyTotal");
+  if(st) st.textContent = fmtPrice(total) + " GNF";
 }
 
 function selPay(el){
