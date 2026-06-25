@@ -228,7 +228,7 @@ section{padding:5.5rem 6%;}
 .pd-order{border-radius:0 16px 0 0;}
 .pd-details{position:relative;z-index:2;background:#fff;border-radius:0 0 16px 0;}
 @media(max-width:900px){.pd-details{border-radius:0;}}
-.pd-media{display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.pd-media{position:relative;width:100%;height:340px;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#FFF8F0,#FFF0D0);display:flex;align-items:center;justify-content:center;}
 .pd-emoji{font-size:7rem;filter:drop-shadow(0 8px 20px rgba(245,168,0,0.3));}
 .pd-video-box{width:100%;background:rgba(0,0,0,0.05);border:2px dashed rgba(245,168,0,0.4);border-radius:10px;padding:1.5rem;text-align:center;}
 .play-btn{font-size:2.5rem;display:block;margin-bottom:.4rem;}
@@ -262,17 +262,41 @@ section{padding:5.5rem 6%;}
 .form-note{text-align:center;font-size:.72rem;color:var(--muted2);margin-top:.8rem;display:flex;align-items:center;justify-content:center;gap:.4rem;flex-wrap:wrap;}
 
 /* ===== REFONTE PAGE COMMANDE — split sticky, mobile-first ===== */
-.pd-thumbs{display:grid;grid-auto-flow:column;grid-auto-columns:58px;justify-content:start;gap:.5rem;margin-top:.9rem;}
-.pd-thumbs .pd-photo{width:58px;height:58px;font-size:1.3rem;border-radius:8px;}
-.pd-thumbs .pd-photo::after{display:none;}
+.pd-thumbs{display:flex;gap:.5rem;margin-top:.7rem;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
+.pd-thumbs::-webkit-scrollbar{height:5px;}
+.pd-thumb{flex:0 0 auto;width:56px;height:56px;border-radius:8px;border:2px solid var(--border);background:#fff center/contain no-repeat;cursor:pointer;position:relative;padding:0;transition:border-color .2s,transform .2s;}
+.pd-thumb.active{border-color:var(--gold);box-shadow:0 3px 12px rgba(245,168,0,.35);}
+.pd-thumb-badge{position:absolute;bottom:-1px;right:-1px;font-size:.6rem;line-height:1;padding:2px 4px;border-radius:6px 0 6px 0;color:#fff;}
+.pd-thumb-badge.vid{background:var(--red);}
+.pd-thumb-badge.pub{background:var(--gold);}
+/* Accordéon description */
+.pd-acc{display:flex;flex-direction:column;gap:.6rem;}
+.pd-acc-item{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;}
+.pd-acc-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;background:none;border:none;cursor:pointer;padding:14px 16px;font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;color:var(--dark);text-align:left;min-height:48px;}
+.pd-acc-ic{font-size:1.3rem;font-weight:800;color:var(--red);transition:transform .25s;flex-shrink:0;}
+.pd-acc-item.open .pd-acc-ic{transform:rotate(45deg);}
+.pd-acc-a{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1);}
+.pd-acc-item.open .pd-acc-a{max-height:1200px;}
+.pd-acc-inner{padding:2px 16px 16px;font-size:.88rem;color:var(--muted);line-height:1.6;}
+.pd-benefits{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+.pd-benefits li{position:relative;padding-left:1.6rem;color:var(--dark);}
+.pd-benefits li::before{content:"✅";position:absolute;left:0;}
+.pd-contenu{color:var(--dark);}
+.pd-reviews{display:flex;flex-direction:column;gap:.8rem;}
+.pd-review{background:var(--bg);border-radius:10px;padding:.8rem .9rem;}
+.pd-review-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem;}
+.pd-review-ava{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--red),#8b0000);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;}
+.pd-review-head b{font-size:.85rem;color:var(--dark);}
+.pd-review-stars{color:var(--gold);font-size:.8rem;margin-left:auto;}
+.pd-review p{font-size:.84rem;color:var(--muted);line-height:1.5;}
 .pd-stars-lbl{color:var(--muted2);font-size:.72rem;}
 .pd-visual-info .pd-name{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.5px;color:var(--dark);margin-bottom:.4rem;line-height:1.05;}
 .pd-visual-info .pd-desc{font-size:.84rem;color:var(--muted);line-height:1.65;margin-top:.7rem;margin-bottom:0;}
 .pd-visual-info .pd-price-row{margin-bottom:0;flex-wrap:wrap;}
 .pd-order .pd-form-title{margin-bottom:1rem;font-size:1.45rem;}
-.pd-trust{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.8rem;}
-.pd-trust-item{display:flex;align-items:center;gap:.5rem;background:#F0FDF4;border:1.5px solid rgba(26,138,46,.22);border-radius:8px;padding:.6rem .7rem;font-size:.74rem;font-weight:700;color:var(--green);line-height:1.2;}
-.pd-trust-item span{font-size:1.15rem;line-height:1;}
+.pd-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.8rem;}
+.pd-trust-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.25rem;background:#F0FDF4;border:1.5px solid rgba(26,138,46,.22);border-radius:8px;padding:.55rem .35rem;font-size:.68rem;font-weight:700;color:var(--green);line-height:1.2;}
+.pd-trust-item span{font-size:1.3rem;line-height:1;}
 .pd-social{display:flex;align-items:center;gap:.5rem;font-size:.76rem;color:var(--muted);background:#fff;border:1px solid var(--border);border-radius:8px;padding:.55rem .7rem;margin-bottom:1rem;}
 .pd-social b{color:var(--dark);}
 .pd-social-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:cartPulse 2s infinite;flex-shrink:0;}
@@ -294,17 +318,13 @@ section{padding:5.5rem 6%;}
   .pd-box{border-radius:0;min-height:100vh;}
   .pd-close{position:fixed;top:9px;right:9px;width:38px;height:38px;z-index:20;}
   .pd-split{grid-template-columns:1fr;}
-  .pd-visual{position:sticky;top:0;z-index:6;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"media info" "thumbs thumbs";gap:.1rem .9rem;align-items:center;padding:.65rem .85rem .65rem;border-bottom:2px solid var(--border);box-shadow:0 5px 16px rgba(0,0,0,.08);}
-  .pd-visual-info{padding-right:44px;}
-  .pd-visual .pd-media{grid-area:media;width:88px;}
-  .pd-visual .pd-media-img{height:88px;width:88px;}
-  .pd-emoji{font-size:2.6rem;}
-  .pd-visual-info{grid-area:info;margin-top:0;}
-  .pd-visual-info .pd-name{font-size:1.05rem;margin-bottom:.15rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-  .pd-cat-tag,.pd-stars,.pd-visual-info .pd-desc{display:none;}
-  .pd-visual-info .pd-price{font-size:1.35rem;}
-  .pd-thumbs{grid-area:thumbs;margin-top:.5rem;}
+  .pd-visual{position:static;padding:.8rem .9rem 1rem;border-radius:0;}
+  .pd-media{height:290px;}
+  .pd-emoji{font-size:3.5rem;}
+  .pd-visual-info{margin-top:.9rem;}
+  .pd-visual-info .pd-name{font-size:1.25rem;}
   .pd-order{padding:1.1rem 1rem 1.6rem;}
+  .pd-right{border-top:8px solid var(--bg);}
 }
 
 /* HOW */
@@ -602,8 +622,16 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 /* Photos produits réelles (Unsplash) */
 .prod-img-real{height:180px;background-size:contain !important;background-position:center;background-repeat:no-repeat;position:relative;transition:transform .4s ease;}
 .prod-card:hover .prod-img-real{transform:scale(1.05);}
-.pd-media-img{width:100%;height:300px;background-size:contain;background-repeat:no-repeat;background-position:center;border-radius:10px;}
-.pd-video{width:100%;max-height:440px;background:#000;border-radius:10px;display:block;object-fit:cover;}
+.pd-media-img{position:absolute;inset:0;background-size:contain;background-repeat:no-repeat;background-position:center;cursor:zoom-in;}
+.pd-video{position:absolute;inset:0;width:100%;height:100%;background:#000;object-fit:contain;display:block;}
+.pd-zoom-btn{position:absolute;top:10px;right:10px;width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.85);box-shadow:0 2px 8px rgba(0,0,0,.18);font-size:1rem;cursor:pointer;z-index:3;display:flex;align-items:center;justify-content:center;}
+.pd-dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:3;}
+.pd-dot{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.22);cursor:pointer;transition:all .25s;}
+.pd-dot.active{background:var(--red);width:20px;border-radius:4px;}
+.pd-zoom{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1200;display:none;align-items:center;justify-content:center;padding:1rem;cursor:zoom-out;}
+.pd-zoom.show{display:flex;}
+.pd-zoom img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;}
+.pd-zoom-close{position:absolute;top:14px;right:14px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:1.2rem;cursor:pointer;}
 
 /* Quantity selector */
 .qty-row{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;}
@@ -1656,17 +1684,15 @@ a, button, input, select{transition:all .25s ease;}
       <div class="pd-split">
         <!-- ===== GAUCHE : visuel produit (sticky) ===== -->
         <div class="pd-visual">
-          <div class="pd-media">
-            <!-- VIDÉO DÉMO (affichée si le produit a un champ "video") -->
-            <video id="pdVideo" class="pd-video" muted loop playsinline controls preload="none" style="display:none"></video>
+          <!-- ===== GALERIE MÉDIA UNIFIÉE (image + pub + vidéo, swipe + dots + zoom) ===== -->
+          <div class="pd-media" id="pdStage">
+            <video id="pdVideo" class="pd-video" muted loop playsinline preload="none" style="display:none"></video>
             <div class="pd-emoji" id="pdEmoji">🛍</div>
+            <button type="button" class="pd-zoom-btn" id="pdZoomBtn" onclick="openPdZoom()" aria-label="Agrandir l'image">🔍</button>
+            <div class="pd-dots" id="pdDots"></div>
           </div>
-          <!-- GALERIE MINIATURES (sous l'image principale) -->
-          <div class="pd-thumbs pd-photos">
-            <div class="pd-photo active" id="pdPhoto1" onclick="selectPhoto(this, 'face')"><span id="pdPhotoEmoji1">🛍</span></div>
-            <div class="pd-photo" id="pdPhoto2" onclick="selectPhoto(this, 'cote')"><span id="pdPhotoEmoji2">🛍</span></div>
-            <div class="pd-photo" id="pdPhoto3" onclick="selectPhoto(this, 'usage')"><span id="pdPhotoEmoji3">🛍</span></div>
-          </div>
+          <!-- MINIATURES (générées dynamiquement, scroll horizontal mobile) -->
+          <div class="pd-thumbs" id="pdThumbs"></div>
           <div class="pd-visual-info">
             <div class="pd-cat-tag" id="pdCat">Catégorie</div>
             <div class="pd-name" id="pdName">Nom du produit</div>
@@ -1687,8 +1713,9 @@ a, button, input, select{transition:all .25s ease;}
 
           <!-- Réassurance COD -->
           <div class="pd-trust">
-            <div class="pd-trust-item"><span>🚚</span>Livraison Conakry<br>sous 24–48h</div>
-            <div class="pd-trust-item"><span>💵</span>Paiement à<br>la réception</div>
+            <div class="pd-trust-item"><span>🚚</span>Livraison 24–48h</div>
+            <div class="pd-trust-item"><span>💰</span>Paiement à la réception</div>
+            <div class="pd-trust-item"><span>🔄</span>Retour facile si problème</div>
           </div>
 
           <!-- Preuve sociale -->
@@ -1732,6 +1759,7 @@ a, button, input, select{transition:all .25s ease;}
             <option>Autre ville</option>
           </select>
         </div>
+        <div class="fg"><label>Note (optionnel)</label><input type="text" id="pdNote" placeholder="Ex: appelez avant de livrer, point de repère…" autocomplete="off"></div>
         <div class="fg">
           <label>Mode de paiement</label>
           <div class="pay-opts" style="grid-template-columns:repeat(2,1fr);">
@@ -1978,81 +2006,61 @@ function openPD(id){
   document.getElementById("pdStock").innerHTML=p.stock?"✅ En stock — Livraison sous 24–48h":"❌ Rupture de stock — Contactez-nous sur WhatsApp";
   document.getElementById("pdStock").style.color=p.stock?"#2ECC71":"#E74C3C";
 
-  // Photos : utiliser l'image Unsplash en grand + emojis pour les vignettes
-  const media = document.querySelector(".pd-media");
+  // ===== GALERIE MÉDIA UNIFIÉE (packshot → pub/lifestyle → vidéo) =====
+  const resolveImg = s => /unsplash/.test(s) ? UNSPLASH(s.match(/photo-[a-z0-9-]+/)?.[0]||"",800) : s;
+  const stage = document.getElementById("pdStage");
   let bigImg = document.getElementById("pdBigImg");
   if(!bigImg){
     bigImg = document.createElement("div");
     bigImg.id = "pdBigImg";
     bigImg.className = "pd-media-img";
-    media.insertBefore(bigImg, document.getElementById("pdEmoji"));
+    stage.insertBefore(bigImg, document.getElementById("pdEmoji"));
   }
-  // Galerie : image principale (carte) + images détail optionnelles (p.imgs)
-  const resolveImg = s => /unsplash/.test(s) ? UNSPLASH(s.match(/photo-[a-z0-9-]+/)?.[0]||"",800) : s;
-  const gallery = [p.img].concat(p.imgs||[]).map(resolveImg);
-  const bigUrl = gallery[0];
-  bigImg.style.backgroundImage = `url('${bigUrl}'),linear-gradient(135deg,#FFF8F0,#FFF0D0)`;
   document.getElementById("pdEmoji").style.display = "none";
+
+  const M = [];
+  M.push({type:"img", src:resolveImg(p.img), kind:"Produit"});
+  (p.imgs||[]).forEach(s=> M.push({type:"img", src:resolveImg(s), kind:"Vue"}));
+  (p.pub||[]).forEach(s=> M.push({type:"img", src:resolveImg(s), kind:"pub"}));
+  if(p.video) M.push({type:"video", src:p.video, kind:"video", poster:resolveImg(p.img)});
+  window.pdMedia = M;
+
+  // Vignettes (1re eager, reste lazy via background)
+  const thumbsEl = document.getElementById("pdThumbs");
+  thumbsEl.innerHTML = M.map((m,i)=>{
+    const bg = m.type==="video" ? m.poster : m.src;
+    const badge = m.type==="video" ? '<span class="pd-thumb-badge vid">▶</span>'
+                : (m.kind==="pub" ? '<span class="pd-thumb-badge pub">★</span>' : '');
+    return `<button type="button" class="pd-thumb${i===0?' active':''}" data-i="${i}" onclick="pdGo(${i})" style="background-image:url('${bg}')">${badge}</button>`;
+  }).join("");
+  thumbsEl.style.display = M.length>1 ? "flex" : "none";
+
+  // Dots (indicateur de position)
+  const dotsEl = document.getElementById("pdDots");
+  dotsEl.innerHTML = M.length>1 ? M.map((m,i)=>`<span class="pd-dot${i===0?' active':''}" data-i="${i}" onclick="pdGo(${i})"></span>`).join("") : "";
+
+  pdGo(0); // afficher le 1er média
 
   // Résumé commande (photo + nom produit) + preuve sociale
   const _sumImg = document.getElementById("pdSumImg");
-  if(_sumImg) _sumImg.style.backgroundImage = `url('${bigUrl}')`;
+  if(_sumImg) _sumImg.style.backgroundImage = `url('${M[0].src}')`;
   const _sumName = document.getElementById("pdSumName");
   if(_sumName) _sumName.textContent = p.nom;
   const _rc = document.getElementById("pdRecentCount");
   if(_rc) _rc.textContent = 8 + Math.floor(Math.random()*22);
 
-  // La vidéo n'est PLUS en haut : le haut affiche la galerie d'images.
-  // (la démo vidéo est déplacée dans la section détails, plus bas)
-  const pdVideoTop = document.getElementById("pdVideo");
-  if(pdVideoTop){ pdVideoTop.pause(); pdVideoTop.removeAttribute("src"); pdVideoTop.style.display = "none"; }
-  bigImg.style.display = "";
-
-  // Vignettes : afficher chaque image de la galerie (sinon masquer)
-  [1,2,3].forEach((idx,i)=>{
-    const ph = document.getElementById("pdPhoto"+idx);
-    const em = document.getElementById("pdPhotoEmoji"+idx);
-    if(gallery[i]){
-      ph.style.display = "";
-      ph.style.backgroundImage = `url('${gallery[i]}')`;
-      ph.style.backgroundSize = "contain";
-      ph.style.backgroundRepeat = "no-repeat";
-      ph.style.backgroundPosition = "center";
-      ph.dataset.img = gallery[i];
-      ph.setAttribute("data-label","");
-      if(em) em.style.display = "none";
-    } else {
-      ph.style.display = "none";
-      ph.style.backgroundImage = "";
-    }
-  });
-  // Masquer la rangée de vignettes s'il n'y a qu'une seule image
-  const pdPhotosRow = document.querySelector(".pd-photos");
-  pdPhotosRow.style.display = gallery.length>1 ? "grid" : "none";
-  pdPhotosRow.style.width = "100%"; // sinon la grille se réduit (align-items:center du conteneur)
-  document.querySelectorAll(".pd-photo").forEach(ph=>ph.classList.remove("active"));
-  document.getElementById("pdPhoto1").classList.add("active");
-
-  // ===== SECTION DÉTAILS : mode d'emploi + vidéo démo + images pub =====
+  // ===== DESCRIPTION DÉTAILLÉE — ACCORDÉON (Bénéfices / Mode d'emploi / Contenu / Avis) =====
   const det = document.getElementById("pdDetails");
-  let dHtml = "";
-  if(p.usage && p.usage.length){
-    dHtml += '<div class="pd-det-block"><div class="pd-det-title">📖 Mode d\'emploi — c\'est simple</div><ol class="pd-usage">'
-           + p.usage.map(s=>`<li><span>${s}</span></li>`).join("") + '</ol></div>';
-  }
-  if(p.video){
-    dHtml += '<div class="pd-det-block"><div class="pd-det-title">🎬 Démonstration en vidéo</div>'
-           + `<video class="pd-video-detail" muted loop playsinline controls preload="none" poster="${bigUrl}"><source src="${p.video}" type="video/mp4"></video></div>`;
-  }
-  if(p.pub && p.pub.length){
-    dHtml += '<div class="pd-det-block"><div class="pd-det-title">✨ Le produit en images</div><div class="pd-pub">'
-           + p.pub.map(s=>`<img src="${resolveImg(s)}" loading="lazy" alt="${p.nom}">`).join("") + '</div></div>';
-  }
-  det.innerHTML = dHtml;
-  det.style.display = dHtml ? "" : "none";
-  // Lecture auto de la vidéo détail uniquement quand elle devient visible (économie de data)
-  const detVid = det.querySelector(".pd-video-detail");
-  if(detVid) attachDetailVideoAutoplay(detVid);
+  const benefices = (p.benefits && p.benefits.length) ? p.benefits : [p.desc];
+  const contenu = p.contenu || `1 × ${p.nom} + notice d'utilisation, livré sous emballage soigné partout en Guinée.`;
+  const avis = defaultAvis(p);
+  const blocks = [];
+  blocks.push(accBlock("✨ Bénéfices", `<ul class="pd-benefits">${benefices.map(b=>`<li>${b}</li>`).join("")}</ul>`, true));
+  if(p.usage && p.usage.length) blocks.push(accBlock("📋 Mode d'emploi", `<ol class="pd-usage">${p.usage.map(s=>`<li><span>${s}</span></li>`).join("")}</ol>`, false));
+  blocks.push(accBlock("📦 Contenu du colis", `<p class="pd-contenu">${contenu}</p>`, false));
+  blocks.push(accBlock("⭐ Avis clients", `<div class="pd-reviews">${avis.map(a=>`<div class="pd-review"><div class="pd-review-head"><span class="pd-review-ava">${a.n[0]}</span><b>${a.n}</b><span class="pd-review-stars">★★★★★</span></div><p>${a.t}</p></div>`).join("")}</div>`, false));
+  det.innerHTML = `<div class="pd-acc">${blocks.join("")}</div>`;
+  det.style.display = "";
 
   window.currentEmoji = p.emoji;
   updateTotal();
@@ -2064,6 +2072,86 @@ function openPD(id){
 
   // Restaurer données client depuis localStorage
   restoreCustomer();
+}
+
+// ===== GALERIE MÉDIA : navigation, swipe, zoom =====
+function pdGo(i){
+  const M = window.pdMedia||[]; if(!M[i]) return;
+  window.pdIdx = i;
+  const m = M[i];
+  const big = document.getElementById("pdBigImg");
+  const vid = document.getElementById("pdVideo");
+  const zoomBtn = document.getElementById("pdZoomBtn");
+  if(m.type === "video"){
+    if(big) big.style.display = "none";
+    if(vid){
+      vid.style.display = "";
+      if(vid.getAttribute("src") !== m.src){ vid.setAttribute("src", m.src); }
+      vid.play().catch(()=>{});
+    }
+    if(zoomBtn) zoomBtn.style.display = "none";
+  } else {
+    if(vid){ vid.pause(); vid.style.display = "none"; }
+    if(big){
+      big.style.display = "";
+      big.style.backgroundImage = `url('${m.src}'),linear-gradient(135deg,#FFF8F0,#FFF0D0)`;
+    }
+    if(zoomBtn) zoomBtn.style.display = "";
+  }
+  document.querySelectorAll("#pdThumbs .pd-thumb").forEach(t=>t.classList.toggle("active", +t.dataset.i === i));
+  document.querySelectorAll("#pdDots .pd-dot").forEach(d=>d.classList.toggle("active", +d.dataset.i === i));
+}
+function pdShift(d){
+  const M = window.pdMedia||[]; if(!M.length) return;
+  let i = (window.pdIdx||0) + d;
+  if(i < 0) i = M.length - 1;
+  if(i >= M.length) i = 0;
+  pdGo(i);
+}
+// Swipe gauche/droite sur mobile
+(function initPdSwipe(){
+  const st = document.getElementById("pdStage"); if(!st) return;
+  let x0 = null;
+  st.addEventListener("touchstart", e=>{ x0 = e.touches[0].clientX; }, {passive:true});
+  st.addEventListener("touchend", e=>{
+    if(x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if(Math.abs(dx) > 40) pdShift(dx < 0 ? 1 : -1);
+    x0 = null;
+  });
+})();
+// Zoom sur tap/clic (image uniquement)
+function openPdZoom(){
+  const m = (window.pdMedia||[])[window.pdIdx||0]; if(!m || m.type !== "img") return;
+  let z = document.getElementById("pdZoom");
+  if(!z){
+    z = document.createElement("div"); z.id = "pdZoom"; z.className = "pd-zoom";
+    z.onclick = closePdZoom;
+    z.innerHTML = '<img id="pdZoomImg" alt=""><button class="pd-zoom-close" type="button" aria-label="Fermer">✕</button>';
+    document.body.appendChild(z);
+  }
+  document.getElementById("pdZoomImg").src = m.src;
+  z.classList.add("show");
+}
+function closePdZoom(){ const z = document.getElementById("pdZoom"); if(z) z.classList.remove("show"); }
+
+// ===== ACCORDÉON DESCRIPTION =====
+function accBlock(title, inner, open){
+  return `<div class="pd-acc-item${open?' open':''}"><button type="button" class="pd-acc-q" onclick="togglePdAcc(this)"><span>${title}</span><span class="pd-acc-ic">+</span></button><div class="pd-acc-a"><div class="pd-acc-inner">${inner}</div></div></div>`;
+}
+function togglePdAcc(btn){ btn.closest(".pd-acc-item").classList.toggle("open"); }
+function defaultAvis(p){
+  const noms = ["Mariama B.","Ibrahima S.","Aïssatou D.","Mamadou C.","Fatoumata D.","Ousmane B.","Kadiatou D.","Alpha B."];
+  const ts = [
+    "Produit conforme, livré rapidement à Conakry. Je recommande !",
+    "Très bonne qualité pour le prix. Paiement à la livraison, parfait.",
+    "Reçu en 2 jours, exactement comme sur les photos. Merci HPSHOP.",
+    "Livraison rapide et produit de qualité. Je recommande vivement.",
+    "Service au top, l'équipe m'a appelé pour confirmer. Très sérieux."
+  ];
+  const pick = (a,n)=> a.slice().sort(()=>Math.random()-.5).slice(0,n);
+  const N = pick(noms,2), T = pick(ts,2);
+  return N.map((n,i)=>({ n, t:T[i] }));
 }
 
 // Lecture auto de la vidéo détail quand elle entre dans la vue (root = modal défilant)
@@ -2329,9 +2417,9 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
         paymentMethod: payMode,
         paymentRef: omId || null,
         status: payMode === "ORANGE" ? "EN_ATTENTE_VERIFICATION_OM" : "NOUVEAU",
-        notes: payMode === "ORANGE"
+        notes: ((document.getElementById("pdNote")?.value.trim() ? "📝 "+document.getElementById("pdNote").value.trim()+" — " : "") + (payMode === "ORANGE"
           ? `Orange Money — ID: ${omId} — ⚠️ À VÉRIFIER AVANT LIVRAISON`
-          : "Cash à la livraison",
+          : "Cash à la livraison")),
         items: [{
           sku: "HP-" + currentProduct.id,
           name: currentProduct.nom,
