@@ -269,6 +269,10 @@ section{padding:5.5rem 6%;}
 .pd-thumb-badge{position:absolute;bottom:-1px;right:-1px;font-size:.6rem;line-height:1;padding:2px 4px;border-radius:6px 0 6px 0;color:#fff;}
 .pd-thumb-badge.vid{background:var(--red);}
 .pd-thumb-badge.pub{background:var(--gold);}
+/* Bloc vidéo démo (juste avant le formulaire) */
+.pd-video-block{margin-bottom:1.3rem;}
+.pd-video-label{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.5px;color:var(--dark);margin-bottom:.55rem;display:flex;align-items:center;gap:.4rem;}
+.pd-form-video{width:100%;max-height:440px;border-radius:12px;background:#000;display:block;object-fit:contain;box-shadow:0 8px 28px rgba(0,0,0,.14);}
 /* Accordéon description */
 .pd-acc{display:flex;flex-direction:column;gap:.6rem;}
 .pd-acc-item{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;}
@@ -1708,6 +1712,11 @@ a, button, input, select{transition:all .25s ease;}
 
         <!-- ===== DROITE : commande + détails (colonne défilante) ===== -->
         <div class="pd-right">
+        <!-- VIDÉO DÉMO en grand, juste avant le formulaire -->
+        <div class="pd-video-block" id="pdVideoBlock" style="display:none">
+          <div class="pd-video-label">🎬 Voir le produit en action</div>
+          <video id="pdFormVideo" class="pd-form-video" muted loop playsinline controls preload="none"></video>
+        </div>
         <div class="pd-order">
           <div class="pd-form-title">📦 Passer ma commande</div>
 
@@ -2020,12 +2029,26 @@ function openPD(id){
   }
   document.getElementById("pdEmoji").style.display = "none";
 
-  const M = [];
+  let M = [];
   M.push({type:"img", src:resolveImg(p.img), kind:"Produit"});
   (p.imgs||[]).forEach(s=> M.push({type:"img", src:resolveImg(s), kind:"Vue"}));
   (p.pub||[]).forEach(s=> M.push({type:"img", src:resolveImg(s), kind:"pub"}));
-  if(p.video) M.push({type:"video", src:p.video, kind:"video", poster:resolveImg(p.img)});
+  // Anti-doublon : une même photo n'apparaît qu'une seule fois dans la galerie
+  const _seen = new Set();
+  M = M.filter(m=>{ if(_seen.has(m.src)) return false; _seen.add(m.src); return true; });
   window.pdMedia = M;
+
+  // Vidéo démo : bloc dédié EN GRAND juste avant le formulaire (pas dans la galerie)
+  const vBlock = document.getElementById("pdVideoBlock");
+  const vEl = document.getElementById("pdFormVideo");
+  if(p.video){
+    if(vEl.getAttribute("src") !== p.video){ vEl.setAttribute("src", p.video); vEl.setAttribute("poster", resolveImg(p.img)); vEl.load(); }
+    vBlock.style.display = "";
+    attachDetailVideoAutoplay(vEl);
+  } else {
+    vEl.pause(); vEl.removeAttribute("src");
+    vBlock.style.display = "none";
+  }
 
   // Vignettes (1re eager, reste lazy via background)
   const thumbsEl = document.getElementById("pdThumbs");
@@ -2176,6 +2199,8 @@ function closePD(){
   if(pdVideo){ pdVideo.pause(); pdVideo.removeAttribute("src"); pdVideo.load(); }
   const detVid = document.querySelector(".pd-video-detail");
   if(detVid){ detVid.pause(); }
+  const formVid = document.getElementById("pdFormVideo");
+  if(formVid){ formVid.pause(); }
   document.getElementById("pdOverlay").classList.remove("show");
   document.body.style.overflow="";
 }
