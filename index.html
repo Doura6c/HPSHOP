@@ -1716,13 +1716,6 @@ a, button, input, select{transition:all .25s ease;}
 
         <!-- ===== DROITE : commande + détails (colonne défilante) ===== -->
         <div class="pd-right">
-        <!-- VIDÉO DÉMO en grand, juste avant le formulaire -->
-        <div class="pd-video-block" id="pdVideoBlock" style="display:none">
-          <div class="pd-video-label">🎬 Voir le produit en action</div>
-          <video id="pdFormVideo" class="pd-form-video" muted loop playsinline controls preload="none"></video>
-        </div>
-        <!-- Le reste des photos (au-delà des 3 miniatures), empilées sous la vidéo -->
-        <div class="pd-more-images" id="pdMoreImages" style="display:none"></div>
         <div class="pd-order">
           <div class="pd-form-title">📦 Passer ma commande</div>
 
@@ -1795,7 +1788,14 @@ a, button, input, select{transition:all .25s ease;}
           <button class="order-btn" id="orderBtn" onclick="passerCommande()">🛒 Commander maintenant</button>
           <p class="form-note">🔒 Données confidentielles &nbsp;·&nbsp; Sans paiement en ligne &nbsp;·&nbsp; Réponse sous 1h</p>
         </div>
-        <!-- DÉTAILS : mode d'emploi + vidéo démo + images pub (rempli par openPD) -->
+        <!-- VIDÉO PUB (1 seule par produit) — APRÈS le formulaire -->
+        <div class="pd-video-block" id="pdVideoBlock" style="display:none">
+          <div class="pd-video-label">🎬 Voir le produit en action</div>
+          <video id="pdFormVideo" class="pd-form-video" muted loop playsinline controls preload="none"></video>
+        </div>
+        <!-- Le reste des photos (au-delà des 3 miniatures) -->
+        <div class="pd-more-images" id="pdMoreImages" style="display:none"></div>
+        <!-- DÉTAILS : accordéon (rempli par openPD) -->
         <div class="pd-details" id="pdDetails"></div>
         </div>
       </div>
