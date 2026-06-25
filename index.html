@@ -2122,6 +2122,9 @@ function pdGo(i){
       big.style.backgroundImage = `url('${m.src}'),linear-gradient(135deg,#FFF8F0,#FFF0D0)`;
     }
     if(zoomBtn) zoomBtn.style.display = "";
+    // Synchronise la photo du récapitulatif de commande avec l'angle choisi
+    const sumImg = document.getElementById("pdSumImg");
+    if(sumImg) sumImg.style.backgroundImage = `url('${m.src}')`;
   }
   document.querySelectorAll("#pdThumbs .pd-thumb").forEach(t=>t.classList.toggle("active", +t.dataset.i === i));
   document.querySelectorAll("#pdDots .pd-dot").forEach(d=>d.classList.toggle("active", +d.dataset.i === i));
