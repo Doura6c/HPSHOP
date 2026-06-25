@@ -260,6 +260,8 @@ section{padding:5.5rem 6%;}
 .order-btn{width:100%;background:linear-gradient(90deg,var(--red),#c00015);color:#fff;border:none;padding:16px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;cursor:pointer;transition:all .35s;margin-top:1rem;box-shadow:0 6px 20px rgba(232,0,28,.35);}
 .order-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(232,0,28,.45);}
 .form-note{text-align:center;font-size:.72rem;color:var(--muted2);margin-top:.8rem;display:flex;align-items:center;justify-content:center;gap:.4rem;flex-wrap:wrap;}
+.fg-hint{font-size:.76rem;color:var(--muted);margin:-.4rem 0 1rem;line-height:1.45;background:#F0FDF4;border:1px solid rgba(26,138,46,.18);border-radius:8px;padding:.5rem .7rem;}
+.fg-hint b{color:var(--green);}
 
 /* ===== REFONTE PAGE COMMANDE — split sticky, mobile-first ===== */
 .pd-thumbs{display:flex;gap:.5rem;margin-top:.7rem;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
@@ -1750,8 +1752,9 @@ a, button, input, select{transition:all .25s ease;}
 
           <div class="frow">
           <div class="fg"><label>Prénom & Nom *</label><input type="text" id="pdNom" placeholder="Ex: Fatoumata Diallo" autocomplete="name"></div>
-          <div class="fg"><label>Téléphone *</label><input type="tel" id="pdTel" placeholder="622 00 00 00" autocomplete="tel" maxlength="13"></div>
+          <div class="fg"><label>Téléphone *</label><input type="tel" id="pdTel" placeholder="622 00 00 00" autocomplete="tel" inputmode="numeric" maxlength="13"></div>
         </div>
+        <div class="fg-hint">📞 Nous vous appelons pour confirmer avant la livraison — <b>aucun paiement en ligne</b>.</div>
         <div class="fg"><label>Adresse de livraison *</label><input type="text" id="pdAdresse" placeholder="Ex: Kaloum, près du marché central" autocomplete="street-address"></div>
         <div class="fg">
           <label>Ville / Préfecture *</label>
