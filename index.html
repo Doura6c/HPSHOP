@@ -273,6 +273,10 @@ section{padding:5.5rem 6%;}
 .pd-video-block{margin-bottom:1.3rem;}
 .pd-video-label{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.5px;color:var(--dark);margin-bottom:.55rem;display:flex;align-items:center;gap:.4rem;}
 .pd-form-video{width:100%;max-height:440px;border-radius:12px;background:#000;display:block;object-fit:contain;box-shadow:0 8px 28px rgba(0,0,0,.14);}
+/* Photos supplémentaires empilées sous la vidéo */
+.pd-more-images{margin-bottom:1.3rem;display:flex;flex-direction:column;gap:.7rem;}
+.pd-more-label{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.5px;color:var(--dark);margin-bottom:.1rem;display:flex;align-items:center;gap:.4rem;}
+.pd-more-images img{width:100%;border-radius:12px;display:block;border:1px solid var(--border);}
 /* Accordéon description */
 .pd-acc{display:flex;flex-direction:column;gap:.6rem;}
 .pd-acc-item{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;}
@@ -1717,6 +1721,8 @@ a, button, input, select{transition:all .25s ease;}
           <div class="pd-video-label">🎬 Voir le produit en action</div>
           <video id="pdFormVideo" class="pd-form-video" muted loop playsinline controls preload="none"></video>
         </div>
+        <!-- Le reste des photos (au-delà des 3 miniatures), empilées sous la vidéo -->
+        <div class="pd-more-images" id="pdMoreImages" style="display:none"></div>
         <div class="pd-order">
           <div class="pd-form-title">📦 Passer ma commande</div>
 
@@ -1919,7 +1925,7 @@ const UNSPLASH = (q,w=400)=>`https://images.unsplash.com/${q}?auto=format&fit=cr
 const produits=[
   {id:1,nom:"Shilajit Gummies Himalayen — Énergie & Vitalité",cat:"sante",emoji:"🍯",img:"assets/products/p01-shilajit.jpg",prix:"245 000",old:"360 000",stock:true,badge:"chaud",desc:"Cure de minéraux purs de l'Himalaya pour booster énergie, endurance et immunité. 1 gomme par jour, effet ressenti dès la 1ʳᵉ semaine.",usage:["Prenez 1 à 2 gommes par jour, de préférence le matin.","Mâchez bien avant d'avaler — inutile de prendre avec de l'eau.","Faites une cure régulière pour une énergie et une vitalité durables."],imgs:["assets/products/p01d-vivonu.jpg"],pub:["assets/products/p01b-lifestyle.jpg","assets/products/p01-pub-strength.jpg"],video:"assets/videos/p01-shilajit.mp4"},
   {id:2,nom:"Crème Kojic Anti-Taches & Anti-Acné",cat:"beaute",emoji:"✨",img:"assets/products/p02-kojic.jpg",prix:"165 000",old:"250 000",stock:true,badge:"new",desc:"Estompe taches brunes, boutons et cicatrices pour un teint clair et uniforme. Formule à l'acide kojique, résultats visibles en 14 jours.",imgs:["assets/products/p02c-jars.jpg","assets/products/p02d-jars.jpg"],usage:["Nettoyez et séchez votre visage matin et soir.","Appliquez une fine couche de crème sur les zones à traiter.","Massez délicatement jusqu'à absorption, en évitant le contour des yeux.","Le jour, appliquez une protection solaire pour de meilleurs résultats."],pub:["assets/products/p02-pub-modele.jpg","assets/products/p02b-avant-apres.jpg"],video:""},
-  {id:3,nom:"Poudre Minérale AQA — Restauration de l'Émail",cat:"beaute",emoji:"🦷",img:"assets/products/p03-aqa-dents.jpg",prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Reminéralise et blanchit les dents en comblant les micro-fissures de l'émail. Un sourire éclatant à la maison, sans dentiste.",imgs:["assets/products/p03b-benefices.jpg","assets/products/p03d-aqa-box.jpg"],usage:["Humidifiez votre brosse à dents.","Trempez-la dans la poudre minérale AQA.","Brossez doucement 2 minutes, matin et soir.","Rincez à l'eau : un sourire plus blanc dès les premiers jours."],pub:["assets/products/p03-pub-avantapres.jpg","assets/products/p03-pub-shield.jpg","assets/products/p03c-action.jpg","assets/products/_extras/aqa-oyikey.jpg"],video:""},
+  {id:3,nom:"Poudre Minérale AQA — Restauration de l'Émail",cat:"beaute",emoji:"🦷",img:"assets/products/p03d-aqa-box.jpg",prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Reminéralise et blanchit les dents en comblant les micro-fissures de l'émail. Un sourire éclatant à la maison, sans dentiste.",imgs:["assets/products/p03-aqa-dents.jpg","assets/products/p03b-benefices.jpg"],usage:["Humidifiez votre brosse à dents.","Trempez-la dans la poudre minérale AQA.","Brossez doucement 2 minutes, matin et soir.","Rincez à l'eau : un sourire plus blanc dès les premiers jours."],pub:["assets/products/p03-pub-avantapres.jpg","assets/products/p03-pub-shield.jpg","assets/products/p03c-action.jpg","assets/products/_extras/aqa-oyikey.jpg"],video:""},
   {id:4,nom:"Power Bank 35 000 mAh — Batterie Externe Rapide",cat:"tech",emoji:"🔋",img:"assets/products/p04-powerbank.jpg",prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Grande capacité 35 000 mAh avec câbles intégrés (USB-C, Lightning, Micro) et écran d'autonomie. Rechargez téléphone, écouteurs et tablette plusieurs fois, partout, même en cas de coupure.",usage:["Chargez complètement la batterie avant la première utilisation.","Branchez votre appareil via un câble intégré ou un port USB.","L'écran LED indique le niveau d'autonomie restant en %.","Idéale en déplacement, taxi-moto ou pendant les coupures de courant."],video:""},
   {id:5,nom:"BeeNail™ — Spray au Venin d'Abeille (Ongles)",cat:"beaute",emoji:"💅",img:"assets/products/p05-beenail.jpg",prix:"195 000",old:"290 000",stock:true,badge:"chaud",desc:"Traite les ongles abîmés, jaunis ou fragiles et stoppe la mycose. Des ongles sains et brillants en quelques semaines.",usage:["Nettoyez et séchez l'ongle concerné.","Vaporisez 2 à 3 fois sur l'ongle et son pourtour.","Laissez sécher sans rincer, matin et soir.","Répétez chaque jour jusqu'à réparation complète de l'ongle."],video:""},
   {id:6,nom:"Savon au Curcuma 100% Naturel",cat:"beaute",emoji:"🧼",img:"assets/products/p06-soaps.jpg",imgs:["assets/products/p06-curcuma.jpg"],prix:"150 000",old:"220 000",stock:true,badge:"",desc:"Éclaircit, purifie et unifie la peau tout en luttant contre l'acné. Curcuma pur, parfaitement adapté aux peaux africaines.",usage:["Mouillez le savon et faites mousser entre les mains.","Appliquez la mousse sur le visage ou le corps en massant.","Laissez poser 1 à 2 minutes pour laisser agir le curcuma.","Rincez à l'eau tiède. Utilisez matin et soir."],video:"assets/videos/p06-curcuma.mp4"},
@@ -2029,14 +2035,26 @@ function openPD(id){
   }
   document.getElementById("pdEmoji").style.display = "none";
 
-  let M = [];
-  M.push({type:"img", src:resolveImg(p.img), kind:"Produit"});
-  (p.imgs||[]).forEach(s=> M.push({type:"img", src:resolveImg(s), kind:"Vue"}));
-  (p.pub||[]).forEach(s=> M.push({type:"img", src:resolveImg(s), kind:"pub"}));
-  // Anti-doublon : une même photo n'apparaît qu'une seule fois dans la galerie
+  // Galerie = image principale + 2 à 3 angles DIFFÉRENTS (max 3 miniatures, jamais de doublon)
+  const GAL_MAX = 3;
+  let gal = [{type:"img", src:resolveImg(p.img), kind:"Produit"}];
+  (p.imgs||[]).forEach(s=> gal.push({type:"img", src:resolveImg(s), kind:"Vue"}));
   const _seen = new Set();
-  M = M.filter(m=>{ if(_seen.has(m.src)) return false; _seen.add(m.src); return true; });
+  gal = gal.filter(m=>{ if(_seen.has(m.src)) return false; _seen.add(m.src); return true; });
+  const _overflow = gal.slice(GAL_MAX).map(m=>m.src); // angles au-delà de 3
+  const M = gal.slice(0, GAL_MAX);
   window.pdMedia = M;
+
+  // Le RESTE des photos (pub/lifestyle + surplus) → empilées sous la vidéo, sans doublon
+  const _belowSeen = new Set(M.map(m=>m.src));
+  const _belowImgs = (p.pub||[]).map(resolveImg).concat(_overflow).filter(s=>{ if(_belowSeen.has(s)) return false; _belowSeen.add(s); return true; });
+  const moreEl = document.getElementById("pdMoreImages");
+  if(moreEl){
+    if(_belowImgs.length){
+      moreEl.innerHTML = '<div class="pd-more-label">📸 Le produit en images</div>' + _belowImgs.map((s,idx)=>`<img src="${s}" loading="${idx<1?'eager':'lazy'}" alt="${p.nom}">`).join("");
+      moreEl.style.display = "";
+    } else { moreEl.innerHTML = ""; moreEl.style.display = "none"; }
+  }
 
   // Vidéo démo : bloc dédié EN GRAND juste avant le formulaire (pas dans la galerie)
   const vBlock = document.getElementById("pdVideoBlock");
