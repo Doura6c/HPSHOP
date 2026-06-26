@@ -262,6 +262,10 @@ section{padding:5.5rem 6%;}
 .form-note{text-align:center;font-size:.72rem;color:var(--muted2);margin-top:.8rem;display:flex;align-items:center;justify-content:center;gap:.4rem;flex-wrap:wrap;}
 .fg-hint{font-size:.76rem;color:var(--muted);margin:-.4rem 0 1rem;line-height:1.45;background:#F0FDF4;border:1px solid rgba(26,138,46,.18);border-radius:8px;padding:.5rem .7rem;}
 .fg-hint b{color:var(--green);}
+.pd-note-toggle{background:none;border:none;color:var(--red);font-weight:800;font-size:.85rem;cursor:pointer;padding:.2rem 0;margin-bottom:.7rem;font-family:'Nunito',sans-serif;}
+.pd-note-toggle:hover{text-decoration:underline;}
+.pd-urgency{font-size:.82rem;font-weight:800;color:#C25E00;background:#FFF6E6;border:1px solid rgba(245,168,0,.4);border-radius:8px;padding:.55rem .7rem;text-align:center;margin-top:.6rem;}
+.pd-urgency b{color:var(--red);}
 /* CTA sticky mobile */
 .pd-sticky-cta{display:none;}
 .pd-sticky-info{display:flex;flex-direction:column;line-height:1.05;flex-shrink:0;}
@@ -1780,7 +1784,8 @@ a, button, input, select{transition:all .25s ease;}
             <option>Autre ville</option>
           </select>
         </div>
-        <div class="fg"><label>Note (optionnel)</label><input type="text" id="pdNote" placeholder="Ex: appelez avant de livrer, point de repère…" autocomplete="off"></div>
+        <button type="button" class="pd-note-toggle" id="pdNoteToggle" onclick="togglePdNote()">＋ Ajouter une note (optionnel)</button>
+        <div class="fg" id="pdNoteField" style="display:none"><label>Note pour le livreur</label><input type="text" id="pdNote" placeholder="Ex: appelez avant de livrer, point de repère…" autocomplete="off"></div>
         <div class="fg">
           <label>Mode de paiement</label>
           <div class="pay-opts" style="grid-template-columns:repeat(2,1fr);">
@@ -1798,6 +1803,7 @@ a, button, input, select{transition:all .25s ease;}
             <p class="om-info-steps"><b>Comment payer :</b><br>1. Composez <b>#144#</b><br>2. Envoyer de l'argent → <b>+224 621 88 12 10</b><br>3. Copiez l'ID de transaction reçu par SMS<br>4. Collez-le ci-dessus et confirmez</p>
           </div>
         </div>
+          <div class="pd-urgency" id="pdUrgency">⚡ Plus que <b id="pdStockLeft">5</b> en stock — commandez vite !</div>
           <button class="order-btn" id="orderBtn" onclick="passerCommande()">🛒 Commander maintenant</button>
           <p class="form-note">🔒 Données confidentielles &nbsp;·&nbsp; Sans paiement en ligne &nbsp;·&nbsp; Réponse sous 1h</p>
         </div>
@@ -2102,6 +2108,14 @@ function openPD(id){
   if(_sumName) _sumName.textContent = p.nom;
   const _rc = document.getElementById("pdRecentCount");
   if(_rc) _rc.textContent = 8 + Math.floor(Math.random()*22);
+  // Urgence stock (étape 4)
+  const _sl = document.getElementById("pdStockLeft");
+  if(_sl) _sl.textContent = 3 + Math.floor(Math.random()*7);
+  const _ug = document.getElementById("pdUrgency");
+  if(_ug) _ug.style.display = p.stock ? "" : "none";
+  // Reset note repliable (étape 5)
+  const _nf = document.getElementById("pdNoteField"); if(_nf) _nf.style.display = "none";
+  const _nt = document.getElementById("pdNoteToggle"); if(_nt) _nt.style.display = "";
 
   // ===== DESCRIPTION DÉTAILLÉE — ACCORDÉON (Bénéfices / Mode d'emploi / Contenu / Avis) =====
   const det = document.getElementById("pdDetails");
@@ -2198,6 +2212,15 @@ function accBlock(title, inner, open){
   return `<div class="pd-acc-item${open?' open':''}"><button type="button" class="pd-acc-q" onclick="togglePdAcc(this)"><span>${title}</span><span class="pd-acc-ic">+</span></button><div class="pd-acc-a"><div class="pd-acc-inner">${inner}</div></div></div>`;
 }
 function togglePdAcc(btn){ btn.closest(".pd-acc-item").classList.toggle("open"); }
+// Note repliable (étape 5) — réduit la longueur perçue du formulaire
+function togglePdNote(){
+  const f = document.getElementById("pdNoteField");
+  const t = document.getElementById("pdNoteToggle");
+  const show = f.style.display === "none";
+  f.style.display = show ? "" : "none";
+  t.style.display = show ? "none" : "";
+  if(show) document.getElementById("pdNote").focus();
+}
 function defaultAvis(p){
   const noms = ["Mariama B.","Ibrahima S.","Aïssatou D.","Mamadou C.","Fatoumata D.","Ousmane B.","Kadiatou D.","Alpha B."];
   const ts = [
