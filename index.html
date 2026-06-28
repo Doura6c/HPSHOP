@@ -276,6 +276,12 @@ section{padding:5.5rem 6%;}
 .cod-notice b{color:#B8860B;}
 .cod-notice-global{background:linear-gradient(135deg,#FFF8E1,#FFF3CD);border-top:3px solid var(--gold);padding:1rem 5%;font-size:.78rem;color:#6B5900;line-height:1.6;text-align:center;}
 .cod-notice-global b{color:#B8860B;}
+/* Bande Suivi de commande */
+.track-band{background:#fff;border-top:1px solid var(--border);padding:2.2rem 5%;text-align:center;}
+.track-band h3{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:1px;color:var(--dark);margin-bottom:.4rem;}
+.track-band p{font-size:.85rem;color:var(--muted);margin-bottom:1.1rem;line-height:1.5;}
+.track-band .btn-track{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:linear-gradient(90deg,#1A8A2E,#13a83a);color:#fff;font-weight:800;font-size:.95rem;text-decoration:none;padding:14px 30px;border-radius:8px;box-shadow:0 6px 20px rgba(26,138,46,.3);transition:transform .25s,box-shadow .25s;min-height:52px;}
+.track-band .btn-track:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(26,138,46,.4);}
 .pd-note-toggle{background:none;border:none;color:var(--red);font-weight:800;font-size:.85rem;cursor:pointer;padding:.2rem 0;margin-bottom:.7rem;font-family:'Nunito',sans-serif;}
 .pd-note-toggle:hover{text-decoration:underline;}
 .pd-urgency{font-size:.82rem;font-weight:800;color:#C25E00;background:#FFF6E6;border:1px solid rgba(245,168,0,.4);border-radius:8px;padding:.55rem .7rem;text-align:center;margin-top:.6rem;}
@@ -1679,6 +1685,13 @@ a, button, input, select{transition:all .25s ease;}
   </div>
 </section>
 
+<!-- SUIVI DE COMMANDE -->
+<div class="track-band">
+  <h3>📦 Déjà commandé ?</h3>
+  <p>Suivez votre livraison en entrant votre <b>numéro de commande</b> (notez-le bien après votre commande).</p>
+  <a href="/suivi-commande" class="btn-track">📍 Suivre ma commande</a>
+</div>
+
 <!-- FOOTER -->
 <div class="cod-notice-global">⚠️ <b>Paiement à la livraison (COD)</b> — Merci de ne commander que si vous êtes disponible pour régler le montant à la réception. Tout colis refusé engage notre logistique inutilement. Nous comptons sur votre sérieux. 🙏</div>
 <footer>
@@ -1943,6 +1956,7 @@ a, button, input, select{transition:all .25s ease;}
     <div class="success-ico">🎉</div>
     <h3>Commande confirmée !</h3>
     <div id="successDetails" style="text-align:left;background:#f8fafc;border-radius:10px;padding:14px;margin:12px 0;font-size:.85rem;line-height:1.8;"></div>
+    <p style="background:#FFF8E1;border:1px solid rgba(245,168,0,.4);border-radius:8px;padding:9px 12px;font-size:.8rem;color:#6B5900;line-height:1.45;margin-bottom:.6rem;">📝 <b>Notez bien votre numéro de commande</b> — il vous servira à suivre votre livraison à tout moment.</p>
     <p style="color:#64748b;font-size:.82rem;">Notre équipe vous contacte <strong>sous 1h</strong> pour organiser votre livraison gratuite via Rapido 🚚</p>
     <button class="btn-red" style="width:100%;justify-content:center;margin-top:.8rem;min-height:52px" onclick="closeSuccess()">🛍 Retour à la boutique</button>
   </div>
