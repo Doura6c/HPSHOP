@@ -7,7 +7,7 @@
   "redirects": [
     { "source": "/admin", "destination": "/", "statusCode": 302 },
     { "source": "/admin/", "destination": "/", "statusCode": 302 },
-    { "source": "/suivi-commande", "destination": "https://wa.me/224621881210?text=Bonjour%2C%20je%20souhaite%20suivre%20ma%20commande%20HPSHOP.", "statusCode": 302 }
+    { "source": "/suivi-commande", "destination": "https://cod-crm-zeta.vercel.app/suivi", "statusCode": 302 }
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },

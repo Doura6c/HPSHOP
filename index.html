@@ -1687,7 +1687,7 @@ a, button, input, select{transition:all .25s ease;}
       <img src="assets/logo.png" alt="HPSHOP Afrique" loading="eager" decoding="async">
       <p>La boutique de la bonne fortune. Des produits de qualité livrés partout en Guinée. Paiement à la livraison, zéro risque.</p>
     </div>
-    <div class="foot-col"><h5>Navigation</h5><a href="#accueil">Accueil</a><a href="#produits">Nos produits</a><a href="#comment">Comment commander</a><a href="#avis">Avis clients</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
+    <div class="foot-col"><h5>Navigation</h5><a href="#accueil">Accueil</a><a href="#produits">Nos produits</a><a href="#comment">Comment commander</a><a href="/suivi-commande">📍 Suivre ma commande</a><a href="#avis">Avis clients</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
     <div class="foot-col"><h5>Catégories</h5><a href="#produits">Beauté & Soin</a><a href="#produits">Santé & Bien-être</a><a href="#produits">Auto & Moto</a><a href="#produits">Maison & Entretien</a><a href="#produits">Tech & Gadgets</a></div>
     <div class="foot-col"><h5>Suivez-nous</h5><a href="#">Facebook HPSHOP</a><a href="#">Instagram HPSHOP</a><a href="#">WhatsApp</a><a href="/politique-confidentialite.html">Politique de confidentialité</a><a href="/mentions-legales.html">Mentions légales</a></div>
   </div>
@@ -1957,6 +1957,8 @@ const CONFIG = {
   waDisplay: "+224 621 88 12 10",
   webhookUrl: "/api/submit-order",
   omMerchant: "+224 621 88 12 10",
+  // Page de suivi publique du CRM (deep-link ?q=CODE → recherche auto)
+  trackBase: "https://cod-crm-zeta.vercel.app/suivi",
 };
 
 // ============================================
@@ -2505,6 +2507,7 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
   // 1) ENVOI AU WEBHOOK CRM (si configuré)
   // ============================================
   let crmOk = false;
+  let orderCodeFinal = orderRef; // code réel renvoyé par le CRM (sinon, réf locale)
   if(CONFIG.webhookUrl){
     try {
       const payLabel = payMode === "ORANGE" ? `Orange Money — ID: ${omId}` : "Cash à la livraison";
@@ -2539,30 +2542,12 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
         body: JSON.stringify(payload)
       });
       crmOk = r.ok;
-
-      // ACTION 3 — WhatsApp de confirmation automatique au CLIENT
-      if(crmOk && phoneNorm){
-        const payLabelClient = payMode === "ORANGE"
-          ? `🟠 Orange Money (ID: ${omId})`
-          : "💵 Cash à la livraison";
-        const omNote = payMode === "ORANGE"
-          ? "\n⏳ Votre commande sera traitée après vérification du paiement (1–2h)."
-          : "";
-        const clientMsg =
-          `✅ *Commande confirmée — HPSHOP AFRIQUE*\n\n` +
-          `Bonjour ${nom.value.trim().split(' ')[0]} !\n\n` +
-          `📦 ${currentProduct.nom} × ${currentQty}\n` +
-          `💰 *${fmtPrice(totalAmount)} GNF* — ${payLabelClient}\n` +
-          `📍 ${adr.value.trim()}, ${vil.value}\n` +
-          `🔖 Réf : ${orderRef}${omNote}\n\n` +
-          `🚚 Livraison sous 24–48h via Rapido\n` +
-          `❓ Questions ? +${CONFIG.waNumber}`;
-        setTimeout(()=>{
-          window.open("https://wa.me/" + phoneNorm + "?text=" + encodeURIComponent(clientMsg), '_blank', 'noopener');
-        }, 1200);
-      }
+      // Récupère le vrai code commande renvoyé par le CRM (pour le suivi)
+      try { const data = await r.json(); if(data && data.order && data.order.code) orderCodeFinal = data.order.code; } catch(e){}
     } catch(e){ crmOk = false; }
   }
+  // Mémorise la dernière commande pour que le client puisse la retrouver (suivi)
+  try { localStorage.setItem("hpLastOrder", JSON.stringify({code:orderCodeFinal, at:Date.now()})); } catch(e){}
 
   // ============================================
   // 2) FALLBACK / NOTIFICATION WHATSAPP
@@ -2594,11 +2579,13 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
 
     // Remplir le modal succès — ACTION 7 : sanitisation XSS des valeurs utilisateur
     const _esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const _trackUrl = CONFIG.trackBase + "?q=" + encodeURIComponent(orderCodeFinal);
     document.getElementById("successDetails").innerHTML =
       `<div style="margin-bottom:6px;">📦 <b>${_esc(currentProduct.nom)}</b> × ${currentQty}</div>` +
       `<div>💰 <b>${fmtPrice(totalAmount)} GNF</b> — ${_esc(payLabel)}</div>` +
       `<div>📍 ${_esc(adr.value.trim())}, ${_esc(vil.value)}</div>` +
-      `<div style="margin-top:8px;font-size:.78rem;color:#94a3b8;">Réf : ${_esc(orderRef)}</div>`;
+      `<div style="margin-top:8px;font-size:.82rem;color:#0f172a;">🔖 N° de commande : <b>${_esc(orderCodeFinal)}</b></div>` +
+      `<a href="${_trackUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:10px;background:#1A8A2E;color:#fff;font-weight:800;text-decoration:none;padding:11px;border-radius:8px;font-size:.85rem;">📍 Suivre ma commande</a>`;
 
     document.getElementById("successOverlay").classList.add("show");
     toast("Commande envoyée !", "Notre équipe vous rappelle sous 1h", "success");
@@ -3052,6 +3039,7 @@ async function confirmerCommandePanier(){
 
   // Envoi CRM
   let crmOk = false;
+  let orderCodeFinal = orderRef; // code réel renvoyé par le CRM (sinon, réf locale)
   if(CONFIG.webhookUrl){
     try {
       const r = await fetch(CONFIG.webhookUrl, {
@@ -3073,28 +3061,12 @@ async function confirmerCommandePanier(){
         })
       });
       crmOk = r.ok;
-
-      // ACTION 3 — WhatsApp confirmation automatique au CLIENT (panier)
-      if(crmOk && phoneNorm){
-        const waItems = selectedItems.map(({p,qty,linePrice}) => `📦 ${p.nom} × ${qty} = ${fmtPrice(linePrice)} GNF`).join('\n');
-        const omNoteClient = payMode === "ORANGE"
-          ? "\n⏳ Votre commande sera traitée après vérification du paiement OM (1–2h)."
-          : "";
-        const clientConfirmMsg =
-          `✅ *Commande confirmée — HPSHOP AFRIQUE*\n\n` +
-          `Bonjour ${nom.value.trim().split(' ')[0]} !\n\n` +
-          `${waItems}\n\n` +
-          `💰 *Total : ${fmtPrice(total)} GNF* — ${payLabel}\n` +
-          `📍 ${adr.value.trim()}, ${vil.value}\n` +
-          `🔖 Réf : ${orderRef}${omNoteClient}\n\n` +
-          `🚚 Livraison sous 24–48h via Rapido\n` +
-          `❓ Questions ? +${CONFIG.waNumber}`;
-        setTimeout(()=>{
-          window.open("https://wa.me/" + phoneNorm + "?text=" + encodeURIComponent(clientConfirmMsg), '_blank', 'noopener');
-        }, 1200);
-      }
+      // Récupère le vrai code commande renvoyé par le CRM (pour le suivi)
+      try { const data = await r.json(); if(data && data.order && data.order.code) orderCodeFinal = data.order.code; } catch(e){}
     } catch(e){}
   }
+  // Mémorise la dernière commande pour le suivi client
+  try { localStorage.setItem("hpLastOrder", JSON.stringify({code:orderCodeFinal, at:Date.now()})); } catch(e){}
 
   // Fallback WhatsApp boutique si CRM échoue
   if(!crmOk){
@@ -3124,8 +3096,11 @@ async function confirmerCommandePanier(){
 
     // Modal succès
     const itemsStr = selectedItems.map(({p,qty}) => `📦 <b>${p.nom}</b> × ${qty}`).join('<br>');
+    const _trackUrl = CONFIG.trackBase + "?q=" + encodeURIComponent(orderCodeFinal);
     document.getElementById("successDetails").innerHTML =
-      `${itemsStr}<br>💰 <b>${fmtPrice(total)} GNF</b> — ${payLabel}<br>📍 ${adr.value.trim()}, ${vil.value}<br><span style="font-size:.76rem;color:#94a3b8;margin-top:6px;display:block;">Réf : ${orderRef}</span>`;
+      `${itemsStr}<br>💰 <b>${fmtPrice(total)} GNF</b> — ${payLabel}<br>📍 ${adr.value.trim()}, ${vil.value}` +
+      `<div style="margin-top:8px;font-size:.82rem;color:#0f172a;">🔖 N° de commande : <b>${orderCodeFinal}</b></div>` +
+      `<a href="${_trackUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:10px;background:#1A8A2E;color:#fff;font-weight:800;text-decoration:none;padding:11px;border-radius:8px;font-size:.85rem;">📍 Suivre ma commande</a>`;
     document.getElementById("successOverlay").classList.add("show");
     toast("Commande envoyée !", "Notre équipe vous rappelle sous 1h", "success");
   }, 900);
