@@ -23,7 +23,7 @@
 <meta property="og:locale" content="fr_GN">
 <meta property="og:site_name" content="HPSHOP Afrique">
 <meta property="og:title" content="HPSHOP Afrique — La boutique de la bonne fortune 🇬🇳">
-<meta property="og:description" content="Livraison gratuite partout en Guinée. Paiement à la livraison ou Orange Money. 18 produits sélectionnés.">
+<meta property="og:description" content="Livraison gratuite partout en Guinée. Paiement à la livraison ou Orange Money. Des produits sélectionnés pour vous.">
 <meta property="og:image" content="https://hpshop-afrique.vercel.app/assets/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -127,17 +127,17 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;scroll-padding-top:132px;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dark);overflow-x:hidden;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dark);overflow-x:hidden;padding-top:116px;}
 
 /* TICKER */
-.ticker-wrap{background:linear-gradient(90deg,var(--red),var(--gold),var(--green));padding:9px 0;overflow:hidden;white-space:nowrap;position:sticky;top:0;z-index:300;}
+.ticker-wrap{background:linear-gradient(90deg,var(--red),var(--gold),var(--green));padding:9px 0;overflow:hidden;white-space:nowrap;position:fixed;top:0;left:0;right:0;z-index:300;}
 .ticker-inner{display:inline-flex;animation:tick 28s linear infinite;}
 .ticker-inner span{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:2px;color:#fff;padding:0 2.5rem;}
 .ticker-inner span::after{content:'✦';margin-left:2.5rem;opacity:.6;}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* NAV */
-nav{background:#fff;border-bottom:2px solid var(--border);padding:0 5%;height:80px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:40px;z-index:290;box-shadow:var(--shadow);transition:box-shadow .3s,padding .3s;}
+nav{background:#fff;border-bottom:2px solid var(--border);padding:0 5%;height:80px;display:flex;align-items:center;justify-content:space-between;position:fixed;top:36px;left:0;right:0;z-index:290;box-shadow:var(--shadow);transition:box-shadow .3s,padding .3s;}
 nav.scrolled{box-shadow:0 6px 25px rgba(0,0,0,.08);}
 .nav-logo{height:52px;object-fit:contain;}
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
@@ -262,6 +262,20 @@ section{padding:5.5rem 6%;}
 .form-note{text-align:center;font-size:.72rem;color:var(--muted2);margin-top:.8rem;display:flex;align-items:center;justify-content:center;gap:.4rem;flex-wrap:wrap;}
 .fg-hint{font-size:.76rem;color:var(--muted);margin:-.4rem 0 1rem;line-height:1.45;background:#F0FDF4;border:1px solid rgba(26,138,46,.18);border-radius:8px;padding:.5rem .7rem;}
 .fg-hint b{color:var(--green);}
+/* Upsell volume */
+.pd-upsell{background:linear-gradient(135deg,#FFFBEB,#FFF3CD);border:1.5px solid rgba(245,168,0,.4);border-radius:10px;padding:.65rem .8rem;margin-bottom:.8rem;}
+.pd-upsell-badge{font-size:.7rem;font-weight:800;color:#fff;background:var(--red);padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:.4rem;}
+.pd-upsell-offers{display:flex;flex-direction:column;gap:.35rem;}
+.pd-upsell-row{display:flex;align-items:center;justify-content:space-between;font-size:.8rem;cursor:pointer;padding:.35rem .5rem;border-radius:6px;border:1.5px solid transparent;transition:all .2s;}
+.pd-upsell-row:hover,.pd-upsell-row.active{border-color:var(--green);background:rgba(26,138,46,.06);}
+.pd-upsell-row .u-qty{font-weight:800;color:var(--dark);}
+.pd-upsell-row .u-save{font-weight:800;color:var(--green);font-size:.72rem;}
+.pd-upsell-row .u-price{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--red);}
+/* COD reassurance notice */
+.cod-notice{background:#FFF8E1;border:1.5px solid rgba(245,168,0,.4);border-radius:10px;padding:.7rem .85rem;font-size:.74rem;color:#6B5900;line-height:1.55;margin-top:.8rem;}
+.cod-notice b{color:#B8860B;}
+.cod-notice-global{background:linear-gradient(135deg,#FFF8E1,#FFF3CD);border-top:3px solid var(--gold);padding:1rem 5%;font-size:.78rem;color:#6B5900;line-height:1.6;text-align:center;}
+.cod-notice-global b{color:#B8860B;}
 .pd-note-toggle{background:none;border:none;color:var(--red);font-weight:800;font-size:.85rem;cursor:pointer;padding:.2rem 0;margin-bottom:.7rem;font-family:'Nunito',sans-serif;}
 .pd-note-toggle:hover{text-decoration:underline;}
 .pd-urgency{font-size:.82rem;font-weight:800;color:#C25E00;background:#FFF6E6;border:1px solid rgba(245,168,0,.4);border-radius:8px;padding:.55rem .7rem;text-align:center;margin-top:.6rem;}
@@ -535,7 +549,8 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
   transition: transform .3s;
 }
 .hv-card:hover { transform: scale(1.08) !important; }
-.hv-card-img { font-size: 2.2rem; }
+.hv-card-img { font-size: 2.2rem; flex-shrink: 0; }
+.hv-card-img img { width: 44px; height: 44px; object-fit: cover; border-radius: 9px; display: block; background: #FFF8F0; }
 .hv-card-info { display: flex; flex-direction: column; }
 .hv-name { font-size: .75rem; font-weight: 800; color: #1a1a1a; }
 .hv-price { font-size: .8rem; font-weight: 800; color: var(--red); }
@@ -832,13 +847,15 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 /* CROSS-SELL "Vous aimerez aussi" */
 .cross-sell{padding:1.5rem 2.5rem;border-top:2px solid var(--border);background:#FAFAFA;}
 .cross-sell-title{font-size:.72rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
-.cross-sell-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;}
-.cs-item{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:.6rem;cursor:pointer;text-align:center;transition:all .25s;}
+.cross-sell-grid{display:flex;gap:.7rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:6px;}
+.cross-sell-grid::-webkit-scrollbar{height:4px;}
+.cross-sell-grid::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.cs-item{flex:0 0 140px;background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:.6rem;cursor:pointer;text-align:center;transition:all .25s;scroll-snap-align:start;}
 .cs-item:hover{border-color:var(--red);transform:translateY(-3px);box-shadow:0 6px 16px rgba(232,0,28,.12);}
 .cs-img{height:55px;background-size:cover;background-position:center;background-color:#FFF8F0;border-radius:5px;margin-bottom:.35rem;display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
 .cs-name{font-size:.65rem;font-weight:800;color:var(--dark);line-height:1.2;height:1.8em;overflow:hidden;text-overflow:ellipsis;margin-bottom:.2rem;}
 .cs-price{font-family:'Bebas Neue',sans-serif;font-size:.95rem;color:var(--red);letter-spacing:.5px;}
-@media(max-width:600px){.cross-sell-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.cs-item{flex:0 0 130px;}}
 
 /* ADD TO CART button in product detail */
 .pd-actions{display:flex;gap:.7rem;margin-top:1rem;}
@@ -1156,7 +1173,6 @@ footer::before{
 /* TICKER - Premium glow */
 .ticker-wrap{
   box-shadow:0 4px 20px rgba(232,0,28,.2);
-  position:relative;
 }
 .ticker-wrap::before{
   content:"";
@@ -1344,13 +1360,13 @@ a, button, input, select{transition:all .25s ease;}
     <span>Livraison Gratuite Partout en Guinée</span>
     <span>Paiement à la Livraison</span>
     <span>HPSHOP Afrique — La Boutique de la Bonne Fortune</span>
-    <span>24 Produits Sélectionnés</span>
+    <span><span class="ticker-count">18</span> Produits Sélectionnés</span>
     <span>Livraison via Rapido</span>
     <span>Commandez en 2 Minutes</span>
     <span>Livraison Gratuite Partout en Guinée</span>
     <span>Paiement à la Livraison</span>
     <span>HPSHOP Afrique — La Boutique de la Bonne Fortune</span>
-    <span>24 Produits Sélectionnés</span>
+    <span><span class="ticker-count">18</span> Produits Sélectionnés</span>
     <span>Livraison via Rapido</span>
     <span>Commandez en 2 Minutes</span>
   </div>
@@ -1406,7 +1422,7 @@ a, button, input, select{transition:all .25s ease;}
       </a>
     </div>
     <div class="hero-stats">
-      <div class="stat"><span class="stat-n">24</span><span class="stat-l">Produits</span></div>
+      <div class="stat"><span class="stat-n" id="statProduits">18</span><span class="stat-l">Produits</span></div>
       <div class="stat"><span class="stat-n">48H</span><span class="stat-l">Livraison max</span></div>
       <div class="stat"><span class="stat-n">100%</span><span class="stat-l">Garanti</span></div>
       <div class="stat"><span class="stat-n">0 GNF</span><span class="stat-l">Frais livraison</span></div>
@@ -1418,20 +1434,20 @@ a, button, input, select{transition:all .25s ease;}
       <div class="hv-ring hv-ring1"></div>
       <div class="hv-ring hv-ring2"></div>
       <div class="hv-card hv-card1">
-        <div class="hv-card-img">💆‍♀️</div>
-        <div class="hv-card-info"><span class="hv-name">Lisseur Pro</span><span class="hv-price">185 000 GNF</span></div>
+        <div class="hv-card-img"><img src="assets/products/p28-jbl.jpg" alt="JBL Xtreme 4" loading="eager"></div>
+        <div class="hv-card-info"><span class="hv-name">JBL Xtreme 4</span><span class="hv-price">285 000 GNF</span></div>
       </div>
       <div class="hv-card hv-card2">
-        <div class="hv-card-img">⌚</div>
-        <div class="hv-card-info"><span class="hv-name">Montre GPS</span><span class="hv-price">210 000 GNF</span></div>
+        <div class="hv-card-img"><img src="assets/products/p01-shilajit.jpg" alt="Shilajit Gummies" loading="eager"></div>
+        <div class="hv-card-info"><span class="hv-name">Shilajit Gummies</span><span class="hv-price">245 000 GNF</span></div>
       </div>
       <div class="hv-card hv-card3">
-        <div class="hv-card-img">❄️</div>
-        <div class="hv-card-info"><span class="hv-name">Climatiseur</span><span class="hv-price">250 000 GNF</span></div>
+        <div class="hv-card-img"><img src="assets/products/p21-fan.jpg" alt="Brumisateur" loading="eager"></div>
+        <div class="hv-card-info"><span class="hv-name">Brumisateur</span><span class="hv-price">195 000 GNF</span></div>
       </div>
       <div class="hv-card hv-card4">
-        <div class="hv-card-img">🚁</div>
-        <div class="hv-card-info"><span class="hv-name">Drone 4K</span><span class="hv-price">240 000 GNF</span></div>
+        <div class="hv-card-img"><img src="assets/products/p14-cs-apply.jpg" alt="Film Carbone" loading="eager"></div>
+        <div class="hv-card-info"><span class="hv-name">Film Carbone</span><span class="hv-price">250 000 GNF</span></div>
       </div>
       <div class="hv-badge-free">🚚 Livraison<br>GRATUITE</div>
     </div>
@@ -1541,7 +1557,7 @@ a, button, input, select{transition:all .25s ease;}
     <p class="s-sub" style="margin:0 auto">4 étapes simples pour recevoir votre produit à domicile</p>
   </div>
   <div class="how-grid">
-    <div class="how-card reveal"><div class="how-num">01</div><div class="how-ico">🛍️</div><h3>Choisissez</h3><p>Parcourez nos 18 produits et cliquez sur celui qui vous intéresse.</p></div>
+    <div class="how-card reveal"><div class="how-num">01</div><div class="how-ico">🛍️</div><h3>Choisissez</h3><p>Parcourez nos <span class="dyn-count"></span> produits et cliquez sur celui qui vous intéresse.</p></div>
     <div class="how-card reveal"><div class="how-num">02</div><div class="how-ico">📝</div><h3>Remplissez</h3><p>Indiquez votre nom, téléphone et adresse de livraison.</p></div>
     <div class="how-card reveal"><div class="how-num">03</div><div class="how-ico">📞</div><h3>Confirmation</h3><p>Notre équipe vous rappelle dans l'heure pour confirmer.</p></div>
     <div class="how-card reveal"><div class="how-num">04</div><div class="how-ico">🚚</div><h3>Livraison</h3><p>Rapido livre chez vous. Payez uniquement à la réception.</p></div>
@@ -1664,6 +1680,7 @@ a, button, input, select{transition:all .25s ease;}
 </section>
 
 <!-- FOOTER -->
+<div class="cod-notice-global">⚠️ <b>Paiement à la livraison (COD)</b> — Merci de ne commander que si vous êtes disponible pour régler le montant à la réception. Tout colis refusé engage notre logistique inutilement. Nous comptons sur votre sérieux. 🙏</div>
 <footer>
   <div class="foot-top">
     <div class="foot-brand">
@@ -1806,6 +1823,7 @@ a, button, input, select{transition:all .25s ease;}
           <div class="pd-urgency" id="pdUrgency">⚡ Plus que <b id="pdStockLeft">5</b> en stock — commandez vite !</div>
           <button class="order-btn" id="orderBtn" onclick="passerCommande()">🛒 Commander maintenant</button>
           <p class="form-note">🔒 Données confidentielles &nbsp;·&nbsp; Sans paiement en ligne &nbsp;·&nbsp; Réponse sous 1h</p>
+          <div class="cod-notice">⚠️ <b>Commande à paiement à la livraison (COD)</b> — Ce site est une plateforme e-commerce sérieuse et engagée. Nous vous remercions de ne passer commande que si vous êtes financièrement disponible à régler le montant total au moment de la livraison. Tout colis refusé ou non récupéré engage notre équipe logistique inutilement. Merci de votre compréhension et de votre engagement.</div>
         </div>
         <!-- VIDÉO PUB (1 seule par produit) — APRÈS le formulaire -->
         <div class="pd-video-block" id="pdVideoBlock" style="display:none">
@@ -1839,7 +1857,7 @@ a, button, input, select{transition:all .25s ease;}
     <div class="cart-empty">
       <div class="cart-empty-ico">🛍</div>
       <h4>Votre panier est vide</h4>
-      <p>Découvrez nos 18 produits incontournables</p>
+      <p>Découvrez nos <span class="dyn-count"></span> produits incontournables</p>
       <button class="btn-red" onclick="closeCart();document.getElementById('produits').scrollIntoView({behavior:'smooth'})">Voir les produits</button>
     </div>
   </div>
@@ -2008,6 +2026,9 @@ function filter(cat,btn){
 }
 
 renderProducts(produits);
+document.querySelectorAll(".dyn-count").forEach(el=>el.textContent=produits.length);
+document.querySelectorAll(".ticker-count").forEach(el=>el.textContent=produits.length);
+const _sp=document.getElementById("statProduits"); if(_sp) _sp.textContent=produits.length;
 
 // ============================================
 // MODAL PRODUIT (avec quantité, total dynamique)
@@ -2117,7 +2138,7 @@ function openPD(id){
   const avis = defaultAvis(p);
   const blocks = [];
   blocks.push(accBlock("✨ Bénéfices", `<ul class="pd-benefits">${benefices.map(b=>`<li>${b}</li>`).join("")}</ul>`, true));
-  if(p.usage && p.usage.length) blocks.push(accBlock("📋 Mode d'emploi", `<ol class="pd-usage">${p.usage.map(s=>`<li><span>${s}</span></li>`).join("")}</ol>`, false));
+  if(p.usage && p.usage.length) blocks.push(accBlock("📋 Comment utiliser ce produit", `<ol class="pd-usage">${p.usage.map(s=>`<li><span>${s}</span></li>`).join("")}</ol>`, true));
   blocks.push(accBlock("📦 Contenu du colis", `<p class="pd-contenu">${contenu}</p>`, false));
   blocks.push(accBlock("⭐ Avis clients", `<div class="pd-reviews">${avis.map(a=>`<div class="pd-review"><div class="pd-review-head"><span class="pd-review-ava">${a.n[0]}</span><b>${a.n}</b><span class="pd-review-stars">★★★★★</span></div><p>${a.t}</p></div>`).join("")}</div>`, false));
   det.innerHTML = `<div class="pd-acc">${blocks.join("")}</div>`;
@@ -2129,6 +2150,7 @@ function openPD(id){
   document.querySelectorAll(".pay-opt").forEach(o=>o.classList.toggle("on", o.dataset.pay==="CASH"));
   document.getElementById("omInfo").classList.remove("show");
   document.getElementById("pdOverlay").classList.add("show");
+  document.getElementById("pdOverlay").scrollTop = 0;
   document.getElementById("pdStickyCta").classList.add("show");
   document.body.style.overflow="hidden";
 
@@ -2255,6 +2277,7 @@ function closePD(){
   document.body.style.overflow="";
 }
 
+// Sélecteur de quantité simple (sans remise volume)
 function updateQty(delta){
   currentQty = Math.max(1, Math.min(10, currentQty + delta));
   document.getElementById("pdQty").textContent = currentQty;
@@ -2783,7 +2806,7 @@ function renderCart(){
       <div class="cart-empty">
         <div class="cart-empty-ico">🛍</div>
         <h4>Votre panier est vide</h4>
-        <p>Découvrez nos 18 produits incontournables</p>
+        <p>Découvrez nos <span class="dyn-count"></span> produits incontournables</p>
         <button class="btn-red" onclick="closeCart();document.getElementById('produits').scrollIntoView({behavior:'smooth'})">Voir les produits</button>
       </div>`;
     foot.style.display = 'none';
@@ -3216,6 +3239,15 @@ startCountdown();
     });
   }, {threshold: 0.6});
   obs.observe(el);
+
+  // HPSHOP — Compteur live : +1 commande toutes les 3 à 5 min (impression de dynamisme/confiance)
+  let live = target;
+  function bump(){
+    live++;
+    el.textContent = live;
+    setTimeout(bump, (180 + Math.random()*120) * 1000); // 3 à 5 min
+  }
+  setTimeout(bump, (180 + Math.random()*120) * 1000);
 })();
 
 // ============ FAQ ACCORDION ============
