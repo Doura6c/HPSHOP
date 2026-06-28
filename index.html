@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#E8001C">
 
 <!-- Security headers -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://images.unsplash.com https://hpshop-afrique.vercel.app; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https: https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net; frame-ancestors 'none'; form-action 'self' https://wa.me; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://images.unsplash.com https://hpshop-afrique.vercel.app https://www.facebook.com; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net; connect-src 'self' https: https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net; frame-ancestors 'none'; form-action 'self' https://wa.me; base-uri 'self'; upgrade-insecure-requests">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()">
@@ -1357,6 +1357,29 @@ a, button, input, select{transition:all .25s ease;}
     gtag('event', 'view_item', { currency: 'GNF', value: price, items: [{ item_name: productName, price: price }] });
   };
 </script>
+
+<!-- ============ META PIXEL (Facebook / Instagram) ============ -->
+<!-- 1) Colle ton Pixel ID ci-dessous (Events Manager → Sources de données). 2) Redéploie. -->
+<!-- Tant que l'ID reste le placeholder, le pixel reste inactif (aucune erreur). -->
+<script>
+  window.META_PIXEL_ID = "YOUR_PIXEL_ID"; // ⚠️ Remplacer par l'ID (15-16 chiffres)
+  (function(){
+    var id = window.META_PIXEL_ID;
+    if(!id || !/^\d{6,}$/.test(id)) return; // pixel dormant tant que l'ID n'est pas configuré
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', id);
+    fbq('track', 'PageView');
+  })();
+  // Wrapper sûr : no-op si le pixel n'est pas configuré
+  window.metaTrack = function(event, data){ try{ if(window.fbq) fbq('track', event, data || {}); }catch(e){} };
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+  src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+<!-- ============ /META PIXEL ============ -->
 </head>
 <body>
 
@@ -1975,6 +1998,18 @@ const CONFIG = {
   trackBase: "https://cod-crm-zeta.vercel.app/suivi",
 };
 
+// Log commande → Google Sheets (best-effort, n'affecte JAMAIS le tunnel ni le CRM)
+function logToSheets(row){
+  try {
+    fetch("/api/log-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(row),
+      keepalive: true
+    }).catch(function(){});
+  } catch(e){}
+}
+
 // ============================================
 // CATALOGUE PRODUITS (avec photos Unsplash)
 // ============================================
@@ -2058,6 +2093,10 @@ function openPD(id){
   currentProduct = p;
   currentQty = 1;
   document.getElementById("pdQty").textContent = "1";
+
+  // Analytics : vue produit (Meta ViewContent + GA view_item)
+  metaTrack('ViewContent', { content_name: p.nom, content_ids: ["HP-"+p.id], content_type: 'product', value: parsePrice(p.prix), currency: 'GNF' });
+  if(window.trackViewProduct) trackViewProduct(p.nom, parsePrice(p.prix));
 
   document.getElementById("pdEmoji").textContent=p.emoji;
   document.getElementById("pdCat").textContent=getCatLabel(p.cat);
@@ -2431,6 +2470,8 @@ function passerCommande(){
 
   // Afficher le modal récap
   const totalAmount = parsePrice(currentProduct.prix) * currentQty;
+  // Analytics : début de checkout (Meta InitiateCheckout)
+  metaTrack('InitiateCheckout', { content_ids: ["HP-"+currentProduct.id], content_name: currentProduct.nom, value: totalAmount, currency: 'GNF', num_items: currentQty });
   const payLabel = payMode === "ORANGE"
     ? "🟠 Orange Money"
     : "💵 Cash à la livraison";
@@ -2562,6 +2603,17 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
   }
   // Mémorise la dernière commande pour que le client puisse la retrouver (suivi)
   try { localStorage.setItem("hpLastOrder", JSON.stringify({code:orderCodeFinal, at:Date.now()})); } catch(e){}
+  // Google Sheets (best-effort, parallèle au CRM)
+  logToSheets({
+    code: orderCodeFinal, externalRef: orderRef,
+    nom: nom.value.trim(), telephone: tel.value.trim(),
+    adresse: adr.value.trim(), ville: vil.value,
+    produits: currentProduct.nom + " × " + currentQty,
+    quantite: currentQty, total: totalAmount,
+    paiement: payMode, omId: omId || "",
+    statut: payMode === "ORANGE" ? "EN_ATTENTE_VERIFICATION_OM" : "NOUVEAU",
+    source: "site"
+  });
 
   // ============================================
   // 2) FALLBACK / NOTIFICATION WHATSAPP
@@ -2602,6 +2654,10 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
       `<a href="${_trackUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:10px;background:#1A8A2E;color:#fff;font-weight:800;text-decoration:none;padding:11px;border-radius:8px;font-size:.85rem;">📍 Suivre ma commande</a>`;
 
     document.getElementById("successOverlay").classList.add("show");
+    // Analytics : achat (Meta Purchase + Lead, GA purchase)
+    metaTrack('Purchase', { content_ids: ["HP-"+currentProduct.id], content_name: currentProduct.nom, content_type: 'product', value: totalAmount, currency: 'GNF', num_items: currentQty });
+    metaTrack('Lead', { content_name: currentProduct.nom, value: totalAmount, currency: 'GNF' });
+    if(window.trackOrder) trackOrder(orderCodeFinal, totalAmount, [{name:currentProduct.nom, qty:currentQty, price:parsePrice(currentProduct.prix)}], vil.value);
     toast("Commande envoyée !", "Notre équipe vous rappelle sous 1h", "success");
     document.getElementById("pdOMId").value = "";
   }, 800);
@@ -2873,6 +2929,13 @@ function checkoutCart(){
   if(cart.length === 0) return;
   closeCart();
 
+  // Analytics : début de checkout panier (Meta InitiateCheckout)
+  (function(){
+    var ids=[], val=0, n=0;
+    cart.forEach(function(item){ var p=produits.find(x=>x.id===item.id); if(p){ ids.push("HP-"+p.id); val+=parsePrice(p.prix)*item.qty; n+=item.qty; } });
+    metaTrack('InitiateCheckout', { content_ids: ids, value: val, currency: 'GNF', num_items: n });
+  })();
+
   // Pré-remplir avec données client sauvegardées
   const saved = JSON.parse(localStorage.getItem('hpshop_customer') || '{}');
 
@@ -3081,6 +3144,17 @@ async function confirmerCommandePanier(){
   }
   // Mémorise la dernière commande pour le suivi client
   try { localStorage.setItem("hpLastOrder", JSON.stringify({code:orderCodeFinal, at:Date.now()})); } catch(e){}
+  // Google Sheets (best-effort, parallèle au CRM)
+  logToSheets({
+    code: orderCodeFinal, externalRef: orderRef,
+    nom: nom.value.trim(), telephone: tel.value.trim(),
+    adresse: adr.value.trim(), ville: vil.value,
+    produits: selectedItems.map(({p,qty}) => p.nom + " × " + qty).join(" | "),
+    quantite: selectedItems.reduce((n,{qty})=>n+qty,0), total: total,
+    paiement: payMode, omId: cartOmId || "",
+    statut: payMode === "ORANGE" ? "EN_ATTENTE_VERIFICATION_OM" : "NOUVEAU",
+    source: "site-panier"
+  });
 
   // Fallback WhatsApp boutique si CRM échoue
   if(!crmOk){
@@ -3107,6 +3181,9 @@ async function confirmerCommandePanier(){
         vil.value
       );
     }
+    // ── Meta Pixel : achat (Purchase + Lead) ────────────────────────────
+    metaTrack('Purchase', { content_ids: selectedItems.map(({p})=>"HP-"+p.id), content_type: 'product', value: total, currency: 'GNF', num_items: selectedItems.reduce((n,{qty})=>n+qty,0) });
+    metaTrack('Lead', { content_name: selectedItems.map(({p})=>p.nom).join(', '), value: total, currency: 'GNF' });
 
     // Modal succès
     const itemsStr = selectedItems.map(({p,qty}) => `📦 <b>${p.nom}</b> × ${qty}`).join('<br>');
