@@ -47,10 +47,11 @@ export default async function handler(req, res) {
     return res.status(413).json({ error: "Requête trop volumineuse" });
   }
 
-  // Si non configuré → no-op silencieux (ne casse JAMAIS le tunnel de commande)
-  const sheetUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+  // URL Apps Script (Web App). Surchargeable via la variable d'env Vercel GOOGLE_SHEETS_WEBHOOK_URL.
+  const SHEETS_URL_DEFAULT = "https://script.google.com/macros/s/AKfycbzuS64zYIi6yE8QVvkSBxs-bkYWsOZxnVnsi3O64DK1lklaQQrLFCC1vsVLZIgYJCiF/exec";
+  const sheetUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL || SHEETS_URL_DEFAULT;
   if (!sheetUrl) {
-    return res.status(200).json({ ok: true, skipped: "GOOGLE_SHEETS_WEBHOOK_URL non configurée" });
+    return res.status(200).json({ ok: true, skipped: "Sheets non configuré" });
   }
 
   try {
