@@ -3517,11 +3517,25 @@ var _lazyObs = new IntersectionObserver((entries, obs) => {
   threshold: 0
 });
 
+var _lazyFallbackT;
+function _forceLoadLazy(){
+  document.querySelectorAll('.prod-img-real[data-bg]:not([data-loaded])').forEach(function(div){
+    var bg=div.dataset.bg; if(!bg) return;
+    var tmp=new Image();
+    tmp.onload=function(){ div.style.backgroundImage="url('"+bg+"'),linear-gradient(135deg,#FFF8F0,#FFF3E0)"; div.dataset.loaded='1'; };
+    tmp.onerror=function(){ div.dataset.loaded='err'; var im=div.querySelector('img[data-src]'); if(im&&im.dataset.src) im.src=im.dataset.src; };
+    tmp.src=bg;
+  });
+}
 function _attachLazyObs(){
   if(!_lazyObs) return; // observer pas encore initialisé (1er render au chargement)
   document.querySelectorAll('.prod-img-real[data-bg]:not([data-loaded])').forEach(el => {
     _lazyObs.observe(el);
   });
+  // Filet de sécurité : si l'IntersectionObserver ne se déclenche pas (certains
+  // contextes/navigateurs), on charge quand même les photos non chargées après un court délai.
+  clearTimeout(_lazyFallbackT);
+  _lazyFallbackT = setTimeout(_forceLoadLazy, 1200);
 }
 // Charger les produits déjà rendus (premier appel renderProducts au chargement de la page)
 _attachLazyObs();
