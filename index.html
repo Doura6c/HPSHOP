@@ -2025,6 +2025,7 @@ const produits=[
   {id:31,nom:"Gonfleur de Pneu Portable Sans Fil — Auto & Moto",cat:"auto",emoji:"🛞",img:"assets/products/p31-gonfleur.jpg",imgs:["assets/products/p31-pompe.jpg"],prix:"185 000",old:"280 000",stock:true,badge:"chaud",desc:"Mini compresseur rechargeable qui regonfle pneus de voiture, moto, vélo et ballons en quelques minutes. Écran digital, pression préréglée, arrêt automatique. Indispensable dans le coffre.",usage:["Rechargez le gonfleur ou branchez-le sur l'allume-cigare.","Vissez l'embout sur la valve du pneu.","Réglez la pression voulue (PSI / BAR) sur l'écran.","Démarrez : l'appareil s'arrête tout seul à la bonne pression."],pub:["assets/products/p31-pub.jpg"],video:"assets/videos/p26-gonfleur.mp4"},
   {id:32,nom:"Mini Aspirateur Sans Fil Puissant — Voiture & Maison",cat:"maison",emoji:"🧹",img:"assets/products/p32-aspirateur.jpg",prix:"165 000",old:"250 000",stock:true,badge:"new",desc:"Petit aspirateur à main rechargeable, parfait pour la voiture, le bureau et les recoins difficiles. Aspiration puissante, embouts inclus, ultra-léger et silencieux.",imgs:["assets/products/p32-asp2.jpg"],pub:["assets/products/p32-keyboard.jpg"],usage:["Chargez l'aspirateur via le câble USB.","Choisissez l'embout adapté (fente ou brosse).","Allumez et passez sur miettes, poussière et poils.","Videz le bac et rincez le filtre après usage."],video:"assets/videos/p27-aspirateur.mp4"},
   {id:33,nom:"Ventilateur de Cou Sans Pales — Portable & Mains Libres",cat:"maison",emoji:"💨",img:"assets/products/p33-neckfan.jpg",prix:"230 000",old:"330 000",stock:true,badge:"chaud",desc:"Ventilateur de cou sans pales (sécurité cheveux), porté autour du cou pour rester au frais les mains libres. Rechargeable longue autonomie, plusieurs vitesses, silencieux et léger — idéal trajet, sport, cuisine et bureau.",imgs:["assets/products/p33-neckfan-blue.jpg"],usage:["Rechargez l'appareil via le câble USB avant usage.","Posez-le autour du cou, les sorties d'air vers le visage.","Allumez et choisissez la vitesse souhaitée.","Mains libres : marchez, travaillez ou cuisinez au frais."],pub:["assets/products/p33-neckfan-features.jpg"],video:"assets/videos/p33-neckfan.mp4"},
+  {id:34,nom:"Défroisseur Vapeur & Mini Fer à Repasser Portable 1000W",cat:"maison",emoji:"👕",img:"assets/products/p34-defroisseur.jpg",prix:"280 000",old:"",stock:true,badge:"new",desc:"Défroisseur vapeur et mini fer à repasser 2-en-1, ultra-compact et puissant (1000W). Chauffe en 20 secondes et défroisse chemises, robes et rideaux à la verticale comme à plat. Réservoir 100 ml, vapeur humide ou repassage à sec — parfait à la maison comme en voyage.",usage:["Remplissez le réservoir d'eau (100 ml) pour la fonction vapeur.","Branchez et patientez 20 secondes de chauffe.","Passez l'appareil sur le vêtement, à la verticale sur un cintre ou à plat.","Videz le réservoir après usage et laissez refroidir avant de ranger."],imgs:["assets/products/p34-defroisseur-green.jpg"],pub:["assets/products/p34-pub.jpg"],video:"assets/videos/p34-repassage.mp4"},
 ];
 
 const CATS = {beaute:"💄 Beauté",sante:"💪 Santé",auto:"🚗 Auto & Moto",maison:"🏠 Maison",tech:"📱 Tech",mode:"👗 Mode"};
@@ -2094,9 +2095,14 @@ function openPD(id){
   document.getElementById("pdName").textContent=p.nom;
   document.getElementById("pdDesc").textContent=p.desc;
   document.getElementById("pdPrice").textContent=p.prix+" GNF";
-  document.getElementById("pdOld").textContent=p.old+" GNF";
-  const saving=Math.round((1-parsePrice(p.prix)/parsePrice(p.old))*100);
-  document.getElementById("pdSaving").textContent="-"+saving+"%";
+  // Ancien prix + remise : uniquement si un ancien prix valide (> prix) est fourni
+  const _oldVal=parsePrice(p.old), _oldEl=document.getElementById("pdOld"), _savEl=document.getElementById("pdSaving");
+  if(_oldVal>parsePrice(p.prix)){
+    _oldEl.textContent=p.old+" GNF"; _oldEl.style.display="";
+    _savEl.textContent="-"+Math.round((1-parsePrice(p.prix)/_oldVal)*100)+"%"; _savEl.style.display="";
+  } else {
+    _oldEl.style.display="none"; _savEl.style.display="none"; // pas de fausse promo
+  }
   document.getElementById("pdStock").innerHTML=p.stock?"✅ En stock — Livraison sous 24–48h":"❌ Rupture de stock — Contactez-nous sur WhatsApp";
   document.getElementById("pdStock").style.color=p.stock?"#2ECC71":"#E74C3C";
 
