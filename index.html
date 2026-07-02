@@ -3532,10 +3532,12 @@ function _attachLazyObs(){
   document.querySelectorAll('.prod-img-real[data-bg]:not([data-loaded])').forEach(el => {
     _lazyObs.observe(el);
   });
-  // Filet de sécurité : si l'IntersectionObserver ne se déclenche pas (certains
-  // contextes/navigateurs), on charge quand même les photos non chargées après un court délai.
+  // Fiabilité : petit catalogue → on charge les photos immédiatement (indépendant
+  // de l'IntersectionObserver, qui ne se déclenche pas dans certains contextes),
+  // + une seconde passe après un court délai pour tout élément rendu juste après.
+  _forceLoadLazy();
   clearTimeout(_lazyFallbackT);
-  _lazyFallbackT = setTimeout(_forceLoadLazy, 1200);
+  _lazyFallbackT = setTimeout(_forceLoadLazy, 600);
 }
 // Charger les produits déjà rendus (premier appel renderProducts au chargement de la page)
 _attachLazyObs();
