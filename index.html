@@ -1819,14 +1819,6 @@ a, button, input, select{transition:all .25s ease;}
           <label>Ville / Préfecture *</label>
           <select id="pdVille">
             <option value="">-- Choisir une ville --</option>
-            <option>Conakry — Kaloum</option><option>Conakry — Ratoma</option>
-            <option>Conakry — Matam</option><option>Conakry — Dixinn</option>
-            <option>Conakry — Matoto</option><option>Kindia</option>
-            <option>Labé</option><option>Kankan</option><option>Mamou</option>
-            <option>Boké</option><option>Faranah</option><option>Nzérékoré</option>
-            <option>Coyah</option><option>Dubréka</option><option>Forécariah</option>
-            <option>Télimélé</option><option>Pita</option><option>Dalaba</option>
-            <option>Autre ville</option>
           </select>
         </div>
         <button type="button" class="pd-note-toggle" id="pdNoteToggle" onclick="togglePdNote()">＋ Ajouter une note (optionnel)</button>
@@ -2420,6 +2412,31 @@ function restoreCustomer(){
 }
 
 // ============================================
+// VILLES DE GUINÉE — 33 préfectures + 5 communes de Conakry (source unique)
+// Groupées par région naturelle. Utilisée pour les 2 formulaires (commande + panier).
+// ============================================
+function villeOptionsHTML(sel){
+  sel = sel || '';
+  var groups = [
+    ['Conakry', ['Conakry — Kaloum','Conakry — Dixinn','Conakry — Ratoma','Conakry — Matam','Conakry — Matoto']],
+    ['Basse-Guinée (Guinée maritime)', ['Boké','Boffa','Fria','Gaoual','Koundara','Kindia','Coyah','Dubréka','Forécariah','Télimélé']],
+    ['Moyenne-Guinée (Fouta-Djalon)', ['Labé','Mamou','Dalaba','Pita','Koubia','Lélouma','Mali','Tougué']],
+    ['Haute-Guinée', ['Kankan','Kissidougou','Faranah','Dabola','Dinguiraye','Kérouané','Kouroussa','Mandiana','Siguiri']],
+    ['Guinée forestière', ['Nzérékoré','Guéckédou','Macenta','Beyla','Lola','Yomou']]
+  ];
+  var h = '<option value="">-- Choisir une ville --</option>';
+  for(var i=0;i<groups.length;i++){
+    h += '<optgroup label="'+groups[i][0]+'">';
+    var arr = groups[i][1];
+    for(var k=0;k<arr.length;k++){ h += '<option'+(arr[k]===sel?' selected':'')+'>'+arr[k]+'</option>'; }
+    h += '</optgroup>';
+  }
+  h += '<option'+('Autre ville'===sel?' selected':'')+'>Autre ville</option>';
+  return h;
+}
+(function(){ var e=document.getElementById('pdVille'); if(e) e.innerHTML = villeOptionsHTML(); })();
+
+// ============================================
 // CONFIRMER COMMANDE
 // ============================================
 // ============================================
@@ -2983,19 +3000,7 @@ function checkoutCart(){
         <input type="text" id="ccoNom" placeholder="Nom complet *" value="${saved.nom||''}" autocomplete="name">
       </div>
       <input type="tel" id="ccoTel" placeholder="Téléphone * (6XX XX XX)" value="${saved.tel||''}" autocomplete="tel">
-      <select id="ccoVille">
-        <option value="">-- Ville * --</option>
-        <option ${saved.ville==='Conakry — Kaloum'?'selected':''}>Conakry — Kaloum</option>
-        <option ${saved.ville==='Conakry — Ratoma'?'selected':''}>Conakry — Ratoma</option>
-        <option ${saved.ville==='Conakry — Matam'?'selected':''}>Conakry — Matam</option>
-        <option ${saved.ville==='Conakry — Dixinn'?'selected':''}>Conakry — Dixinn</option>
-        <option ${saved.ville==='Conakry — Matoto'?'selected':''}>Conakry — Matoto</option>
-        <option>Kindia</option><option>Labé</option><option>Kankan</option>
-        <option>Mamou</option><option>Boké</option><option>Faranah</option>
-        <option>Nzérékoré</option><option>Coyah</option><option>Dubréka</option>
-        <option>Forécariah</option><option>Télimélé</option><option>Pita</option>
-        <option>Dalaba</option><option>Autre ville</option>
-      </select>
+      <select id="ccoVille">${villeOptionsHTML(saved.ville)}</select>
       <div class="fg-full">
         <input type="text" id="ccoAdresse" placeholder="Adresse de livraison *" value="${saved.adresse||''}" autocomplete="street-address">
       </div>
