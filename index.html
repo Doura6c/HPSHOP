@@ -3498,28 +3498,33 @@ window.addEventListener('DOMContentLoaded', ()=>{
 // ============ LAZY LOADING — Images produits ============
 // Charge les images Unsplash uniquement quand la carte entre dans le viewport
 // Gain estimé : -60% sur le chargement initial (réseau 3G/4G Guinée)
+// Charge le fond d'une carte : WebP d'abord (−56 % de poids), repli JPEG
+// automatique si le WebP manque ou n'est pas supporté (vieux navigateur),
+// puis emoji en dernier recours. Garantit zéro image cassée.
+function _loadBg(div){
+  if(!div || div.dataset.loaded) return;
+  var bg = div.dataset.bg; if(!bg) return;
+  var webp = bg.replace(/\.jpe?g$/i, '.webp');
+  var apply = function(url){ div.style.backgroundImage = "url('"+url+"'),linear-gradient(135deg,#FFF8F0,#FFF3E0)"; div.dataset.loaded = '1'; };
+  var toEmoji = function(){ div.dataset.loaded='err'; var el=div.querySelector('img[data-src]'); if(el&&el.dataset.src) el.src=el.dataset.src; };
+  var t = new Image();
+  t.onload = function(){ apply(webp); };
+  t.onerror = function(){
+    if(webp === bg){ toEmoji(); return; }
+    var j = new Image();
+    j.onload = function(){ apply(bg); };
+    j.onerror = toEmoji;
+    j.src = bg;
+  };
+  t.src = webp;
+}
+
 var _lazyObs = new IntersectionObserver((entries, obs) => {
   entries.forEach(e => {
     if(!e.isIntersecting) return;
     const div = e.target;
     if(div.dataset.loaded) { obs.unobserve(div); return; } // déjà chargé ou en erreur
-    const bg = div.dataset.bg;
-    if(bg){
-      // Charger l'image en arrière-plan avant de l'afficher
-      const tmp = new Image();
-      tmp.onload = () => {
-        div.style.backgroundImage = `url('${bg}'),linear-gradient(135deg,#FFF8F0,#FFF3E0)`;
-        div.dataset.loaded = '1';
-      };
-      tmp.onerror = () => {
-        // Déjà géré par l'img onerror inline — on marque juste comme chargé
-        div.dataset.loaded = 'err';
-      };
-      tmp.src = bg;
-      // Déclencher aussi l'onerror inline si l'URL est invalide
-      const img = div.querySelector('img[data-src]');
-      if(img && img.dataset.src){ img.src = img.dataset.src; }
-    }
+    _loadBg(div);
     obs.unobserve(div);
   });
 }, {
@@ -3529,13 +3534,7 @@ var _lazyObs = new IntersectionObserver((entries, obs) => {
 
 var _lazyFallbackT;
 function _forceLoadLazy(){
-  document.querySelectorAll('.prod-img-real[data-bg]:not([data-loaded])').forEach(function(div){
-    var bg=div.dataset.bg; if(!bg) return;
-    var tmp=new Image();
-    tmp.onload=function(){ div.style.backgroundImage="url('"+bg+"'),linear-gradient(135deg,#FFF8F0,#FFF3E0)"; div.dataset.loaded='1'; };
-    tmp.onerror=function(){ div.dataset.loaded='err'; var im=div.querySelector('img[data-src]'); if(im&&im.dataset.src) im.src=im.dataset.src; };
-    tmp.src=bg;
-  });
+  document.querySelectorAll('.prod-img-real[data-bg]:not([data-loaded])').forEach(_loadBg);
 }
 function _attachLazyObs(){
   if(!_lazyObs) return; // observer pas encore initialisé (1er render au chargement)
