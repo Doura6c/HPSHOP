@@ -856,7 +856,8 @@ footer{background:var(--dark);padding:3rem 6% 1.5rem;}
 
 /* ADD TO CART button in product detail */
 .pd-actions{display:flex;gap:.7rem;margin-top:1rem;}
-.btn-add-cart{flex:1;background:#fff;color:var(--dark);border:2px solid var(--dark);padding:14px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:1.5px;cursor:pointer;transition:all .3s;}
+.btn-add-cart{flex:0 0 auto;white-space:nowrap;background:#fff;color:var(--muted);border:1.5px solid var(--border);padding:9px 14px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:.3px;cursor:pointer;transition:all .3s;}
+.btn-add-cart:hover{color:var(--dark);border-color:var(--dark);}
 .btn-add-cart:hover{background:var(--dark);color:#fff;transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.2);}
 
 /* NEWSLETTER POPUP */
@@ -1707,7 +1708,7 @@ a, button, input, select{transition:all .25s ease;}
 </div>
 
 <!-- FOOTER -->
-<div class="cod-notice-global">⚠️ <b>Paiement à la livraison (COD)</b> — Merci de ne commander que si vous êtes disponible pour régler le montant à la réception. Tout colis refusé engage notre logistique inutilement. Nous comptons sur votre sérieux. 🙏</div>
+<div class="cod-notice-global">✅ <b>Paiement à la livraison partout en Guinée</b> — Commandez sans rien payer d'avance. Vous réglez à la réception, après avoir vérifié votre colis. Livraison gratuite via Rapido. 🚚</div>
 <footer>
   <div class="foot-top">
     <div class="foot-brand">
@@ -1850,7 +1851,7 @@ a, button, input, select{transition:all .25s ease;}
           <div class="pd-urgency" id="pdUrgency">⚡ Plus que <b id="pdStockLeft">5</b> en stock — commandez vite !</div>
           <button class="order-btn" id="orderBtn" onclick="passerCommande()">🛒 Commander maintenant</button>
           <p class="form-note">🔒 Données confidentielles &nbsp;·&nbsp; Sans paiement en ligne &nbsp;·&nbsp; Réponse sous 1h</p>
-          <div class="cod-notice">⚠️ <b>Commande à paiement à la livraison (COD)</b> — Ce site est une plateforme e-commerce sérieuse et engagée. Nous vous remercions de ne passer commande que si vous êtes financièrement disponible à régler le montant total au moment de la livraison. Tout colis refusé ou non récupéré engage notre équipe logistique inutilement. Merci de votre compréhension et de votre engagement.</div>
+          <div class="cod-notice">✅ <b>Paiement à la livraison</b> — Vous ne payez rien maintenant. Vous réglez seulement à la réception, une fois votre colis livré et vérifié. Merci de commander uniquement si vous serez disponible pour le réceptionner. 🙏</div>
         </div>
         <!-- VIDÉO PUB (1 seule par produit) — APRÈS le formulaire -->
         <div class="pd-video-block" id="pdVideoBlock" style="display:none">
@@ -2631,8 +2632,8 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
     "🕐 " + new Date().toLocaleString("fr-FR") + "\n\n" +
     "⚡ Livraison via *Rapido* — À confirmer rapidement !";
 
+  const waUrl = "https://wa.me/" + CONFIG.waNumber + "?text=" + encodeURIComponent(msg);
   if(!crmOk){
-    const waUrl = "https://wa.me/" + CONFIG.waNumber + "?text=" + encodeURIComponent(msg);
     window.open(waUrl, "_blank");
   }
 
@@ -2645,19 +2646,26 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
     // Remplir le modal succès — ACTION 7 : sanitisation XSS des valeurs utilisateur
     const _esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     const _trackUrl = CONFIG.trackBase + "?q=" + encodeURIComponent(orderCodeFinal);
+    // Si l'envoi au CRM a échoué (souvent : connexion instable), on ne fait PAS
+    // croire que la commande est partie. On demande au client de l'envoyer via
+    // WhatsApp (le message est déjà pré-rempli) — sinon commande perdue « fantôme ».
+    const notSent = !crmOk;
     document.getElementById("successDetails").innerHTML =
+      (notSent ? `<div style="background:#FFF4E5;border:1.5px solid #F5A800;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:.84rem;color:#7a4b00;line-height:1.5;text-align:left;">⚠️ <b>Dernière étape pour valider :</b> si WhatsApp ne s'est pas ouvert tout seul, appuyez sur le bouton vert ci-dessous et <b>envoyez le message</b> — sinon nous ne recevrons pas votre commande.</div>` : '') +
       `<div style="margin-bottom:6px;">📦 <b>${_esc(currentProduct.nom)}</b> × ${currentQty}</div>` +
       `<div>💰 <b>${fmtPrice(totalAmount)} GNF</b> — ${_esc(payLabel)}</div>` +
       `<div>📍 ${_esc(adr.value.trim())}, ${_esc(vil.value)}</div>` +
       `<div style="margin-top:8px;font-size:.82rem;color:#0f172a;">🔖 N° de commande : <b>${_esc(orderCodeFinal)}</b></div>` +
-      `<a href="${_trackUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:10px;background:#1A8A2E;color:#fff;font-weight:800;text-decoration:none;padding:11px;border-radius:8px;font-size:.85rem;">📍 Suivre ma commande</a>`;
+      (notSent
+        ? `<a href="${waUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:10px;background:#25D366;color:#fff;font-weight:800;text-decoration:none;padding:13px;border-radius:8px;font-size:.9rem;">💬 Envoyer ma commande sur WhatsApp</a>`
+        : `<a href="${_trackUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:10px;background:#1A8A2E;color:#fff;font-weight:800;text-decoration:none;padding:11px;border-radius:8px;font-size:.85rem;">📍 Suivre ma commande</a>`);
 
     document.getElementById("successOverlay").classList.add("show");
     // Analytics : achat (Meta Purchase + Lead, GA purchase)
     metaTrack('Purchase', { content_ids: ["HP-"+currentProduct.id], content_name: currentProduct.nom, content_type: 'product', value: totalAmount, currency: 'GNF', num_items: currentQty });
     metaTrack('Lead', { content_name: currentProduct.nom, value: totalAmount, currency: 'GNF' });
     if(window.trackOrder) trackOrder(orderCodeFinal, totalAmount, [{name:currentProduct.nom, qty:currentQty, price:parsePrice(currentProduct.prix)}], vil.value);
-    toast("Commande envoyée !", "Notre équipe vous rappelle sous 1h", "success");
+    toast(notSent ? "Presque terminé !" : "Commande envoyée !", notSent ? "Envoyez le message WhatsApp pour valider" : "Notre équipe vous rappelle sous 1h", notSent ? "warning" : "success");
     document.getElementById("pdOMId").value = "";
   }, 800);
 }
@@ -3424,7 +3432,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
     wrap.className = 'pd-actions';
     const addBtn = document.createElement('button');
     addBtn.className = 'btn-add-cart';
-    addBtn.innerHTML = '🛒 AJOUTER AU PANIER';
+    addBtn.innerHTML = '＋ Au panier';
     addBtn.type = 'button';
     addBtn.onclick = ()=>{
       if(currentProduct){
