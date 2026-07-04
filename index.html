@@ -1791,7 +1791,7 @@ a, button, input, select{transition:all .25s ease;}
 <!-- PRODUCT DETAIL -->
 <div class="pd-overlay" id="pdOverlay">
   <div class="pd-container">
-    <button class="pd-close" onclick="closePD()">✕</button>
+    <button class="pd-close" onclick="attemptClosePD()">✕</button>
     <div class="pd-box">
       <div class="pd-split">
         <!-- ===== GAUCHE : visuel produit (sticky) ===== -->
@@ -1938,11 +1938,11 @@ a, button, input, select{transition:all .25s ease;}
 </aside>
 
 <!-- CART CHECKOUT MODAL -->
-<div class="cart-checkout-overlay" id="cartCheckoutOverlay" onclick="if(event.target===this)closeCartCheckout()">
+<div class="cart-checkout-overlay" id="cartCheckoutOverlay" onclick="if(event.target===this)_backdropNudge(this)">
   <div class="cart-checkout-modal" id="cartCheckoutModal">
     <div class="cco-header">
       <div class="cco-title">🛒 Finaliser ma commande</div>
-      <button class="cco-close" onclick="closeCartCheckout()" aria-label="Fermer">✕</button>
+      <button class="cco-close" onclick="attemptCloseCartCheckout()" aria-label="Fermer">✕</button>
     </div>
     <div class="cco-body" id="ccoBody">
       <!-- Rempli dynamiquement -->
@@ -2739,12 +2739,12 @@ function closeSuccess(){
   document.getElementById("successOverlay").classList.remove("show");
 }
 
-document.getElementById("pdOverlay").addEventListener("click",function(e){if(e.target===this)closePD();});
+document.getElementById("pdOverlay").addEventListener("click",function(e){if(e.target===this)_backdropNudge(this);});
 
 // ESC pour fermer
 document.addEventListener("keydown", e=>{
   if(e.key === "Escape"){
-    closePD();
+    attemptClosePD();
     closeSuccess();
   }
 });
@@ -2794,6 +2794,46 @@ document.getElementById("pdTel").addEventListener("input", e=>{
   document.getElementById(id)?.addEventListener("input", e=>e.target.classList.remove("error"));
   document.getElementById(id)?.addEventListener("change", e=>e.target.classList.remove("error"));
 });
+
+// ============================================
+// ANTI-PERTE DE COMMANDE (fermeture protégée + sauvegarde auto)
+// ============================================
+// Sauvegarde auto de la saisie en cours → restaurée par restoreCustomer() à l'ouverture (même après refresh)
+let _draftT;
+function _saveDraftSoon(){ clearTimeout(_draftT); _draftT = setTimeout(saveCustomer, 400); }
+["pdNom","pdTel","pdAdresse","pdVille"].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el){ el.addEventListener("input", _saveDraftSoon); el.addEventListener("change", _saveDraftSoon); }
+});
+// Clic sur le fond : la modale ne se ferme plus par accident → petit indice visuel (shake + ✕ qui pulse)
+function _backdropNudge(overlay){
+  const box = overlay.querySelector(".pd-container, .cco-box, .cart-checkout-box") || overlay.firstElementChild;
+  if(box){ box.style.animation = "none"; void box.offsetWidth; box.style.animation = "shake .35s"; }
+  const x = overlay.querySelector(".pd-close, .cco-close");
+  if(x){ x.style.transition = "transform .15s"; x.style.transform = "scale(1.25)"; setTimeout(()=>{ x.style.transform = ""; }, 220); }
+}
+// Fermeture protégée de la fiche produit (confirmation si des champs sont remplis)
+function _pdHasInput(){
+  return ["pdNom","pdTel","pdAdresse","pdOMId"].some(id=>{
+    const el = document.getElementById(id); return el && el.value.trim();
+  });
+}
+function attemptClosePD(){
+  const ov = document.getElementById("pdOverlay");
+  if(!ov || !ov.classList.contains("show")) return;
+  if(_pdHasInput() && !confirm("Fermer cette commande ? Vos informations sont conservées pour la prochaine fois.")) return;
+  closePD();
+}
+// Fermeture protégée du checkout panier
+function attemptCloseCartCheckout(){
+  const ov = document.getElementById("cartCheckoutOverlay");
+  if(!ov || !ov.classList.contains("show")) return;
+  const filled = ["ccoNom","ccoTel","ccoAdresse","ccoOMId"].some(id=>{
+    const el = document.getElementById(id); return el && el.value.trim();
+  });
+  if(filled && !confirm("Fermer cette commande ? Vos informations sont conservées pour la prochaine fois.")) return;
+  closeCartCheckout();
+}
 
 // ============================================
 // MASQUE STICKY MOBILE BAR QUAND MODAL OUVERT
