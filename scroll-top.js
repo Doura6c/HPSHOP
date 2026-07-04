@@ -1,4 +1,5 @@
 /* HP Shop — bouton "Retour en haut" mascotte Happy Price (composant global auto-injecté) */
+/* Conscient des modales : remonte aussi le haut de la page commande (#pdOverlay) et du checkout panier (#ccoBody). */
 (function () {
   if (window.__hpScrollTop) return;
   window.__hpScrollTop = true;
@@ -10,6 +11,7 @@
     + '-webkit-tap-highlight-color:transparent;opacity:0;visibility:hidden;transform:translateY(16px);'
     + 'background:conic-gradient(from -90deg,#CE1126 0deg,#FCD116 calc(var(--p,0)*1.8deg),#009460 calc(var(--p,0)*3.6deg),rgba(120,120,120,.20) calc(var(--p,0)*3.6deg) 360deg);'
     + 'transition:opacity .35s ease,transform .35s cubic-bezier(.34,1.56,.64,1);}'
+    + '.hpstop.hpstop-modal{z-index:585;}'
     + '.hpstop.show{opacity:1;visibility:visible;transform:translateY(0);}'
     + '.hpstop-face{width:100%;height:100%;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.18);}'
     + '.hpstop svg{width:32px;height:32px;display:block;}'
@@ -44,6 +46,28 @@
   btn.style.setProperty('--p', '0');
   btn.innerHTML = '<span class="hpstop-face">' + svg + '</span>';
 
+  function byId(id) { return document.getElementById(id); }
+  function shown(id) { var el = byId(id); return el && el.classList.contains('show'); }
+
+  /* Modales de commande à défilement interne : { déclencheur .show , élément qui scrolle } */
+  var SCROLL_MODALS = [
+    { open: 'cartCheckoutOverlay', scroller: 'ccoBody' },
+    { open: 'pdOverlay', scroller: 'pdOverlay' }
+  ];
+  /* Modales "bloquantes" : quand elles sont ouvertes, on cache le bouton */
+  var BLOCK_MODALS = ['recapOverlay', 'successOverlay', 'nlOverlay', 'cartOverlay'];
+
+  function activeScroller() {
+    for (var i = 0; i < SCROLL_MODALS.length; i++) {
+      if (shown(SCROLL_MODALS[i].open)) return byId(SCROLL_MODALS[i].scroller);
+    }
+    return null;
+  }
+  function isBlocked() {
+    for (var i = 0; i < BLOCK_MODALS.length; i++) { if (shown(BLOCK_MODALS[i])) return true; }
+    return false;
+  }
+
   function mount() {
     document.body.appendChild(btn);
     onScroll();
@@ -54,8 +78,18 @@
   var ticking = false;
   function update() {
     ticking = false;
-    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    if (isBlocked()) { btn.classList.remove('show'); return; }
+    var sc = activeScroller();
+    var y, docH;
+    if (sc) {
+      y = sc.scrollTop;
+      docH = sc.scrollHeight - sc.clientHeight;
+      btn.classList.add('hpstop-modal');
+    } else {
+      y = window.pageYOffset || document.documentElement.scrollTop || 0;
+      docH = document.documentElement.scrollHeight - window.innerHeight;
+      btn.classList.remove('hpstop-modal');
+    }
     var p = docH > 0 ? Math.min(100, Math.max(0, (y / docH) * 100)) : 0;
     btn.style.setProperty('--p', p.toFixed(1));
     if (y > 300) btn.classList.add('show');
@@ -64,8 +98,22 @@
   function onScroll() {
     if (!ticking) { ticking = true; requestAnimationFrame(update); }
   }
+
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
+  ['pdOverlay', 'ccoBody'].forEach(function (id) {
+    var el = byId(id);
+    if (el) el.addEventListener('scroll', onScroll, { passive: true });
+  });
+
+  /* Recalcule quand une modale s'ouvre/se ferme (changement de classe) */
+  if (window.MutationObserver) {
+    var mo = new MutationObserver(onScroll);
+    ['pdOverlay', 'cartCheckoutOverlay'].concat(BLOCK_MODALS).forEach(function (id) {
+      var el = byId(id);
+      if (el) mo.observe(el, { attributes: true, attributeFilter: ['class'] });
+    });
+  }
 
   btn.addEventListener('click', function () {
     if (!reduce) {
@@ -73,6 +121,7 @@
       void btn.offsetWidth;
       btn.classList.add('takeoff');
     }
-    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    var sc = activeScroller();
+    (sc || window).scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
   });
 })();
