@@ -176,6 +176,24 @@ nav.scrolled{box-shadow:0 6px 25px rgba(0,0,0,.08);}
 .strip-item{display:flex;align-items:center;gap:.6rem;font-size:.82rem;font-weight:700;color:#fff;}
 .strip-item strong{color:var(--gold);}
 .strip-ico{font-size:1.1rem;}
+/* ===== HELPMEPROCESS — réassurance service client pro ===== */
+.strip-headline{background:var(--dark);color:#fff;text-align:center;font-size:.92rem;font-weight:800;padding:1.1rem 5% .1rem;line-height:1.45;}
+.strip-headline strong{color:var(--gold);}
+.hmp-note{display:flex;gap:.6rem;align-items:flex-start;background:#F0FDF4;border:1.5px solid rgba(26,138,46,.25);border-radius:10px;padding:.7rem .85rem;font-size:.77rem;color:#166534;line-height:1.5;margin-top:.8rem;}
+.hmp-note .hmp-ico{font-size:1.25rem;line-height:1.2;flex-shrink:0;}
+.hmp-note b{color:var(--green);}
+.hmp-note a{color:var(--green);font-weight:800;text-decoration:none;white-space:nowrap;}
+.hmp-foot{width:100%;text-align:center;font-size:.8rem;color:rgba(255,255,255,.6);padding:0 5% 1.2rem;line-height:1.55;}
+.hmp-foot b{color:#fff;}
+.hmp-foot a{color:var(--gold);font-weight:800;text-decoration:none;}
+.hmp-sec-wrap{max-width:920px;margin:0 auto;}
+.hmp-sec{background:linear-gradient(135deg,#fff,#FFF8F0);border:1.5px solid var(--border);border-left:4px solid var(--red);border-radius:14px;padding:1.6rem 1.8rem;box-shadow:var(--shadow);}
+.hmp-sec p{font-size:.9rem;color:var(--muted);line-height:1.7;margin:0 0 1.1rem;}
+.hmp-sec p b{color:var(--dark);}
+.hmp-pillars{display:flex;flex-wrap:wrap;gap:.7rem;}
+.hmp-pill{display:flex;align-items:center;gap:.45rem;background:#fff;border:1.5px solid var(--border);border-radius:999px;padding:.45rem .9rem;font-size:.78rem;font-weight:700;color:var(--dark);}
+.hmp-pill span{font-size:1rem;}
+@media(max-width:600px){.hmp-sec{padding:1.3rem 1.15rem;}.strip-headline{font-size:.82rem;}}
 
 /* SECTIONS */
 section{padding:5.5rem 6%;}
@@ -1478,45 +1496,46 @@ a, button, input, select{transition:all .25s ease;}
   </div><!-- end hero-inner-wrap -->
 </section>
 
-<!-- STRIP -->
+<!-- STRIP + RÉASSURANCE SERVICE CLIENT PRO -->
+<div class="strip-headline">🎧 La seule boutique en Guinée avec un vrai <strong>service client professionnel</strong></div>
 <div class="strip">
-  <div class="strip-item"><span class="strip-ico">🚚</span> Livraison <strong>&nbsp;GRATUITE&nbsp;</strong> partout en Guinée</div>
+  <div class="strip-item"><span class="strip-ico">🎧</span> Service client pro <strong>&nbsp;Helpmeprocess</strong></div>
   <div class="strip-item"><span class="strip-ico">💵</span> Paiement <strong>&nbsp;à la livraison</strong></div>
-  <div class="strip-item"><span class="strip-ico">🛡️</span> Produits <strong>&nbsp;100% garantis</strong></div>
-  <div class="strip-item"><span class="strip-ico">⚡</span> Expédié par <strong>&nbsp;Rapido</strong></div>
+  <div class="strip-item"><span class="strip-ico">🚚</span> Livraison <strong>&nbsp;GRATUITE&nbsp;</strong> partout en Guinée</div>
+  <div class="strip-item"><span class="strip-ico">🔄</span> Retour <strong>&nbsp;si défectueux</strong></div>
 </div>
 
 <!-- TRUST BAND — Preuve sociale -->
 <div class="trust-band">
   <div class="trust-item">
-    <span class="t-icon">✅</span>
+    <span class="t-icon">🎧</span>
     <div class="trust-item-text">
-      <span class="t-num" id="trustOrderCount">847</span>
-      <span class="t-label">Commandes livrées</span>
+      <span class="t-num">PRO</span>
+      <span class="t-label">Service client Helpmeprocess</span>
     </div>
   </div>
   <div class="trust-divider"></div>
   <div class="trust-item">
-    <span class="t-icon">⭐</span>
+    <span class="t-icon">🏢</span>
     <div class="trust-item-text">
-      <span class="t-num">96%</span>
-      <span class="t-label">Clients satisfaits</span>
+      <span class="t-num">2024</span>
+      <span class="t-label">Entreprise enregistrée en Guinée</span>
     </div>
   </div>
   <div class="trust-divider"></div>
   <div class="trust-item">
     <span class="t-icon">🚚</span>
     <div class="trust-item-text">
-      <span class="t-num">24H</span>
-      <span class="t-label">Livraison moyenne</span>
+      <span class="t-num">24–48H</span>
+      <span class="t-label">Livraison partout en Guinée</span>
     </div>
   </div>
   <div class="trust-divider"></div>
   <div class="trust-item">
-    <span class="t-icon">🔒</span>
+    <span class="t-icon">💵</span>
     <div class="trust-item-text">
-      <span class="t-num">100%</span>
-      <span class="t-label">Garanti ou remboursé</span>
+      <span class="t-num">0</span>
+      <span class="t-label">À payer avant la réception</span>
     </div>
   </div>
 </div>
@@ -1600,6 +1619,26 @@ a, button, input, select{transition:all .25s ease;}
     <div class="testi reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">Le fer à lisser est top ! Résultat salon chez moi. Paiement à la livraison m'a rassurée. Je recommande HPSHOP !</p><div class="tauthor"><div class="tav">AM</div><div><div class="tname">Aïssatou M.</div><div class="tcity">Conakry, Kaloum</div></div></div></div>
     <div class="testi reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">Commande reçue en 24h à Kindia ! Produit conforme, emballé correctement. Merci HPSHOP Afrique !</p><div class="tauthor"><div class="tav">MB</div><div><div class="tname">Mamadou B.</div><div class="tcity">Kindia</div></div></div></div>
     <div class="testi reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">Le purificateur d'air fonctionne très bien. Ma maison sent toujours bon. Je vais recommander d'autres produits bientôt.</p><div class="tauthor"><div class="tav">SD</div><div><div class="tname">Seydou D.</div><div class="tcity">Labé</div></div></div></div>
+  </div>
+</section>
+
+<!-- POURQUOI CONFIANCE (Helpmeprocess) -->
+<section id="confiance" class="alt">
+  <div class="s-head reveal" style="text-align:center">
+    <div class="s-label">✦ Le sérieux derrière HPSHOP</div>
+    <div class="s-title">Pourquoi commander <span>en toute confiance ?</span></div>
+    <p class="s-sub" style="margin:0 auto">Une vraie entreprise, un vrai service client — pas une boutique anonyme</p>
+  </div>
+  <div class="hmp-sec-wrap reveal">
+    <div class="hmp-sec">
+      <p>HPSHOP n'est pas une boutique anonyme. Elle est portée par <b>Helpmeprocess</b>, une entreprise de <b>relation client (BPO)</b> enregistrée officiellement en Guinée depuis <b>janvier 2024</b>. Concrètement : de la confirmation de votre commande jusqu'à la livraison, vous êtes suivi par une <b>vraie équipe de conseillers professionnels</b> — pas un simple vendeur derrière un téléphone. Une question, un doute ? On vous répond au <b>+224&nbsp;621&nbsp;88&nbsp;12&nbsp;10</b>.</p>
+      <div class="hmp-pillars">
+        <div class="hmp-pill"><span>🏢</span> Entreprise enregistrée (jan. 2024)</div>
+        <div class="hmp-pill"><span>🎧</span> Conseillers professionnels</div>
+        <div class="hmp-pill"><span>💵</span> Paiement à la livraison</div>
+        <div class="hmp-pill"><span>📞</span> +224 621 88 12 10</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1722,6 +1761,7 @@ a, button, input, select{transition:all .25s ease;}
     <div class="foot-col"><h5>Catégories</h5><a href="#produits">Beauté & Soin</a><a href="#produits">Santé & Bien-être</a><a href="#produits">Auto & Moto</a><a href="#produits">Maison & Entretien</a><a href="#produits">Tech & Gadgets</a></div>
     <div class="foot-col"><h5>Suivez-nous</h5><a href="#">Facebook HPSHOP</a><a href="#">Instagram HPSHOP</a><a href="#">WhatsApp</a><a href="/politique-confidentialite.html">Politique de confidentialité</a><a href="/mentions-legales.html">Mentions légales</a></div>
   </div>
+  <div class="hmp-foot">🎧 <b>Service client assuré par Helpmeprocess</b> — entreprise de relation client professionnelle enregistrée en Guinée · <a href="tel:+224621881210">☎️ +224 621 88 12 10</a></div>
   <div class="foot-bottom">
     <p>© 2026 HPSHOP Afrique — Tous droits réservés · Conakry, Guinée 🇬🇳</p>
     <div class="rapido-badge">⚡ Livraison assurée par Rapido</div>
@@ -1847,6 +1887,7 @@ a, button, input, select{transition:all .25s ease;}
           <button class="order-btn" id="orderBtn" onclick="passerCommande()">🛒 Commander maintenant</button>
           <p class="form-note">🔒 Données confidentielles &nbsp;·&nbsp; Sans paiement en ligne &nbsp;·&nbsp; Réponse sous 1h</p>
           <div class="cod-notice">✅ <b>Paiement à la livraison</b> — Vous ne payez rien maintenant. Vous réglez seulement à la réception, une fois votre colis livré et vérifié. Merci de commander uniquement si vous serez disponible pour le réceptionner. 🙏</div>
+          <div class="hmp-note"><span class="hmp-ico">🎧</span><div><b>Commandez en confiance.</b> Un doute ? Nos conseillers <b>Helpmeprocess</b> (service client professionnel) vous répondent au <a href="tel:+224621881210">+224&nbsp;621&nbsp;88&nbsp;12&nbsp;10</a>. Paiement à la livraison — zéro risque.</div></div>
         </div>
         <!-- VIDÉO PUB (1 seule par produit) — APRÈS le formulaire -->
         <div class="pd-video-block" id="pdVideoBlock" style="display:none">
@@ -1957,6 +1998,7 @@ a, button, input, select{transition:all .25s ease;}
       <button class="recap-btn-edit" onclick="closeRecap()">✏️ Modifier</button>
       <button class="recap-btn-confirm btn-red" id="recapConfirmBtn" onclick="confirmerCommande()">✅ Confirmer ma commande</button>
     </div>
+    <div class="hmp-note" style="margin:0 22px 18px;"><span class="hmp-ico">🔒</span><div><b>Vous ne payez qu'à la réception.</b> Un souci pendant votre commande ? L'équipe <b>Helpmeprocess</b> est joignable au <a href="tel:+224621881210">+224&nbsp;621&nbsp;88&nbsp;12&nbsp;10</a> pour vous accompagner.</div></div>
   </div>
 </div>
 
