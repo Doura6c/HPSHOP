@@ -1766,7 +1766,7 @@ a, button, input, select{transition:all .25s ease;}
     </div>
     <div class="foot-col"><h5>Navigation</h5><a href="#accueil">Accueil</a><a href="#produits">Nos produits</a><a href="#comment">Comment commander</a><a href="/suivi-commande">📍 Suivre ma commande</a><a href="#avis">Avis clients</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
     <div class="foot-col"><h5>Catégories</h5><a href="#produits">Beauté & Soin</a><a href="#produits">Santé & Bien-être</a><a href="#produits">Auto & Moto</a><a href="#produits">Maison & Entretien</a><a href="#produits">Tech & Gadgets</a></div>
-    <div class="foot-col"><h5>Suivez-nous</h5><a href="#">Facebook HPSHOP</a><a href="#">Instagram HPSHOP</a><a href="#">WhatsApp</a><a href="/politique-confidentialite.html">Politique de confidentialité</a><a href="/mentions-legales.html">Mentions légales</a></div>
+    <div class="foot-col"><h5>Suivez-nous</h5><a href="https://wa.me/224621881210" target="_blank" rel="noopener">💬 WhatsApp</a><a href="/politique-confidentialite.html">Politique de confidentialité</a><a href="/mentions-legales.html">Mentions légales</a></div>
   </div>
   <div class="hmp-foot">🎧 <b>Service client assuré par Helpmeprocess</b> — entreprise de relation client professionnelle enregistrée en Guinée · <a href="tel:+224621881210">☎️ +224 621 88 12 10</a></div>
   <div class="foot-bottom">
@@ -2738,10 +2738,13 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
         : `<a href="${_trackUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:10px;background:#1A8A2E;color:#fff;font-weight:800;text-decoration:none;padding:11px;border-radius:8px;font-size:.85rem;">📍 Suivre ma commande</a>`);
 
     document.getElementById("successOverlay").classList.add("show");
-    // Analytics : achat (Meta Purchase + Lead, GA purchase)
-    metaTrack('Purchase', { content_ids: ["HP-"+currentProduct.id], content_name: currentProduct.nom, content_type: 'product', value: totalAmount, currency: 'GNF', num_items: currentQty });
-    metaTrack('Lead', { content_name: currentProduct.nom, value: totalAmount, currency: 'GNF' });
-    if(window.trackOrder) trackOrder(orderCodeFinal, totalAmount, [{name:currentProduct.nom, qty:currentQty, price:parsePrice(currentProduct.prix)}], vil.value);
+    // Analytics : achat compté UNIQUEMENT si la commande a bien atteint le CRM
+    // (sinon on enverrait de fausses conversions à Meta → optimisation faussée).
+    if(crmOk){
+      metaTrack('Purchase', { content_ids: ["HP-"+currentProduct.id], content_name: currentProduct.nom, content_type: 'product', value: totalAmount, currency: 'GNF', num_items: currentQty });
+      metaTrack('Lead', { content_name: currentProduct.nom, value: totalAmount, currency: 'GNF' });
+      if(window.trackOrder) trackOrder(orderCodeFinal, totalAmount, [{name:currentProduct.nom, qty:currentQty, price:parsePrice(currentProduct.prix)}], vil.value);
+    }
     toast(notSent ? "Presque terminé !" : "Commande envoyée !", notSent ? "Envoyez le message WhatsApp pour valider" : "Notre équipe vous rappelle sous 1h", notSent ? "warning" : "success");
     document.getElementById("pdOMId").value = "";
   }, 800);
@@ -3285,17 +3288,18 @@ async function confirmerCommandePanier(){
     cart = cart.filter(i => !selectedIds.includes(i.id));
     saveCart(); renderCart();
 
-    // ── Google Analytics : événement achat ─────────────────────────────
-    if(typeof window.trackOrder === 'function') {
-      window.trackOrder(
-        orderRef, total,
-        selectedItems.map(({p,qty}) => ({ name: p.nom, qty: qty, price: parsePrice(p.prix) })),
-        vil.value
-      );
+    // ── Analytics : achat compté UNIQUEMENT si la commande a atteint le CRM ──
+    if(crmOk){
+      if(typeof window.trackOrder === 'function') {
+        window.trackOrder(
+          orderRef, total,
+          selectedItems.map(({p,qty}) => ({ name: p.nom, qty: qty, price: parsePrice(p.prix) })),
+          vil.value
+        );
+      }
+      metaTrack('Purchase', { content_ids: selectedItems.map(({p})=>"HP-"+p.id), content_type: 'product', value: total, currency: 'GNF', num_items: selectedItems.reduce((n,{qty})=>n+qty,0) });
+      metaTrack('Lead', { content_name: selectedItems.map(({p})=>p.nom).join(', '), value: total, currency: 'GNF' });
     }
-    // ── Meta Pixel : achat (Purchase + Lead) ────────────────────────────
-    metaTrack('Purchase', { content_ids: selectedItems.map(({p})=>"HP-"+p.id), content_type: 'product', value: total, currency: 'GNF', num_items: selectedItems.reduce((n,{qty})=>n+qty,0) });
-    metaTrack('Lead', { content_name: selectedItems.map(({p})=>p.nom).join(', '), value: total, currency: 'GNF' });
 
     // Modal succès
     const itemsStr = selectedItems.map(({p,qty}) => `📦 <b>${p.nom}</b> × ${qty}`).join('<br>');
