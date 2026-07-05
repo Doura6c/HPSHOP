@@ -1546,19 +1546,6 @@ a, button, input, select{transition:all .25s ease;}
   </div>
 </div>
 
-<!-- URGENCY COUNTDOWN -->
-<div class="urgency-bar" id="urgencyBar">
-  <div class="urgency-inner">
-    <span class="urgency-pulse"></span>
-    <span class="urgency-label">⚡ OFFRE FLASH —</span>
-    <span class="urgency-text">-30% sur tous les produits, expire dans</span>
-    <div class="countdown" id="countdown">
-      <span><b id="cdH">00</b><i>H</i></span>
-      <span><b id="cdM">00</b><i>M</i></span>
-      <span><b id="cdS">00</b><i>S</i></span>
-    </div>
-  </div>
-</div>
 
 <!-- PRODUITS -->
 <section id="produits" class="alt">
@@ -1838,7 +1825,7 @@ a, button, input, select{transition:all .25s ease;}
           </div>
 
           <!-- Preuve sociale -->
-          <div class="pd-social"><span class="pd-social-dot"></span><b id="pdRecentCount">18</b>&nbsp;personnes ont commandé aujourd'hui&nbsp;·&nbsp;★★★★★ 4,8/5</div>
+          <div class="pd-social"><span class="pd-social-dot"></span>Paiement à la livraison&nbsp;·&nbsp;Livraison 24–48h partout en Guinée</div>
 
           <!-- Résumé commande : photo + nom + total -->
           <div class="pd-summary">
@@ -1874,10 +1861,10 @@ a, button, input, select{transition:all .25s ease;}
         <button type="button" class="pd-note-toggle" id="pdNoteToggle" onclick="togglePdNote()">＋ Ajouter une note (optionnel)</button>
         <div class="fg" id="pdNoteField" style="display:none"><label>Note pour le livreur</label><input type="text" id="pdNote" placeholder="Ex: appelez avant de livrer, point de repère…" autocomplete="off"></div>
         <div class="fg">
-          <label>Mode de paiement</label>
+          <label>Mode de paiement <span style="font-weight:600;color:var(--green);font-size:.72rem;">— Cash à la livraison recommandé : rien à payer d'avance</span></label>
           <div class="pay-opts" style="grid-template-columns:repeat(2,1fr);">
             <div class="pay-opt on" data-pay="CASH" onclick="selPay(this)"><span class="pay-ico">💵</span>Cash à la livraison</div>
-            <div class="pay-opt" data-pay="ORANGE" onclick="selPay(this)"><span class="pay-ico">🟠</span>Orange Money</div>
+            <div class="pay-opt" data-pay="ORANGE" onclick="selPay(this)"><span class="pay-ico">🟠</span>Orange Money <span style="font-size:.68rem;opacity:.7">(avance)</span></div>
           </div>
           <div class="om-info" id="omInfo">
             <div class="om-info-title">🟠 Paiement Orange Money</div>
@@ -1890,7 +1877,7 @@ a, button, input, select{transition:all .25s ease;}
             <p class="om-info-steps"><b>Comment payer :</b><br>1. Composez <b>#144#</b><br>2. Envoyer de l'argent → <b>+224 621 88 12 10</b><br>3. Copiez l'ID de transaction reçu par SMS<br>4. Collez-le ci-dessus et confirmez</p>
           </div>
         </div>
-          <div class="pd-urgency" id="pdUrgency">⚡ Plus que <b id="pdStockLeft">5</b> en stock — commandez vite !</div>
+          <div class="pd-urgency" id="pdUrgency">✅ En stock — livraison sous 24–48h partout en Guinée</div>
           <button class="order-btn" id="orderBtn" onclick="passerCommande()">🛒 Commander maintenant</button>
           <p class="form-note">🔒 Données confidentielles &nbsp;·&nbsp; Sans paiement en ligne &nbsp;·&nbsp; Réponse sous 1h</p>
           <div class="cod-notice">✅ <b>Paiement à la livraison</b> — Vous ne payez rien maintenant. Vous réglez seulement à la réception, une fois votre colis livré et vérifié. Merci de commander uniquement si vous serez disponible pour le réceptionner. 🙏</div>
@@ -2227,11 +2214,6 @@ function openPD(id){
   if(_sumImg) _sumImg.style.backgroundImage = `url('${M[0].src}')`;
   const _sumName = document.getElementById("pdSumName");
   if(_sumName) _sumName.textContent = p.nom;
-  const _rc = document.getElementById("pdRecentCount");
-  if(_rc) _rc.textContent = 8 + Math.floor(Math.random()*22);
-  // Urgence stock (étape 4)
-  const _sl = document.getElementById("pdStockLeft");
-  if(_sl) _sl.textContent = 3 + Math.floor(Math.random()*7);
   const _ug = document.getElementById("pdUrgency");
   if(_ug) _ug.style.display = p.stock ? "" : "none";
   // Reset note repliable (étape 5)
