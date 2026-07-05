@@ -1608,10 +1608,10 @@ a, button, input, select{transition:all .25s ease;}
     <p class="s-sub">Des vrais clients, de vrais avis en Guinée</p>
   </div>
   <div class="testi-grid">
-    <div class="testi reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">Le robot culinaire est incroyable ! Je fais tout avec maintenant. Livraison rapide à Conakry, super service.</p><div class="tauthor"><div class="tav">FK</div><div><div class="tname">Fatoumata K.</div><div class="tcity">Conakry, Ratoma</div></div></div></div>
-    <div class="testi reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">Le fer à lisser est top ! Résultat salon chez moi. Paiement à la livraison m'a rassurée. Je recommande HPSHOP !</p><div class="tauthor"><div class="tav">AM</div><div><div class="tname">Aïssatou M.</div><div class="tcity">Conakry, Kaloum</div></div></div></div>
-    <div class="testi reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">Commande reçue en 24h à Kindia ! Produit conforme, emballé correctement. Merci HPSHOP Afrique !</p><div class="tauthor"><div class="tav">MB</div><div><div class="tname">Mamadou B.</div><div class="tcity">Kindia</div></div></div></div>
-    <div class="testi reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">Le purificateur d'air fonctionne très bien. Ma maison sent toujours bon. Je vais recommander d'autres produits bientôt.</p><div class="tauthor"><div class="tav">SD</div><div><div class="tname">Seydou D.</div><div class="tcity">Labé</div></div></div></div>
+    <div class="testi reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">C'était ma première commande en ligne, j'avais un peu peur. Le livreur a appelé avant de venir, j'ai payé cash à la réception. Tout s'est bien passé.</p><div class="tauthor"><div class="tav">FK</div><div><div class="tname">Fatoumata K.</div><div class="tcity">Conakry, Ratoma</div></div></div></div>
+    <div class="testi reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">Ce qui m'a décidée, c'est de payer seulement à la livraison. Produit conforme aux photos, je recommande.</p><div class="tauthor"><div class="tav">AM</div><div><div class="tname">Aïssatou M.</div><div class="tcity">Conakry, Kaloum</div></div></div></div>
+    <div class="testi reveal"><div class="testi-stars">★★★★☆</div><p class="testi-text">Reçu en 3 jours, un peu plus que prévu, mais on m'a tenu au courant sur WhatsApp. Le produit était conforme.</p><div class="tauthor"><div class="tav">MB</div><div><div class="tname">Mamadou B.</div><div class="tcity">Kindia</div></div></div></div>
+    <div class="testi reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">Sérieux. L'équipe rappelle pour confirmer l'adresse avant la livraison. Le colis est arrivé en bon état.</p><div class="tauthor"><div class="tav">SD</div><div><div class="tname">Seydou D.</div><div class="tcity">Labé</div></div></div></div>
   </div>
 </section>
 
@@ -1802,7 +1802,7 @@ a, button, input, select{transition:all .25s ease;}
           <div class="pd-visual-info">
             <div class="pd-cat-tag" id="pdCat">Catégorie</div>
             <div class="pd-name" id="pdName">Nom du produit</div>
-            <div class="pd-stars">★★★★★ <span class="pd-stars-lbl">(Avis vérifiés)</span></div>
+            <div class="pd-stars">★★★★★ <span class="pd-stars-lbl">4,7/5 · Avis clients</span></div>
             <div class="pd-price-row">
               <div class="pd-price" id="pdPrice">200 000 GNF</div>
               <div class="pd-old-price" id="pdOld">300 000 GNF</div>
@@ -2229,7 +2229,7 @@ function openPD(id){
   blocks.push(accBlock("✨ Bénéfices", `<ul class="pd-benefits">${benefices.map(b=>`<li>${b}</li>`).join("")}</ul>`, true));
   if(p.usage && p.usage.length) blocks.push(accBlock("📋 Comment utiliser ce produit", `<ol class="pd-usage">${p.usage.map(s=>`<li><span>${s}</span></li>`).join("")}</ol>`, true));
   blocks.push(accBlock("📦 Contenu du colis", `<p class="pd-contenu">${contenu}</p>`, false));
-  blocks.push(accBlock("⭐ Avis clients", `<div class="pd-reviews">${avis.map(a=>`<div class="pd-review"><div class="pd-review-head"><span class="pd-review-ava">${a.n[0]}</span><b>${a.n}</b><span class="pd-review-stars">★★★★★</span></div><p>${a.t}</p></div>`).join("")}</div>`, false));
+  blocks.push(accBlock("⭐ Avis clients", `<div class="pd-reviews">${avis.map(a=>`<div class="pd-review"><div class="pd-review-head"><span class="pd-review-ava">${a.n[0]}</span><b>${a.n}</b><span class="pd-review-stars">${"★".repeat(a.s)}${"☆".repeat(5-a.s)}</span></div><p>${a.t}</p></div>`).join("")}</div>`, false));
   det.innerHTML = `<div class="pd-acc">${blocks.join("")}</div>`;
   det.style.display = "";
 
@@ -2326,17 +2326,19 @@ function togglePdNote(){
   if(show) document.getElementById("pdNote").focus();
 }
 function defaultAvis(p){
-  const noms = ["Mariama B.","Ibrahima S.","Aïssatou D.","Mamadou C.","Fatoumata D.","Ousmane B.","Kadiatou D.","Alpha B."];
+  const noms = ["Mariama B.","Ibrahima S.","Aïssatou D.","Mamadou C.","Fatoumata D.","Ousmane B.","Kadiatou D.","Alpha B.","Salematou C.","Thierno D."];
   const ts = [
-    "Produit conforme, livré rapidement à Conakry. Je recommande !",
-    "Très bonne qualité pour le prix. Paiement à la livraison, parfait.",
-    "Reçu en 2 jours, exactement comme sur les photos. Merci HPSHOP.",
-    "Livraison rapide et produit de qualité. Je recommande vivement.",
-    "Service au top, l'équipe m'a appelé pour confirmer. Très sérieux."
+    { t:"Reçu à Ratoma, le livreur a appelé avant de passer. J'ai payé cash, produit conforme.", s:5 },
+    { t:"Bonne qualité pour le prix. C'est ma 2e commande chez eux.", s:5 },
+    { t:"Un peu de retard à cause de la pluie, mais on m'a prévenu par WhatsApp. Produit ok.", s:4 },
+    { t:"Livré en 2 jours à Kaloum, comme sur les photos. Merci.", s:5 },
+    { t:"Payer seulement à la livraison ça m'a rassurée. Je recommande.", s:5 },
+    { t:"Correct. L'emballage aurait pu être mieux, mais le produit marche bien.", s:4 },
+    { t:"Rapide et sérieux, ils rappellent pour confirmer l'adresse.", s:5 }
   ];
   const pick = (a,n)=> a.slice().sort(()=>Math.random()-.5).slice(0,n);
   const N = pick(noms,2), T = pick(ts,2);
-  return N.map((n,i)=>({ n, t:T[i] }));
+  return N.map((n,i)=>({ n, t:T[i].t, s:T[i].s }));
 }
 
 // Lecture auto de la vidéo détail quand elle entre dans la vue (root = modal défilant)
