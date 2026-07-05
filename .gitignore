@@ -1,3 +1,12 @@
 .DS_Store
 Thumbs.db
 .vercel
+
+# Documents internes — NE JAMAIS déployer publiquement (ce dépôt = site public Vercel)
+AUDIT_*.md
+CORRECTIONS*.md
+GOOGLE_SHEETS_SETUP.md
+INTEGRATIONS.md
+PIXEL_META_INSTRUCTIONS.md
+Business_Plan_*.xlsx
+build_business_plan.py
