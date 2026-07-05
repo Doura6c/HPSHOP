@@ -10,3 +10,6 @@ INTEGRATIONS.md
 PIXEL_META_INSTRUCTIONS.md
 Business_Plan_*.xlsx
 build_business_plan.py
+
+# Vidéos de produits pas encore ajoutés (local seulement, hors déploiement)
+assets/videos/_pending/
