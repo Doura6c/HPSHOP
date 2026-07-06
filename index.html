@@ -305,14 +305,34 @@ section{padding:5.5rem 6%;}
 .pd-urgency b{color:var(--red);}
 /* CTA sticky mobile */
 .pd-sticky-cta{display:none;}
-.pd-sticky-info{display:flex;flex-direction:column;line-height:1.05;flex-shrink:0;}
-.pd-sticky-info span{font-size:.58rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted2);font-weight:700;}
-.pd-sticky-info strong{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:var(--red);}
-.pd-sticky-btn{flex:1;min-height:50px;border:none;border-radius:10px;background:linear-gradient(135deg,#1A8A2E,#13a83a);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 14px rgba(26,138,46,.35);}
-@media(max-width:900px){
-  .pd-sticky-cta.show{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:560;align-items:center;gap:.7rem;background:#fff;border-top:1.5px solid var(--border);box-shadow:0 -6px 20px rgba(0,0,0,.12);padding:.55rem .9rem;padding-bottom:calc(.55rem + env(safe-area-inset-bottom));}
-  .pd-box{padding-bottom:74px;}
-}
+.pd-sticky-cta.show{display:flex;flex-direction:column;gap:.35rem;position:fixed;left:0;right:0;bottom:0;z-index:560;background:#fff;border-top:1.5px solid var(--border);box-shadow:0 -6px 20px rgba(0,0,0,.12);padding:.5rem .9rem;padding-bottom:calc(.5rem + env(safe-area-inset-bottom));}
+.pd-sticky-cta.sticky-hidden{display:none !important;}
+.pd-sticky-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:.25rem .7rem;font-size:.66rem;font-weight:800;color:#0a6b4d;}
+.pd-sticky-btn{width:100%;min-height:52px;border:none;border-radius:12px;background:#009460;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 14px rgba(0,148,96,.35);display:flex;align-items:center;justify-content:center;gap:.4rem;}
+.pd-sticky-btn:active{transform:scale(.99);}
+@media(min-width:901px){ .pd-sticky-cta.show{left:50%;right:auto;transform:translateX(-50%);max-width:540px;width:calc(100% - 3rem);border:1px solid var(--border);border-radius:14px 14px 0 0;} }
+.pd-box{padding-bottom:104px;}
+.order-badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.6rem 0;}
+.order-badges .ob{display:inline-flex;align-items:center;gap:.25rem;background:#EAF7EF;border:1.5px solid rgba(0,148,96,.28);color:#0a6b4d;font-size:.72rem;font-weight:700;padding:.35rem .6rem;border-radius:999px;text-decoration:none;line-height:1.25;}
+.order-cta-inline{width:100%;min-height:52px;margin:.5rem 0;border:none;border-radius:12px;background:#009460;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 14px rgba(0,148,96,.3);}
+.ordm-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.6);align-items:flex-end;justify-content:center;}
+@media(min-width:601px){ .ordm-overlay{align-items:center;padding:1.2rem;} }
+.ordm-overlay.show{display:flex;}
+.ordm-box{background:#fff;width:100%;max-width:460px;max-height:94vh;display:flex;flex-direction:column;border-radius:18px 18px 0 0;overflow:hidden;animation:ordmIn .24s ease;}
+@media(min-width:601px){ .ordm-box{border-radius:16px;} }
+@keyframes ordmIn{from{opacity:.4;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+.ordm-head{display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.ordm-img{width:44px;height:44px;border-radius:9px;background:#f3f0ea center/cover no-repeat;flex-shrink:0;}
+.ordm-ti{flex:1;min-width:0;}
+.ordm-name{font-weight:800;font-size:.84rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ordm-total{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;color:var(--red);}
+.ordm-close{width:38px;height:38px;flex-shrink:0;border:none;background:#f1f1f1;border-radius:50%;font-size:1.15rem;cursor:pointer;color:#333;line-height:1;}
+.ordm-body{padding:.7rem .85rem;overflow-y:auto;flex:1;}
+.ordm-foot{padding:.55rem .85rem;border-top:1px solid var(--border);flex-shrink:0;padding-bottom:calc(.55rem + env(safe-area-inset-bottom));}
+.ordm-submit{width:100%;min-height:52px;border:none;border-radius:12px;background:#009460;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;}
+.ordm-submit:disabled{opacity:.65;}
+.ordm-success{padding:1.4rem 1.1rem;text-align:center;}
+@media(prefers-reduced-motion:reduce){ .ordm-box{animation:none;} }
 
 /* ===== REFONTE PAGE COMMANDE — split sticky, mobile-first ===== */
 .pd-thumbs{display:flex;gap:.5rem;margin-top:.7rem;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
@@ -1818,72 +1838,15 @@ a, button, input, select{transition:all .25s ease;}
         <!-- ===== DROITE : commande + détails (colonne défilante) ===== -->
         <div class="pd-right">
         <div class="pd-order">
-          <div class="pd-form-title">📦 Passer ma commande</div>
-
-          <!-- Réassurance COD -->
-          <div class="pd-trust">
-            <div class="pd-trust-item"><span>🚚</span>Livraison 24–48h</div>
-            <div class="pd-trust-item"><span>💰</span>Paiement à la réception</div>
-            <div class="pd-trust-item"><span>🔄</span>Retour facile si problème</div>
-          </div>
-
-          <!-- Preuve sociale -->
+          <div class="pd-form-title">📦 Commander en 1 minute</div>
           <div class="pd-social"><span class="pd-social-dot"></span>Paiement à la livraison&nbsp;·&nbsp;Livraison 24–48h partout en Guinée</div>
-
-          <!-- Résumé commande : photo + nom + total -->
-          <div class="pd-summary">
-            <div class="pd-sum-img" id="pdSumImg"></div>
-            <div class="pd-sum-info">
-              <div class="pd-sum-name" id="pdSumName">Produit</div>
-              <div class="pd-sum-stock" id="pdStock">✅ En stock — 24–48h</div>
-            </div>
-            <div class="pd-sum-total"><span>Total</span><strong id="pdTotal">0 GNF</strong></div>
+          <div class="order-badges">
+            <span class="ob">💵 Paiement à la livraison</span>
+            <span class="ob">✅ Tu vérifies avant de payer</span>
+            <a class="ob" href="/garantie-echange" target="_blank" rel="noopener">🔄 7 jours pour l'échange · Voir les conditions</a>
+            <span class="ob">📞 On t'appelle pour confirmer</span>
           </div>
-
-          <div class="qty-row">
-            <span class="qty-label">Quantité</span>
-            <div class="qty-box">
-              <button class="qty-btn" type="button" onclick="updateQty(-1)">−</button>
-              <span class="qty-val" id="pdQty">1</span>
-              <button class="qty-btn" type="button" onclick="updateQty(1)">+</button>
-            </div>
-          </div>
-
-          <div class="frow">
-          <div class="fg"><label>Prénom & Nom *</label><input type="text" id="pdNom" placeholder="Ex: Fatoumata Diallo" autocomplete="name"></div>
-          <div class="fg"><label>Téléphone *</label><input type="tel" id="pdTel" placeholder="622 00 00 00" autocomplete="tel" inputmode="numeric" maxlength="13"></div>
-        </div>
-        <div class="fg-hint">📞 On t'appelle pour confirmer avant la livraison — <b>aucun paiement en ligne</b>.</div>
-        <div class="fg"><label>Adresse de livraison *</label><input type="text" id="pdAdresse" placeholder="Ex: Kaloum, près du marché central" autocomplete="street-address"></div>
-        <div class="fg">
-          <label>Ville / Préfecture *</label>
-          <select id="pdVille">
-            <option value="">-- Choisir une ville --</option>
-          </select>
-        </div>
-        <button type="button" class="pd-note-toggle" id="pdNoteToggle" onclick="togglePdNote()">＋ Ajouter une note (optionnel)</button>
-        <div class="fg" id="pdNoteField" style="display:none"><label>Note pour le livreur</label><input type="text" id="pdNote" placeholder="Ex: appelez avant de livrer, point de repère…" autocomplete="off"></div>
-        <div class="fg">
-          <label>Mode de paiement <span style="font-weight:600;color:var(--green);font-size:.72rem;">— Cash à la livraison recommandé : rien à payer d'avance</span></label>
-          <div class="pay-opts" style="grid-template-columns:repeat(2,1fr);">
-            <div class="pay-opt on" data-pay="CASH" onclick="selPay(this)"><span class="pay-ico">💵</span>Cash à la livraison</div>
-            <div class="pay-opt" data-pay="ORANGE" onclick="selPay(this)"><span class="pay-ico">🟠</span>Orange Money <span style="font-size:.68rem;opacity:.7">(avance)</span></div>
-          </div>
-          <div class="om-info" id="omInfo">
-            <div class="om-info-title">🟠 Paiement Orange Money</div>
-            <p style="font-size:.78rem;color:var(--muted);line-height:1.5;">Envoie le montant total au numéro marchand ci-dessous, puis confirme ta commande. Notre équipe vérifie la transaction avant livraison.</p>
-            <div class="om-info-num" onclick="copyOM(this)" title="Cliquez pour copier">+224 621 88 12 10</div>
-            <div class="fg" style="margin-top:.6rem;margin-bottom:0;">
-              <label style="color:#D17900;">ID Transaction Orange Money *</label>
-              <input type="text" id="pdOMId" placeholder="Ex: PP250522.1234.A56789" autocomplete="off">
-            </div>
-            <p class="om-info-steps"><b>Comment payer :</b><br>1. Composez <b>#144#</b><br>2. Envoyer de l'argent → <b>+224 621 88 12 10</b><br>3. Copiez l'ID de transaction reçu par SMS<br>4. Collez-le ci-dessus et confirmez</p>
-          </div>
-        </div>
-          <div class="pd-urgency" id="pdUrgency">✅ En stock — livraison sous 24–48h partout en Guinée</div>
-          <button class="order-btn" id="orderBtn" onclick="passerCommande()">🛒 Commander maintenant</button>
-          <p class="form-note">🔒 Données confidentielles &nbsp;·&nbsp; Sans paiement en ligne &nbsp;·&nbsp; Réponse rapide</p>
-          <a class="pd-exchange" href="/garantie-echange" target="_blank" rel="noopener">🔄 <b>7 jours pour l'échange</b> — Voir les conditions →</a>
+          <button class="order-cta-inline" type="button" onclick="openOrderForm()">💵 Commander — Paiement à la livraison</button>
           <div class="cod-notice">✅ <b>Paiement à la livraison</b> — Tu ne paies rien maintenant. Tu règles seulement à la réception, une fois ton colis livré et vérifié. Merci de commander seulement si tu seras disponible pour le réceptionner. 🙏</div>
           <div class="hmp-note"><span class="hmp-ico">🎧</span><div><b>Commande en confiance.</b> Un doute ? Nos conseillers <b>Helpmeprocess</b> (service client professionnel) te répondent au <a href="tel:+224621881210">+224&nbsp;621&nbsp;88&nbsp;12&nbsp;10</a>. Paiement à la livraison — zéro risque.</div></div>
         </div>
@@ -1903,8 +1866,51 @@ a, button, input, select{transition:all .25s ease;}
 </div>
 <!-- CTA STICKY MOBILE (hors overlay pour un position:fixed fiable) -->
 <div class="pd-sticky-cta" id="pdStickyCta">
-  <div class="pd-sticky-info"><span>Total à payer</span><strong id="pdStickyTotal">0 GNF</strong></div>
-  <button type="button" class="pd-sticky-btn" onclick="passerCommande()">🛒 Commander</button>
+  <div class="pd-sticky-badges">💵 Paiement à la livraison&nbsp;·&nbsp;✅ Tu vérifies avant de payer&nbsp;·&nbsp;📞 On t'appelle</div>
+  <button type="button" class="pd-sticky-btn" onclick="openOrderForm()">💵 Commander — Paiement à la livraison</button>
+</div>
+
+<!-- POP-UP FORMULAIRE DE COMMANDE (CRO) -->
+<div class="ordm-overlay" id="orderModal" onclick="if(event.target===this)closeOrderForm()">
+  <div class="ordm-box" role="dialog" aria-modal="true" aria-label="Formulaire de commande">
+    <div class="ordm-head">
+      <div class="ordm-img" id="pdSumImg"></div>
+      <div class="ordm-ti">
+        <div class="ordm-name" id="pdSumName">Produit</div>
+        <div id="pdStock" style="font-size:.72rem;color:var(--green);font-weight:700;">✅ En stock — 24–48h</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;"><div style="font-size:.55rem;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.4px;">Total</div><div class="ordm-total" id="pdTotal">0 GNF</div></div>
+      <button type="button" class="ordm-close" onclick="closeOrderForm()" aria-label="Fermer la commande">✕</button>
+    </div>
+    <div class="ordm-body" id="orderFormWrap">
+      <div class="order-badges">
+        <span class="ob">💵 Paiement à la livraison</span>
+        <span class="ob">✅ Tu vérifies avant de payer</span>
+        <a class="ob" href="/garantie-echange" target="_blank" rel="noopener">🔄 7 jours pour l'échange · Voir les conditions</a>
+        <span class="ob">📞 On t'appelle pour confirmer</span>
+      </div>
+      <div class="qty-row">
+        <span class="qty-label">Quantité</span>
+        <div class="qty-box">
+          <button class="qty-btn" type="button" onclick="updateQty(-1)">−</button>
+          <span class="qty-val" id="pdQty">1</span>
+          <button class="qty-btn" type="button" onclick="updateQty(1)">+</button>
+        </div>
+      </div>
+      <div class="fg"><label>Prénom & Nom *</label><input type="text" id="pdNom" placeholder="Ex: Fatoumata Diallo" autocomplete="name"></div>
+      <div class="fg"><label>Téléphone *</label><input type="tel" id="pdTel" placeholder="622 00 00 00" autocomplete="tel" inputmode="numeric" maxlength="13"></div>
+      <div class="fg"><label>Ville / Préfecture *</label><select id="pdVille"><option value="">-- Choisir une ville --</option></select></div>
+      <div class="fg"><label>Quartier / Adresse *</label><input type="text" id="pdAdresse" placeholder="Ex: Ratoma, près du marché" autocomplete="street-address"></div>
+      <div class="fg-hint" style="margin-top:.1rem;">📞 On t'appelle pour confirmer avant la livraison — <b>aucun paiement en ligne</b>.</div>
+    </div>
+    <div class="ordm-foot" id="orderModalFoot">
+      <button type="button" class="ordm-submit" id="orderSubmitBtn" onclick="submitOrderPopup()">💵 Valider — Paiement à la livraison</button>
+    </div>
+    <div class="ordm-success" id="orderModalSuccess" style="display:none">
+      <div id="orderSuccessDetails"></div>
+      <button type="button" class="ordm-submit" style="margin-top:1rem;" onclick="closeOrderForm()">Fermer</button>
+    </div>
+  </div>
 </div>
 
 <!-- SUCCESS -->
@@ -2239,9 +2245,6 @@ function openPD(id){
 
   window.currentEmoji = p.emoji;
   updateTotal();
-  // Reset Orange Money
-  document.querySelectorAll(".pay-opt").forEach(o=>o.classList.toggle("on", o.dataset.pay==="CASH"));
-  document.getElementById("omInfo").classList.remove("show");
   document.getElementById("pdOverlay").classList.add("show");
   document.getElementById("pdOverlay").scrollTop = 0;
   document.getElementById("pdStickyCta").classList.add("show");
@@ -2620,8 +2623,67 @@ async function confirmerCommande(){
   await _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, phoneNorm, orderRef);
 }
 
+// ============================================
+// POP-UP COMMANDE (CRO) — formulaire en modale, envoi direct
+// ============================================
+function openOrderForm(){
+  if(!currentProduct) return;
+  const m = document.getElementById('orderModal');
+  if(m.classList.contains('show')) return; // anti double-ouverture
+  document.getElementById('orderFormWrap').style.display = '';
+  document.getElementById('orderModalFoot').style.display = '';
+  document.getElementById('orderModalSuccess').style.display = 'none';
+  const sb = document.getElementById('orderSubmitBtn');
+  sb.disabled = false; sb.innerHTML = '💵 Valider — Paiement à la livraison';
+  restoreCustomer();
+  updateTotal();
+  document.getElementById('pdStickyCta').classList.add('sticky-hidden');
+  m.classList.add('show');
+}
+function closeOrderForm(){
+  document.getElementById('orderModal').classList.remove('show');
+  document.getElementById('pdStickyCta').classList.remove('sticky-hidden');
+}
+function submitOrderPopup(){
+  if(!currentProduct){ toast("Erreur", "Aucun produit sélectionné", "error"); return; }
+  if(!currentProduct.stock){ toast("Rupture de stock", "Ce produit n'est plus disponible", "warning"); return; }
+  const nom = document.getElementById("pdNom");
+  const tel = document.getElementById("pdTel");
+  const adr = document.getElementById("pdAdresse");
+  const vil = document.getElementById("pdVille");
+  [nom,tel,adr,vil].forEach(f=>f.classList.remove("error"));
+  let firstErr = null;
+  if(!nom.value.trim()){ nom.classList.add("error"); firstErr = firstErr || nom; }
+  if(!tel.value.trim() || !validatePhoneGN(tel.value)){ tel.classList.add("error"); firstErr = firstErr || tel; }
+  if(!vil.value){ vil.classList.add("error"); firstErr = firstErr || vil; }
+  if(!adr.value.trim()){ adr.classList.add("error"); firstErr = firstErr || adr; }
+  if(firstErr){
+    if(firstErr === tel && tel.value.trim()) toast("Téléphone invalide", "Format : 622 00 00 00 (9 chiffres)", "error");
+    else toast("Champs obligatoires", "Remplis tous les champs (*)", "error");
+    firstErr.focus();
+    return;
+  }
+  const sb = document.getElementById('orderSubmitBtn');
+  if(sb.disabled) return; // anti double-clic
+  const last = parseInt(localStorage.getItem('hpLastOrderTime') || '0');
+  if(Date.now() - last < 60000){
+    const w = Math.ceil((60000 - (Date.now() - last)) / 1000);
+    toast("⏳ Trop rapide", `Attends ${w}s avant une nouvelle commande`, "warning");
+    return;
+  }
+  localStorage.setItem('hpLastOrderTime', String(Date.now()));
+  const totalAmount = parsePrice(currentProduct.prix) * currentQty;
+  metaTrack('InitiateCheckout', { content_ids: ["HP-"+currentProduct.id], content_name: currentProduct.nom, value: totalAmount, currency: 'GNF', num_items: currentQty });
+  saveCustomer();
+  const phoneNorm = normalizePhoneGN(tel.value);
+  const orderRef = "HP-" + Date.now() + "-" + currentProduct.id;
+  sb.disabled = true; sb.innerHTML = '<span class="spin"></span> Envoi...';
+  document.getElementById("sendingBar").classList.add("show");
+  _envoyerCommande(nom, tel, adr, vil, "CASH", null, totalAmount, phoneNorm, orderRef);
+}
+
 async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, phoneNorm, orderRef){
-  const orderBtn = document.getElementById("orderBtn");
+  const orderBtn = document.getElementById("orderSubmitBtn");
 
   // ============================================
   // 1) ENVOI AU WEBHOOK CRM (si configuré)
@@ -2703,38 +2765,41 @@ async function _envoyerCommande(nom, tel, adr, vil, payMode, omId, totalAmount, 
   }
 
   setTimeout(()=>{
-    orderBtn.disabled = false;
-    orderBtn.innerHTML = "🛒 CONFIRMER MA COMMANDE — LIVRAISON GRATUITE";
+    if(orderBtn){ orderBtn.disabled = false; orderBtn.innerHTML = "💵 Valider — Paiement à la livraison"; }
     document.getElementById("sendingBar").classList.remove("show");
-    closePD();
 
-    // Remplir le modal succès — ACTION 7 : sanitisation XSS des valeurs utilisateur
+    // Message de confirmation DANS la pop-up (XSS-safe)
     const _esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     const _trackUrl = CONFIG.trackBase + "?q=" + encodeURIComponent(orderCodeFinal);
-    // Si l'envoi au CRM a échoué (souvent : connexion instable), on ne fait PAS
-    // croire que la commande est partie. On demande au client de l'envoyer via
-    // WhatsApp (le message est déjà pré-rempli) — sinon commande perdue « fantôme ».
+    // Si le CRM a échoué, on ne fait PAS croire que c'est parti : on demande d'envoyer via WhatsApp.
     const notSent = !crmOk;
-    document.getElementById("successDetails").innerHTML =
-      (notSent ? `<div style="background:#FFF4E5;border:1.5px solid #F5A800;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:.84rem;color:#7a4b00;line-height:1.5;text-align:left;">⚠️ <b>Dernière étape pour valider :</b> si WhatsApp ne s'est pas ouvert tout seul, appuie sur le bouton vert ci-dessous et <b>envoie le message</b> — sinon nous ne recevrons pas ta commande.</div>` : '') +
-      `<div style="margin-bottom:6px;">📦 <b>${_esc(currentProduct.nom)}</b> × ${currentQty}</div>` +
-      `<div>💰 <b>${fmtPrice(totalAmount)} GNF</b> — ${_esc(payLabel)}</div>` +
-      `<div>📍 ${_esc(adr.value.trim())}, ${_esc(vil.value)}</div>` +
-      `<div style="margin-top:8px;font-size:.82rem;color:#0f172a;">🔖 N° de commande : <b>${_esc(orderCodeFinal)}</b></div>` +
+    document.getElementById("orderSuccessDetails").innerHTML =
+      `<div style="font-size:2.6rem;line-height:1;">${notSent ? '⚠️' : '✅'}</div>` +
+      `<div style="font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.5px;color:${notSent ? '#B8860B' : '#009460'};margin:.2rem 0 .5rem;">${notSent ? 'Presque terminé !' : 'Commande reçue !'}</div>` +
       (notSent
-        ? `<a href="${waUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:10px;background:#25D366;color:#fff;font-weight:800;text-decoration:none;padding:13px;border-radius:8px;font-size:.9rem;">💬 Envoyer ma commande sur WhatsApp</a>`
-        : `<a href="${_trackUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:10px;background:#1A8A2E;color:#fff;font-weight:800;text-decoration:none;padding:11px;border-radius:8px;font-size:.85rem;">📍 Suivre ma commande</a>`);
+        ? `<div style="background:#FFF4E5;border:1.5px solid #F5A800;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:.84rem;color:#7a4b00;line-height:1.5;text-align:left;">Dernière étape : appuie sur le bouton vert et <b>envoie le message WhatsApp</b> — sinon nous ne recevrons pas ta commande.</div>`
+        : `<div style="font-size:.9rem;color:#555;margin-bottom:.8rem;">On t'appelle très vite pour confirmer ta livraison. 🚚</div>`) +
+      `<div style="text-align:left;background:#F7F5F0;border-radius:10px;padding:.7rem .85rem;font-size:.86rem;line-height:1.6;">` +
+      `<div>📦 <b>${_esc(currentProduct.nom)}</b> × ${currentQty}</div>` +
+      `<div>💰 <b>${fmtPrice(totalAmount)} GNF</b> — Paiement à la livraison</div>` +
+      `<div>📍 ${_esc(adr.value.trim())}, ${_esc(vil.value)}</div>` +
+      `<div style="margin-top:6px;font-size:.82rem;">🔖 N° de commande : <b>${_esc(orderCodeFinal)}</b></div>` +
+      `</div>` +
+      (notSent
+        ? `<a href="${waUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:12px;background:#25D366;color:#fff;font-weight:800;text-decoration:none;padding:13px;border-radius:10px;font-size:.92rem;">💬 Envoyer ma commande sur WhatsApp</a>`
+        : `<a href="${_trackUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:12px;background:#1A8A2E;color:#fff;font-weight:800;text-decoration:none;padding:11px;border-radius:10px;font-size:.85rem;">📍 Suivre ma commande</a>`);
 
-    document.getElementById("successOverlay").classList.add("show");
-    // Analytics : achat compté UNIQUEMENT si la commande a bien atteint le CRM
-    // (sinon on enverrait de fausses conversions à Meta → optimisation faussée).
+    // Basculer la pop-up en mode succès (elle reste ouverte, pas de fermeture qui laisse un doute)
+    document.getElementById("orderFormWrap").style.display = "none";
+    document.getElementById("orderModalFoot").style.display = "none";
+    document.getElementById("orderModalSuccess").style.display = "";
+
     if(crmOk){
       metaTrack('Purchase', { content_ids: ["HP-"+currentProduct.id], content_name: currentProduct.nom, content_type: 'product', value: totalAmount, currency: 'GNF', num_items: currentQty });
       metaTrack('Lead', { content_name: currentProduct.nom, value: totalAmount, currency: 'GNF' });
       if(window.trackOrder) trackOrder(orderCodeFinal, totalAmount, [{name:currentProduct.nom, qty:currentQty, price:parsePrice(currentProduct.prix)}], vil.value);
     }
-    toast(notSent ? "Presque terminé !" : "Commande envoyée !", notSent ? "Envoyez le message WhatsApp pour valider" : "Notre équipe te rappelle rapidement", notSent ? "warning" : "success");
-    document.getElementById("pdOMId").value = "";
+    toast(notSent ? "Presque terminé !" : "Commande reçue !", notSent ? "Envoie le message WhatsApp pour valider" : "On te rappelle très vite", notSent ? "warning" : "success");
   }, 800);
 }
 
@@ -2747,6 +2812,8 @@ document.getElementById("pdOverlay").addEventListener("click",function(e){if(e.t
 // ESC pour fermer
 document.addEventListener("keydown", e=>{
   if(e.key === "Escape"){
+    // La pop-up commande passe avant (ne ferme pas la fiche produit derrière)
+    if(document.getElementById("orderModal")?.classList.contains("show")){ closeOrderForm(); return; }
     attemptClosePD();
     closeSuccess();
   }

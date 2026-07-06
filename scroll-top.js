@@ -55,7 +55,7 @@
     { open: 'pdOverlay', scroller: 'pdOverlay' }
   ];
   /* Modales "bloquantes" : quand elles sont ouvertes, on cache le bouton */
-  var BLOCK_MODALS = ['recapOverlay', 'successOverlay', 'nlOverlay', 'cartOverlay'];
+  var BLOCK_MODALS = ['recapOverlay', 'successOverlay', 'nlOverlay', 'cartOverlay', 'orderModal'];
 
   function activeScroller() {
     for (var i = 0; i < SCROLL_MODALS.length; i++) {
