@@ -2084,7 +2084,7 @@ const _sp=document.getElementById("statProduits"); if(_sp) _sp.textContent=produ
 // Gère produits/prix/stock dans un tableur → voir admin/GESTION-PRODUITS-GOOGLE-SHEETS.md
 // Tant que l'URL est vide, le site utilise les produits intégrés ci-dessus (repli sûr).
 // ============================================
-const PRODUITS_SHEET_URL = ""; // ← Colle ici l'URL du script Google (…/exec)
+const PRODUITS_SHEET_URL = "https://script.google.com/macros/s/AKfycby4dqCbmR4EEbAhviZjxSq5vwuBz5UdR40IBr8rCy-sBgtpWyJ1LKFXAEblX9gaXR3W/exec"; // ← URL du script Google (…/exec)
 (function loadProduitsFromSheet(){
   if(!PRODUITS_SHEET_URL) return;
   const CACHE_KEY="hpshop_produits_v1";
