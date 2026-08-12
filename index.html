@@ -2002,7 +2002,7 @@ function logToSheets(row){
 // ============================================
 const UNSPLASH = (q,w=400)=>`https://images.unsplash.com/${q}?auto=format&fit=crop&w=${w}&q=70`;
 
-const produits=[
+let produits=[
   {id:1,nom:"Shilajit Gummies Himalayen — Énergie & Vitalité",cat:"sante",emoji:"🍯",img:"assets/products/p01-shilajit.jpg",prix:"245 000",old:"360 000",stock:true,badge:"chaud",desc:"Cure de minéraux purs de l'Himalaya pour booster énergie, endurance et immunité. 1 gomme par jour, effet ressenti dès la 1ʳᵉ semaine.",usage:["Prenez 1 à 2 gommes par jour, de préférence le matin.","Mâchez bien avant d'avaler — inutile de prendre avec de l'eau.","Faites une cure régulière pour une énergie et une vitalité durables."],imgs:["assets/products/p01-shilajit-natural.jpg"],pub:["assets/products/p01-pub-strength.jpg"],video:"assets/videos/p01-shilajit.mp4"},
   {id:2,nom:"Soin Kojic Acid Anti-Taches & Anti-Acné",cat:"beaute",emoji:"✨",img:"assets/products/p02-kojic-lotion.jpg",prix:"165 000",old:"250 000",stock:true,badge:"new",desc:"Estompe taches brunes, boutons et cicatrices pour un teint clair et uniforme. Gamme à l'acide kojique (lotion + crème), résultats visibles en 14 jours.",imgs:["assets/products/p02-kojic-cream.jpg"],usage:["Nettoyez et séchez votre peau matin et soir.","Appliquez une fine couche sur les zones à traiter.","Massez délicatement jusqu'à absorption, en évitant le contour des yeux.","Le jour, appliquez une protection solaire pour de meilleurs résultats."],pub:["assets/products/p02-pub-modele.jpg","assets/products/p02b-avant-apres.jpg"],video:"assets/videos/p02-kojic.mp4"},
   {id:3,nom:"Poudre Minérale AQA — Blancheur & Soin des Dents",cat:"beaute",emoji:"🦷",img:"assets/products/p03d-aqa-box.jpg",prix:"185 000",old:"280 000",stock:true,badge:"top",desc:"Reminéralise et blanchit les dents en comblant les micro-fissures de l'émail. Un sourire éclatant à la maison, sans dentiste.",imgs:["assets/products/p03b-benefices.jpg"],usage:["Humidifiez votre brosse à dents.","Trempez-la dans la poudre minérale AQA.","Brossez doucement 2 minutes, matin et soir.","Rincez à l'eau : un sourire plus blanc dès les premiers jours."],pub:["assets/products/p03-pub-avantapres.jpg","assets/products/p03-pub-shield.jpg","assets/products/_extras/aqa-oyikey.jpg"],video:""},
@@ -2078,6 +2078,48 @@ renderProducts(produits);
 document.querySelectorAll(".dyn-count").forEach(el=>el.textContent=produits.length);
 document.querySelectorAll(".ticker-count").forEach(el=>el.textContent=produits.length);
 const _sp=document.getElementById("statProduits"); if(_sp) _sp.textContent=produits.length;
+
+// ============================================
+// CHARGEMENT DES PRODUITS DEPUIS GOOGLE SHEETS
+// Gère produits/prix/stock dans un tableur → voir admin/GESTION-PRODUITS-GOOGLE-SHEETS.md
+// Tant que l'URL est vide, le site utilise les produits intégrés ci-dessus (repli sûr).
+// ============================================
+const PRODUITS_SHEET_URL = ""; // ← Colle ici l'URL du script Google (…/exec)
+(function loadProduitsFromSheet(){
+  if(!PRODUITS_SHEET_URL) return;
+  const CACHE_KEY="hpshop_produits_v1";
+  function refreshCounts(){
+    document.querySelectorAll(".dyn-count").forEach(el=>el.textContent=produits.length);
+    document.querySelectorAll(".ticker-count").forEach(el=>el.textContent=produits.length);
+    const sp=document.getElementById("statProduits"); if(sp) sp.textContent=produits.length;
+  }
+  function apply(list){
+    if(!Array.isArray(list)||!list.length) return;
+    produits = list;
+    renderProducts(produits);
+    refreshCounts();
+  }
+  function normalize(list){
+    return (list||[]).map(p=>({
+      ...p,
+      id:Number(p.id),
+      stock:(p.stock===true||String(p.stock).toLowerCase()==="true"),
+      imgs:Array.isArray(p.imgs)?p.imgs:(p.imgs?String(p.imgs).split(/\s*\|\s*/):[]),
+      pub:Array.isArray(p.pub)?p.pub:(p.pub?String(p.pub).split(/\s*\|\s*/):[]),
+      usage:Array.isArray(p.usage)?p.usage:(p.usage?String(p.usage).split(/\s*\|\s*/):[])
+    })).filter(p=>p.id&&p.nom);
+  }
+  // 1) Affichage instantané depuis le cache local (si présent)
+  try{ const c=JSON.parse(localStorage.getItem(CACHE_KEY)||"null"); if(c&&c.data) apply(c.data); }catch(e){}
+  // 2) Rafraîchissement en tâche de fond depuis la feuille
+  fetch(PRODUITS_SHEET_URL,{cache:"no-store"})
+    .then(r=>r.json())
+    .then(list=>{
+      const norm=normalize(list);
+      if(norm.length){ apply(norm); try{ localStorage.setItem(CACHE_KEY,JSON.stringify({t:Date.now(),data:norm})); }catch(e){} }
+    })
+    .catch(()=>{ /* silencieux : le site garde les produits intégrés / le cache */ });
+})();
 
 // ============================================
 // MODAL PRODUIT (avec quantité, total dynamique)

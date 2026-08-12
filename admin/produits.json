@@ -1,0 +1,589 @@
+[
+  {
+    "id": 1,
+    "nom": "Shilajit Gummies Himalayen — Énergie & Vitalité",
+    "cat": "sante",
+    "emoji": "🍯",
+    "img": "assets/products/p01-shilajit.jpg",
+    "prix": "245 000",
+    "old": "360 000",
+    "stock": true,
+    "badge": "chaud",
+    "desc": "Cure de minéraux purs de l'Himalaya pour booster énergie, endurance et immunité. 1 gomme par jour, effet ressenti dès la 1ʳᵉ semaine.",
+    "usage": [
+      "Prenez 1 à 2 gommes par jour, de préférence le matin.",
+      "Mâchez bien avant d'avaler — inutile de prendre avec de l'eau.",
+      "Faites une cure régulière pour une énergie et une vitalité durables."
+    ],
+    "imgs": [
+      "assets/products/p01-shilajit-natural.jpg"
+    ],
+    "pub": [
+      "assets/products/p01-pub-strength.jpg"
+    ],
+    "video": "assets/videos/p01-shilajit.mp4"
+  },
+  {
+    "id": 2,
+    "nom": "Soin Kojic Acid Anti-Taches & Anti-Acné",
+    "cat": "beaute",
+    "emoji": "✨",
+    "img": "assets/products/p02-kojic-lotion.jpg",
+    "prix": "165 000",
+    "old": "250 000",
+    "stock": true,
+    "badge": "new",
+    "desc": "Estompe taches brunes, boutons et cicatrices pour un teint clair et uniforme. Gamme à l'acide kojique (lotion + crème), résultats visibles en 14 jours.",
+    "imgs": [
+      "assets/products/p02-kojic-cream.jpg"
+    ],
+    "usage": [
+      "Nettoyez et séchez votre peau matin et soir.",
+      "Appliquez une fine couche sur les zones à traiter.",
+      "Massez délicatement jusqu'à absorption, en évitant le contour des yeux.",
+      "Le jour, appliquez une protection solaire pour de meilleurs résultats."
+    ],
+    "pub": [
+      "assets/products/p02-pub-modele.jpg",
+      "assets/products/p02b-avant-apres.jpg"
+    ],
+    "video": "assets/videos/p02-kojic.mp4"
+  },
+  {
+    "id": 3,
+    "nom": "Poudre Minérale AQA — Blancheur & Soin des Dents",
+    "cat": "beaute",
+    "emoji": "🦷",
+    "img": "assets/products/p03d-aqa-box.jpg",
+    "prix": "185 000",
+    "old": "280 000",
+    "stock": true,
+    "badge": "top",
+    "desc": "Reminéralise et blanchit les dents en comblant les micro-fissures de l'émail. Un sourire éclatant à la maison, sans dentiste.",
+    "imgs": [
+      "assets/products/p03b-benefices.jpg"
+    ],
+    "usage": [
+      "Humidifiez votre brosse à dents.",
+      "Trempez-la dans la poudre minérale AQA.",
+      "Brossez doucement 2 minutes, matin et soir.",
+      "Rincez à l'eau : un sourire plus blanc dès les premiers jours."
+    ],
+    "pub": [
+      "assets/products/p03-pub-avantapres.jpg",
+      "assets/products/p03-pub-shield.jpg",
+      "assets/products/_extras/aqa-oyikey.jpg"
+    ],
+    "video": ""
+  },
+  {
+    "id": 4,
+    "nom": "Power Bank MagSafe Sans Fil — Batterie Magnétique",
+    "cat": "tech",
+    "emoji": "🔋",
+    "img": "assets/products/p04-magsafe-main.jpg",
+    "prix": "185 000",
+    "old": "280 000",
+    "stock": true,
+    "badge": "top",
+    "desc": "Batterie externe sans fil qui se clipse magnétiquement à l'arrière de ton téléphone (compatible MagSafe). Recharge sans câble, ultra-fine, se glisse dans la poche — idéale en déplacement.",
+    "imgs": [
+      "assets/products/p04-magsafe.jpg",
+      "assets/products/p04-magsafe2.jpg"
+    ],
+    "usage": [
+      "Approchez la batterie de l'arrière de ton téléphone : l'aimant la fixe tout seul.",
+      "La recharge sans fil démarre automatiquement.",
+      "Rechargez la batterie elle-même via le port USB-C.",
+      "Compatible iPhone MagSafe et coques magnétiques."
+    ],
+    "pub": [
+      "assets/products/p04-bank1.jpg",
+      "assets/products/p04-bank2.jpg"
+    ],
+    "video": "assets/videos/p04-magsafe.mp4"
+  },
+  {
+    "id": 10,
+    "nom": "Genouillère Anti-Arthrose Compression",
+    "cat": "sante",
+    "emoji": "🦵",
+    "img": "assets/products/p10-genou.jpg",
+    "imgs": [
+      "assets/products/p10-genou1.jpg",
+      "assets/products/p10-genou2.jpg"
+    ],
+    "pub": [
+      "assets/products/p10-genouelle.jpg"
+    ],
+    "prix": "165 000",
+    "old": "250 000",
+    "stock": true,
+    "badge": "",
+    "desc": "Soutient le genou et soulage les douleurs d'arthrose et articulaires. Compression chauffante pour bouger à nouveau sans douleur.",
+    "usage": [
+      "Enfilez la genouillère en centrant l'ouverture sur la rotule.",
+      "Ajustez les sangles : compression ferme mais confortable.",
+      "Portez-la pendant vos activités ou en cas de douleur.",
+      "Retirez-la la nuit ; lavable à la main."
+    ],
+    "video": "assets/videos/p10-genou.mp4"
+  },
+  {
+    "id": 21,
+    "nom": "Ventilateur Brumisateur Rafraîchisseur d'Air Portable",
+    "cat": "maison",
+    "emoji": "🌬️",
+    "img": "assets/products/p21-fan.jpg",
+    "imgs": [
+      "assets/products/p21-fan-desk.jpg",
+      "assets/products/p21-fan-green.jpg"
+    ],
+    "prix": "195 000",
+    "old": "290 000",
+    "stock": true,
+    "badge": "chaud",
+    "desc": "Rafraîchit et humidifie l'air pour braver la chaleur de Conakry. Réservoir 700 ml, brumisation fine, 3 vitesses, veilleuse LED et minuterie. Rechargeable et silencieux, parfait sur le bureau ou la table de nuit.",
+    "usage": [
+      "Remplissez le réservoir d'eau (et de glaçons pour plus de fraîcheur).",
+      "Rechargez ou branchez l'appareil.",
+      "Allumez et réglez la vitesse et la brumisation.",
+      "Orientez le flux vers vous. Parfait contre la chaleur de Conakry."
+    ],
+    "pub": [
+      "assets/products/p21-fan-features.jpg"
+    ],
+    "video": "assets/videos/p21-brumisateur.mp4"
+  },
+  {
+    "id": 26,
+    "nom": "Masque Moto + Lunettes Amovibles Anti-Vent",
+    "cat": "auto",
+    "emoji": "🥽",
+    "img": "assets/products/p26-masque-moto.jpg",
+    "prix": "165 000",
+    "old": "250 000",
+    "stock": true,
+    "badge": "new",
+    "desc": "Masque moto rétro avec lunettes amovibles : protège du vent, de la poussière, du soleil et des projections. Se porte seul ou se clipse sur un casque jet/demi-jet. Verres iridescents anti-UV, mousse confort respirante, sangle réglable.",
+    "imgs": [
+      "assets/products/p26b-masque-moto.jpg"
+    ],
+    "usage": [
+      "Clipsez ou détachez les lunettes du masque grâce aux attaches latérales.",
+      "Ajustez la sangle élastique derrière la tête (ou par-dessus le casque).",
+      "Portez-le seul à moto/scooter, ou avec un casque jet ou demi-jet.",
+      "Nettoyez les verres avec un chiffon doux ; rangez à l'abri des rayures."
+    ],
+    "pub": [
+      "assets/products/p26c-masque-moto-porte.jpg",
+      "assets/products/p26d-masque-moto-main.jpg"
+    ],
+    "video": "assets/videos/p26-masque-moto.mp4"
+  },
+  {
+    "id": 25,
+    "nom": "Mini Machine à Coudre Portable Sans Fil",
+    "cat": "maison",
+    "emoji": "🧵",
+    "img": "assets/products/p25-machine-couture.jpg",
+    "prix": "230 000",
+    "old": "330 000",
+    "stock": true,
+    "badge": "new",
+    "desc": "Cousez ourlets, rideaux et vêtements à la main en quelques secondes, sans fil. Légère et facile, idéale à la maison comme en déplacement.",
+    "imgs": [
+      "assets/products/p25d-inhand.jpg"
+    ],
+    "usage": [
+      "Insérez les piles ou branchez l'appareil.",
+      "Enfilez le fil et placez le tissu sous l'aiguille.",
+      "Appuyez sur le bouton et guidez doucement le tissu.",
+      "Coupez le fil et nouez : c'est cousu !"
+    ],
+    "pub": [
+      "assets/products/p25-pub-creatif.jpg",
+      "assets/products/p25c-closeup.jpg"
+    ],
+    "video": "assets/videos/p25-machine-couture.mp4"
+  },
+  {
+    "id": 28,
+    "nom": "JBL Xtreme 4 — Enceinte Bluetooth Portable & Étanche",
+    "cat": "tech",
+    "emoji": "🔊",
+    "img": "assets/products/p28-jbl.jpg",
+    "prix": "285 000",
+    "old": "420 000",
+    "stock": true,
+    "badge": "chaud",
+    "desc": "Enceinte Bluetooth puissante avec basses profondes et son immersif. Étanche (plage, piscine), bandoulière incluse, grosse autonomie — parfaite pour les fêtes, le sport et les sorties.",
+    "imgs": [
+      "assets/products/p28-jbl-lifestyle.jpg"
+    ],
+    "usage": [
+      "Chargez complètement l'enceinte avant la première utilisation.",
+      "Activez le Bluetooth et appairez votre téléphone.",
+      "Réglez le volume et lancez votre playlist.",
+      "Emportez-la partout grâce à la bandoulière."
+    ],
+    "pub": [
+      "assets/products/p28-jbl-colors.jpg"
+    ],
+    "video": "assets/videos/p28-jbl.mp4"
+  },
+  {
+    "id": 31,
+    "nom": "Gonfleur de Pneu Portable Sans Fil — Auto & Moto",
+    "cat": "auto",
+    "emoji": "🛞",
+    "img": "assets/products/p31-gonfleur.jpg",
+    "imgs": [
+      "assets/products/p31-pompe.jpg"
+    ],
+    "prix": "185 000",
+    "old": "280 000",
+    "stock": true,
+    "badge": "chaud",
+    "desc": "Mini compresseur rechargeable qui regonfle pneus de voiture, moto, vélo et ballons en quelques minutes. Écran digital, pression préréglée, arrêt automatique. Indispensable dans le coffre.",
+    "usage": [
+      "Rechargez le gonfleur ou branchez-le sur l'allume-cigare.",
+      "Vissez l'embout sur la valve du pneu.",
+      "Réglez la pression voulue (PSI / BAR) sur l'écran.",
+      "Démarrez : l'appareil s'arrête tout seul à la bonne pression."
+    ],
+    "pub": [
+      "assets/products/p31-pub.jpg"
+    ],
+    "video": "assets/videos/p26-gonfleur.mp4"
+  },
+  {
+    "id": 32,
+    "nom": "Mini Aspirateur Sans Fil Puissant — Voiture & Maison",
+    "cat": "maison",
+    "emoji": "🧹",
+    "img": "assets/products/p32-aspirateur.jpg",
+    "prix": "165 000",
+    "old": "250 000",
+    "stock": true,
+    "badge": "new",
+    "desc": "Petit aspirateur à main rechargeable, parfait pour la voiture, le bureau et les recoins difficiles. Aspiration puissante, embouts inclus, ultra-léger et silencieux.",
+    "imgs": [
+      "assets/products/p32-asp2.jpg"
+    ],
+    "pub": [
+      "assets/products/p32-keyboard.jpg"
+    ],
+    "usage": [
+      "Chargez l'aspirateur via le câble USB.",
+      "Choisissez l'embout adapté (fente ou brosse).",
+      "Allumez et passez sur miettes, poussière et poils.",
+      "Videz le bac et rincez le filtre après usage."
+    ],
+    "video": "assets/videos/p27-aspirateur.mp4"
+  },
+  {
+    "id": 33,
+    "nom": "Ventilateur de Cou Sans Pales — Portable & Mains Libres",
+    "cat": "maison",
+    "emoji": "💨",
+    "img": "assets/products/p33-neckfan.jpg",
+    "prix": "230 000",
+    "old": "330 000",
+    "stock": true,
+    "badge": "chaud",
+    "desc": "Ventilateur de cou sans pales (sécurité cheveux), porté autour du cou pour rester au frais les mains libres. Rechargeable longue autonomie, plusieurs vitesses, silencieux et léger — idéal trajet, sport, cuisine et bureau.",
+    "imgs": [
+      "assets/products/p33-neckfan-blue.jpg"
+    ],
+    "usage": [
+      "Rechargez l'appareil via le câble USB avant usage.",
+      "Posez-le autour du cou, les sorties d'air vers le visage.",
+      "Allumez et choisissez la vitesse souhaitée.",
+      "Mains libres : marchez, travaillez ou cuisinez au frais."
+    ],
+    "pub": [
+      "assets/products/p33-neckfan-features.jpg"
+    ],
+    "video": "assets/videos/p33-neckfan.mp4"
+  },
+  {
+    "id": 34,
+    "nom": "Défroisseur Vapeur & Mini Fer à Repasser Portable 1000W",
+    "cat": "maison",
+    "emoji": "👕",
+    "img": "assets/products/p34-defroisseur.jpg",
+    "prix": "280 000",
+    "old": "",
+    "stock": true,
+    "badge": "new",
+    "desc": "Défroisseur vapeur et mini fer à repasser 2-en-1, ultra-compact et puissant (1000W). Chauffe en 20 secondes et défroisse chemises, robes et rideaux à la verticale comme à plat. Réservoir 100 ml, vapeur humide ou repassage à sec — parfait à la maison comme en voyage.",
+    "usage": [
+      "Remplissez le réservoir d'eau (100 ml) pour la fonction vapeur.",
+      "Branchez et patientez 20 secondes de chauffe.",
+      "Passez l'appareil sur le vêtement, à la verticale sur un cintre ou à plat.",
+      "Videz le réservoir après usage et laissez refroidir avant de ranger."
+    ],
+    "imgs": [
+      "assets/products/p34-defroisseur-green.jpg"
+    ],
+    "pub": [
+      "assets/products/p34-pub.jpg"
+    ],
+    "video": "assets/videos/p34-repassage.mp4"
+  },
+  {
+    "id": 35,
+    "nom": "Lampe Torche LED Ultra-Puissante 8000LM — 8 LED Rechargeable",
+    "cat": "maison",
+    "emoji": "🔦",
+    "img": "assets/products/p35-torche.jpg",
+    "prix": "120 000",
+    "old": "",
+    "stock": true,
+    "badge": "chaud",
+    "desc": "Lampe torche LED ultra-puissante : 8000 lumens, 8 LED et 8 modes d'éclairage. Rechargeable par USB, compacte et résistante, avec base magnétique — parfaite à la maison, en cas de coupure de courant, au camping ou en déplacement. Faisceau puissant qui éclaire très loin.",
+    "usage": [
+      "Rechargez la torche via le câble USB avant la première utilisation.",
+      "Appuyez sur le bouton pour l'allumer et changer de mode d'éclairage.",
+      "Fixez-la sur une surface métallique grâce à la base magnétique, mains libres.",
+      "Idéale à la maison, en cas de coupure, au camping ou en voiture."
+    ],
+    "imgs": [
+      "assets/products/p35-torche-hand.jpg"
+    ],
+    "pub": [],
+    "video": "assets/videos/p35-torche.mp4"
+  },
+  {
+    "id": 36,
+    "nom": "Spray Imperméabilisant Nano — Chaussures & Baskets Anti-Eau & Taches",
+    "cat": "mode",
+    "emoji": "👟",
+    "img": "assets/products/p36-spray.jpg",
+    "prix": "120 000",
+    "old": "",
+    "stock": true,
+    "badge": "chaud",
+    "desc": "Spray imperméabilisant nano dernière génération : il crée une barrière invisible qui repousse l'eau, la boue et les taches sur chaussures, baskets, daim et tissus. Une pulvérisation et l'eau perle et glisse — tes baskets restent propres et sèches, même en pleine saison des pluies. Séchage rapide, sans odeur, invisible.",
+    "usage": [
+      "Nettoyez et séchez la chaussure ou le tissu avant application.",
+      "Pulvérisez à 15–20 cm, en couche fine et régulière.",
+      "Laissez sécher 20 à 30 minutes (ou 2 fines couches à 10 min d'intervalle).",
+      "L'eau, la boue et les taches perlent et glissent. À renouveler après plusieurs pluies ou lavages."
+    ],
+    "imgs": [
+      "assets/products/p36-spray-can.jpg"
+    ],
+    "pub": [
+      "assets/products/p36-spray-apply.jpg"
+    ],
+    "video": "assets/videos/p36-spray.mp4"
+  },
+  {
+    "id": 37,
+    "nom": "Brosse Lissante Chauffante Sans Fil — Rechargeable USB",
+    "cat": "beaute",
+    "emoji": "💇",
+    "img": "assets/products/p37-brosse-lissante.jpg",
+    "prix": "280 000",
+    "old": "",
+    "stock": true,
+    "badge": "new",
+    "desc": "Des cheveux lisses et brillants en quelques minutes, sans fil et sans effort. Cette brosse chauffante démêle et lisse d'un seul geste : elle monte jusqu'à 200°C avec écran digital et se recharge par USB. Glissez-la dans votre sac pour une coiffure parfaite partout — à la maison, au bureau ou en voyage.",
+    "usage": [
+      "Rechargez la brosse via le câble USB avant utilisation.",
+      "Allumez et réglez la température (jusqu'à 200°C) sur l'écran digital.",
+      "Passez la brosse mèche par mèche, des racines vers les pointes.",
+      "Laissez refroidir avant de la ranger. Idéale à la maison comme en voyage."
+    ],
+    "imgs": [
+      "assets/products/p37-brosse-lissante-2.jpg"
+    ],
+    "pub": [],
+    "video": "assets/videos/p37-brosse-lissante.mp4"
+  },
+  {
+    "id": 38,
+    "nom": "Miroir de Maquillage LED Rechargeable — 3 Modes de Lumière",
+    "cat": "beaute",
+    "emoji": "🪞",
+    "img": "assets/products/p38-miroir-led.jpg",
+    "prix": "200 000",
+    "old": "",
+    "stock": true,
+    "badge": "top",
+    "desc": "Un miroir lumineux digne des instituts pour un maquillage parfait à toute heure. Éclairage LED doux réglable sur 3 intensités, commande tactile et recharge USB — sans fil ni pile. Sa base élégante range aussi vos bijoux et cosmétiques. Chic, féminin, et une idée cadeau qui fait toujours plaisir.",
+    "usage": [
+      "Rechargez le miroir via le câble USB avant utilisation.",
+      "Touchez le bouton tactile pour l'allumer.",
+      "Appuyez à nouveau pour régler l'intensité (3 modes de lumière).",
+      "Posez vos bijoux et cosmétiques sur la base de rangement."
+    ],
+    "imgs": [
+      "assets/products/p38-miroir-led-2.jpg"
+    ],
+    "pub": [
+      "assets/products/p38-miroir-led-3.jpg"
+    ],
+    "video": "assets/videos/p38-miroir-led.mp4"
+  },
+  {
+    "id": 39,
+    "nom": "Lampe LED Rechargeable avec Télécommande — Anti-Coupures",
+    "cat": "maison",
+    "emoji": "💡",
+    "img": "assets/products/p39-lampe-led-telecommande.jpg",
+    "prix": "165 000",
+    "old": "230 000",
+    "stock": true,
+    "badge": "chaud",
+    "desc": "Ne subissez plus les coupures de courant. Cette ampoule LED rechargeable continue d'éclairer même sans électricité, et se contrôle entièrement à la télécommande : allumage, intensité et 16 couleurs. Crochet intégré pour l'accrocher partout — maison, boutique, cour ou camping.",
+    "benefits": [
+      "Reste allumée pendant les coupures de courant (batterie intégrée)",
+      "Télécommande : allumage, intensité réglable et 16 couleurs RGB",
+      "Recharge par USB, plusieurs heures d'autonomie",
+      "Crochet intégré : à suspendre partout, aucune installation",
+      "Payé à la livraison — tu règles seulement à la réception"
+    ],
+    "usage": [
+      "Rechargez l'ampoule via le câble USB avant la première utilisation.",
+      "Vissez-la sur une douille ou suspendez-la par son crochet.",
+      "Allumez et réglez l'intensité ou la couleur avec la télécommande.",
+      "En cas de coupure, elle continue d'éclairer sur sa batterie."
+    ],
+    "imgs": [
+      "assets/products/p39-lampe-led-telecommande-2.jpg"
+    ],
+    "pub": [
+      "assets/products/p39-lampe-led-telecommande-3.jpg"
+    ],
+    "video": ""
+  },
+  {
+    "id": 40,
+    "nom": "Hydropulseur Dentaire Portable — Jet Dentaire USB (4 Embouts)",
+    "cat": "sante",
+    "emoji": "🦷",
+    "img": "assets/products/p40-hydropulseur-dentaire.jpg",
+    "prix": "245 000",
+    "old": "350 000",
+    "stock": true,
+    "badge": "new",
+    "desc": "Une hygiène dentaire de cabinet, à la maison. Ce jet d'eau sous pression déloge les résidus et la plaque entre les dents, là où la brosse ne passe pas — plus efficace et plus doux que le fil dentaire. Rechargeable USB, sans fil, avec réservoir intégré et 4 embouts pour toute la famille (idéal appareils et bagues).",
+    "benefits": [
+      "Nettoie entre les dents et sous les bagues, là où la brosse n'atteint pas",
+      "Jet d'eau réglable : plus doux et efficace que le fil dentaire",
+      "Rechargeable USB, sans fil — utilisable partout",
+      "4 embouts inclus pour toute la famille",
+      "Payé à la livraison — tu règles seulement à la réception"
+    ],
+    "usage": [
+      "Rechargez l'appareil via USB et remplissez le réservoir d'eau.",
+      "Choisissez un embout et réglez l'intensité du jet.",
+      "Penchez-vous au-dessus du lavabo, bouche entrouverte.",
+      "Passez le jet le long de la gencive et entre chaque dent."
+    ],
+    "imgs": [
+      "assets/products/p40-hydropulseur-dentaire-2.jpg"
+    ],
+    "pub": [
+      "assets/products/p40-hydropulseur-dentaire-3.jpg"
+    ],
+    "video": "assets/videos/p40-hydropulseur-dentaire.mp4"
+  },
+  {
+    "id": 41,
+    "nom": "Parasol Pare-Soleil Voiture — Protection Habitacle Anti-Chaleur",
+    "cat": "auto",
+    "emoji": "☂️",
+    "img": "assets/products/p41-parasol-voiture.jpg",
+    "prix": "175 000",
+    "old": "260 000",
+    "stock": true,
+    "badge": "chaud",
+    "desc": "Fini l'habitacle brûlant et le volant impossible à toucher. Ce pare-soleil en forme de parapluie se déploie en quelques secondes et bloque la chaleur et les UV derrière votre pare-brise. Votre voiture reste fraîche, le tableau de bord protégé, et il se replie pour se ranger dans sa housse.",
+    "benefits": [
+      "Garde l'habitacle frais même en plein soleil",
+      "Se déploie et se replie en quelques secondes, comme un parapluie",
+      "Protège tableau de bord, volant et sièges des UV",
+      "Se range compact dans sa housse fournie",
+      "Payé à la livraison — tu règles seulement à la réception"
+    ],
+    "usage": [
+      "Ouvrez le parasol comme un parapluie à l'intérieur du véhicule.",
+      "Calez le manche entre le volant et le pare-brise.",
+      "Ajustez pour couvrir toute la surface vitrée.",
+      "Repliez-le et rangez-le dans sa housse en quittant la voiture."
+    ],
+    "imgs": [
+      "assets/products/p41-parasol-voiture-2.jpg"
+    ],
+    "pub": [],
+    "video": "assets/videos/p41-parasol-voiture.mp4"
+  },
+  {
+    "id": 42,
+    "nom": "Répéteur WiFi 300 Mbps — Amplificateur de Signal Maison",
+    "cat": "maison",
+    "emoji": "📶",
+    "img": "assets/products/p42-wifi-booster.jpg",
+    "prix": "185 000",
+    "old": "270 000",
+    "stock": true,
+    "badge": "new",
+    "desc": "Du WiFi partout, fini les zones mortes. Ce répéteur se branche sur une prise et étend le signal de votre box dans toute la maison — chambres, étage, cour. Installation en 2 minutes via le bouton WPS, sans câble ni configuration compliquée. Idéal pour les grandes concessions et les murs épais.",
+    "benefits": [
+      "Étend le WiFi dans toute la maison, supprime les zones sans réseau",
+      "Installation simple en 2 minutes avec le bouton WPS",
+      "Se branche directement sur une prise, sans encombrement",
+      "Port LAN pour connecter aussi un appareil en filaire",
+      "Payé à la livraison — tu règles seulement à la réception"
+    ],
+    "usage": [
+      "Branchez le répéteur sur une prise, à mi-chemin de votre box.",
+      "Appuyez sur le bouton WPS du répéteur puis sur celui de la box.",
+      "Attendez que le voyant de signal se stabilise.",
+      "Connectez vos appareils au nouveau réseau étendu."
+    ],
+    "imgs": [
+      "assets/products/p42-wifi-booster-2.jpg"
+    ],
+    "pub": [
+      "assets/products/p42-wifi-booster-3.jpg"
+    ],
+    "video": ""
+  },
+  {
+    "id": 43,
+    "nom": "Blender Portable Rechargeable USB — Mixeur à Jus & Smoothies 6 Lames",
+    "cat": "maison",
+    "emoji": "🥤",
+    "img": "assets/products/mixeur-1.jpg",
+    "prix": "175 000",
+    "old": "250 000",
+    "stock": true,
+    "badge": "new",
+    "desc": "Préparez vos jus de fruits frais partout, sans fil. Ce mini-mixeur rechargeable broie mangue, ananas, gingembre ou banane en quelques secondes grâce à ses 6 lames en inox. Parfait pour un smoothie vitaminé, une bouillie pour bébé ou une sauce express — et il se transforme en gourde à emporter au bureau, en voyage ou à la salle. Recharge par USB, aucun branchement, zéro corvée de vaisselle.",
+    "benefits": [
+      "6 lames en inox : broie fruits, glace et bouillies en quelques secondes",
+      "Sans fil, rechargeable par USB — utilisable partout, même sans prise",
+      "Se transforme en gourde à emporter (bureau, voyage, sport)",
+      "Parfait pour jus de mangue, ananas, gingembre, smoothies et bouillies bébé",
+      "Payé à la livraison — tu règles seulement à la réception"
+    ],
+    "usage": [
+      "Rechargez l'appareil via le câble USB avant la première utilisation.",
+      "Ouvrez le bol et ajoutez vos fruits coupés avec un peu d'eau ou de lait.",
+      "Refermez bien, retournez l'appareil et double-cliquez sur le bouton pour démarrer.",
+      "Dégustez directement dans la bouteille, puis rincez à l'eau."
+    ],
+    "imgs": [
+      "assets/products/mixeur-2.jpg"
+    ],
+    "pub": [
+      "assets/products/mixeur-3.jpg"
+    ],
+    "video": "assets/videos/mixeur-video.mp4"
+  }
+]
